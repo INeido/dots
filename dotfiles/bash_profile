@@ -1,0 +1,9 @@
+#
+# ~/.bash_profile
+#
+
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+export PATH=$PATH:/home/neido/.spicetify
+export PATH=$PATH:/home/neido/.local/share/gem/ruby/3.0.0/bin
+export PATH=$PATH:/home/neido/.local/bin
+export SHELL=/bin/zsh

@@ -1,0 +1,34 @@
+# https://github.com/spaceship-prompt/spaceship-prompt
+autoload -U promptinit; promptinit
+prompt spaceship
+
+# Maybe consider switching to
+# https://github.com/romkatv/powerlevel10k#fonts
+
+# https://github.com/zsh-users/zsh-syntax-highlighting
+source /home/neido/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# https://github.com/athityakumar/colorls/
+source $(dirname $(gem which colorls))/tab_complete.sh
+alias lc='colorls -lA --sd'
+alias lt='colorls --tree'
+
+# Be kind to Linux
+alias pls='sudo'
+
+# I am lazy
+alias ai='cd /AI/stable-diffusion-webui/'
+
+# Keybinds
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
+
+# PATH
+export PATH=$PATH:/home/neido/.spicetify
+export PATH=$PATH:/home/neido/.local/share/gem/ruby/3.0.0/bin
+export PATH=$PATH:/home/neido/.local/bin
+export SHELL=/bin/zsh
+
+# greeter
+neofetch | lolcat -S 25

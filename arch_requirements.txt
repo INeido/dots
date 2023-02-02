@@ -1,0 +1,5 @@
+zsh
+neovim
+alacritty
+thunderbird
+htop

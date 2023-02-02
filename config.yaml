@@ -1,0 +1,111 @@
+config:
+  backup: true
+  banner: true
+  create: true
+  dotpath: dotfiles
+  keepdot: false
+  link_dotfile_default: nolink
+  link_on_import: nolink
+  longkey: false
+dotfiles:
+  f_zshrc:
+    src: zshrc
+    dst: ~/.zshrc
+  f_gitconfig:
+    src: gitconfig
+    dst: ~/.gitconfig
+  f_bashrc:
+    src: bashrc
+    dst: ~/.bashrc
+  f_bash_profile:
+    src: bash_profile
+    dst: ~/.bash_profile
+  f_alacritty.yml:
+    src: config/alacritty/alacritty.yml
+    dst: ~/.config/alacritty/alacritty.yml
+  f_kcminputrc:
+    src: config/kdedefaults/kcminputrc
+    dst: ~/.config/kdedefaults/kcminputrc
+    chmod: '600'
+  f_kdeglobals:
+    src: config/kdedefaults/kdeglobals
+    dst: ~/.config/kdedefaults/kdeglobals
+    chmod: '600'
+  f_kscreenlockerrc:
+    src: config/kdedefaults/kscreenlockerrc
+    dst: ~/.config/kdedefaults/kscreenlockerrc
+    chmod: '600'
+  f_ksplashrc:
+    src: config/kdedefaults/ksplashrc
+    dst: ~/.config/kdedefaults/ksplashrc
+    chmod: '600'
+  f_kwinrc:
+    src: config/kdedefaults/kwinrc
+    dst: ~/.config/kdedefaults/kwinrc
+    chmod: '600'
+  f_package:
+    src: config/kdedefaults/package
+    dst: ~/.config/kdedefaults/package
+  f_plasmarc:
+    src: config/kdedefaults/plasmarc
+    dst: ~/.config/kdedefaults/plasmarc
+    chmod: '600'
+  d_kvantum:
+    src: config/Kvantum
+    dst: ~/.config/Kvantum
+  f_kvantum.kvconfig:
+    src: config/Kvantum/kvantum.kvconfig
+    dst: ~/.config/Kvantum/kvantum.kvconfig
+  d_layan:
+    src: config/Kvantum/Layan
+    dst: ~/.config/Kvantum/Layan
+  f_layan.kvconfig:
+    src: config/Kvantum/Layan/Layan.kvconfig
+    dst: ~/.config/Kvantum/Layan/Layan.kvconfig
+  f_layan.svg:
+    src: config/Kvantum/Layan/Layan.svg
+    dst: ~/.config/Kvantum/Layan/Layan.svg
+  f_config.conf:
+    src: config/neofetch/config.conf
+    dst: ~/.config/neofetch/config.conf
+  f_config_kdeglobals:
+    src: config/kdeglobals
+    dst: ~/.config/kdeglobals
+    chmod: '600'
+  f_dolphinrc:
+    src: config/dolphinrc
+    dst: ~/.config/dolphinrc
+    chmod: '600'
+  f_config_kwinrc:
+    src: config/kwinrc
+    dst: ~/.config/kwinrc
+    chmod: '600'
+  f_plasma-org.kde.plasma.desktop-appletsrc:
+    src: config/plasma-org.kde.plasma.desktop-appletsrc
+    dst: ~/.config/plasma-org.kde.plasma.desktop-appletsrc
+    chmod: '600'
+profiles:
+  PC0:
+    dotfiles:
+    - f_zshrc
+    - f_gitconfig
+    - f_bashrc
+    - f_bash_profile
+    - f_alacritty.yml
+    - f_kcminputrc
+    - f_kdeglobals
+    - f_kscreenlockerrc
+    - f_ksplashrc
+    - f_kwinrc
+    - f_package
+    - f_plasmarc
+    - d_kvantum
+    - f_kvantum.kvconfig
+    - d_layan
+    - f_layan.kvconfig
+    - f_layan.svg
+    - f_config.conf
+    - f_config_kdeglobals
+    - f_dolphinrc
+    - f_config_kwinrc
+    - f_plasma-org.kde.plasma.desktop-appletsrc

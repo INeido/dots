@@ -1,0 +1,61 @@
+[$Version]
+update_info=dolphin_detailsmodesettings.upd:rename-leading-padding
+
+[Baloo KEditCommentDialog]
+DP-0 Height 2560x1440=253
+DP-0 Width 2560x1440=274
+
+[ContextMenu]
+ShowAddToPlaces=false
+ShowCopyLocation=false
+ShowDuplicateHere=false
+ShowViewMode=false
+
+[CreateDialog]
+LastMimeType=application/zip
+
+[ExtractDialog]
+DP-0 Height 2560x1440=738
+DP-0 Width 2560x1440=1627
+DirHistory[$e]=$HOME/Downloads/
+
+[General]
+ConfirmClosingMultipleTabs=false
+EditableUrl=true
+FilterBar=true
+RememberOpenedTabs=false
+ShowFullPath=true
+ShowSelectionToggle=false
+ShowSpaceInfo=false
+ShowStatusBar=false
+ShowZoomSlider=false
+Version=202
+ViewPropsTimestamp=2022,7,14,19,24,39.413
+
+[IconsMode]
+PreviewSize=112
+
+[KFileDialog Settings]
+Places Icons Auto-resize=false
+Places Icons Static Size=22
+Recent Files[$e]=file:$HOME,file:$HOME
+Recent URLs[$e]=file:$HOME/Downloads/,file:$HOME/
+detailViewIconSize=16
+
+[KPropertiesDialog]
+DP-0 Height 2560x1440=462
+DP-0 Width 2560x1440=477
+
+[MainWindow]
+MenuBar=Disabled
+ToolBarsMovable=Disabled
+
+[Notification Messages]
+ConfirmDelete=true
+
+[Open-with settings]
+CompletionMode=1
+History=kwri,kw,kwr,vl,vis
+
+[PreviewSettings]
+Plugins=appimagethumbnail,audiothumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,directorythumbnail,fontthumbnail,imagethumbnail,jpegthumbnail,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,opendocumentthumbnail,svgthumbnail
