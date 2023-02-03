@@ -1,5 +1,8 @@
 zsh
-neovim
 alacritty
 thunderbird
 htop
+code
+python
+dolphin
+firefox

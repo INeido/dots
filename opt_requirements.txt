@@ -1,0 +1,8 @@
+discord
+steam
+remmina
+bitwarden
+lutris
+virt-manager
+noisetorch
+vlc

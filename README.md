@@ -27,6 +27,11 @@ Finally, the dots can be installed using dotdrop.
 dotdrop install
 ```
 
+Optional requirements.
+```bash
+pacman -S --needed - < opt_requirements.txt
+```
+
 # Components
 | | Name | Package | Links |
 |-| ---- | ------- | ----- |
@@ -42,3 +47,15 @@ dotdrop install
 | **System Font** | Inter | `-` | [GitHub](https://github.com/rsms/inter)
 | **VS Code Font** | Fira Code | `-` | [GitHub](https://github.com/tonsky/FiraCode), [Docs](https://github.com/tonsky/FiraCode/wiki)
 | **Icon Theme** | Papirus | `-` | [GitHub](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme)
+
+
+# ZSH Mods
+**Oh My ZSH** | [Git](https://github.com/ohmyzsh/ohmyzsh)
+
+**Syntax Highlighting** | [Git](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md)
+
+**Spaceship Prompt** | [Git](https://github.com/spaceship-prompt/spaceship-prompt)
+
+**Neofetch** | [Git](https://github.com/dylanaraps/neofetch)
+
+**ColorLS** | [Git](https://github.com/athityakumar/colorls/)
