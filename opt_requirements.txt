@@ -6,3 +6,4 @@ lutris
 virt-manager
 noisetorch
 vlc
+shutter
