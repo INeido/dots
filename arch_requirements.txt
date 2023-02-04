@@ -6,3 +6,6 @@ code
 python
 dolphin
 firefox
+lolcat
+neofetch
+playerctl

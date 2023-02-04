@@ -1,9 +1,9 @@
 discord
-steam
 remmina
 bitwarden
 lutris
 virt-manager
-noisetorch
 vlc
 shutter
+steam
+spotify-launcher
