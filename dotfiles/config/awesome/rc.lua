@@ -12,13 +12,11 @@
 
 local awful = require("awful")
 local beautiful = require("beautiful")
-local gears = require("gears")
 
 require("config.errorhandling")
 require("awful.autofocus")
 
--- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "theme.lua" )
 
 -- ===================================================================
 -- Configs

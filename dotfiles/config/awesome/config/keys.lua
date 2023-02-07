@@ -15,6 +15,8 @@ local gears = require("gears")
 
 local hotkeys_popup = require("awful.hotkeys_popup")
 
+local apps = require("config.apps")
+
 -- Define mod keys
 local modkey = "Mod4"
 local altkey = "Mod1"
@@ -77,6 +79,11 @@ keys.globalkeys = gears.table.join(
             awful.spawn("rofi -show drun")
         end,
         { description = "Show Rofi drun", group = "launcher" }),
+    awful.key({ altkey }, "v",
+        function()
+            awful.spawn("rofi -show window")
+        end,
+        { description = "Show Rofi window", group = "launcher" }),
     awful.key({ modkey, }, "e",
         function()
             awful.spawn("dolphin")
@@ -119,7 +126,7 @@ keys.globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey, }, "Return",
         function()
-            awful.spawn(terminal)
+            awful.spawn(apps.terminal)
         end,
         { description = "open a terminal", group = "launcher" }),
     awful.key({ modkey, "Control" }, "r",
@@ -153,22 +160,22 @@ keys.clientkeys = gears.table.join(
         function(c)
             c:swap(awful.client.getmaster())
         end,
-        { description = "move to master", group = "client" }),
+        { description = "Move to master", group = "client" }),
     awful.key({ modkey, }, "o",
         function(c)
             c:move_to_screen()
         end,
-        { description = "move to screen", group = "client" }),
+        { description = "Move to screen", group = "client" }),
     awful.key({ modkey, }, "t",
         function(c)
             c.ontop = not c.ontop
         end,
-        { description = "toggle keep on top", group = "client" }),
+        { description = "Toggle keep on top", group = "client" }),
     awful.key({ modkey, }, "n",
         function(c)
             c.minimized = true
         end,
-        { description = "minimize", group = "client" }),
+        { description = "Minimize", group = "client" }),
     awful.key({ modkey, }, "m",
         function(c)
             c.maximized = not c.maximized
@@ -190,7 +197,7 @@ keys.clientkeys = gears.table.join(
 )
 
 -- Bind all key numbers to tags.
-for i = 1, 3 do
+for i = 1, 9 do
     keys.globalkeys = gears.table.join(keys.globalkeys,
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
@@ -201,7 +208,7 @@ for i = 1, 3 do
                     tag:view_only()
                 end
             end,
-            { description = "view tag #" .. i, group = "tag" }),
+            { description = "View tag #" .. i, group = "tag" }),
         -- Move client to tag.
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
             function()
@@ -212,7 +219,7 @@ for i = 1, 3 do
                     end
                 end
             end,
-            { description = "move focused client to tag #" .. i, group = "tag" })
+            { description = "Move focused client to tag #" .. i, group = "tag" })
     )
 end
 

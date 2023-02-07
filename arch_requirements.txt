@@ -9,3 +9,6 @@ firefox
 lolcat
 neofetch
 playerctl
+brightnessctl
+acpi
+ttf-font-awesome

@@ -8,7 +8,7 @@
 
 local apps = {
     terminal = "alacritty",
-    --launcher = "sh /home/parndt/.config/rofi/launch.sh",
+    launcher = "rofi",
     --switcher = require("widgets.alt-tab"),
     --xrandr = "lxrandr",
     screenshot = "shutter",
@@ -18,6 +18,7 @@ local apps = {
     fileexplorer = "dolphin",
     musicplayer = "spotify-launcher",
     --settings = "code /home/parndt/awesome/"
+    editor = os.getenv("EDITOR") or "nano",
 }
 
 user = {

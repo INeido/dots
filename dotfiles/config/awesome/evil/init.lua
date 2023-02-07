@@ -1,4 +1,4 @@
--- require("evil.battery")
-require("evil.volume")
--- require("evil.brightness")
-require("evil.playerctl")
+require("evil.ram")
+require("evil.cpu")
+require("evil.temp")
+require("evil.pacman")

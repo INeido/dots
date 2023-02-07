@@ -1,9 +1,9 @@
---      ████████╗██╗████████╗██╗     ███████╗██████╗  █████╗ ██████╗ 
+--      ████████╗██╗████████╗██╗     ███████╗██████╗  █████╗ ██████╗
 --      ╚══██╔══╝██║╚══██╔══╝██║     ██╔════╝██╔══██╗██╔══██╗██╔══██╗
---      ██║   ██║   ██║   ██║     █████╗  ██████╔╝███████║██████╔╝
---      ██║   ██║   ██║   ██║     ██╔══╝  ██╔══██╗██╔══██║██╔══██╗
---      ██║   ██║   ██║   ███████╗███████╗██████╔╝██║  ██║██║  ██║
---      ╚═╝   ╚═╝   ╚═╝   ╚══════╝╚══════╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+--         ██║   ██║   ██║   ██║     █████╗  ██████╔╝███████║██████╔╝
+--         ██║   ██║   ██║   ██║     ██╔══╝  ██╔══██╗██╔══██║██╔══██╗
+--         ██║   ██║   ██║   ███████╗███████╗██████╔╝██║  ██║██║  ██║
+--         ╚═╝   ╚═╝   ╚═╝   ╚══════╝╚══════╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
 
 
 -- ===================================================================
@@ -17,10 +17,56 @@ local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
+-- Create Button
+-- ===================================================================
+
+local function create_button(command, c)
+    local w = wibox.widget {
+        {
+            {
+                {
+                    widget = wibox.widget.textbox,
+                },
+                forced_height = dpi(15),
+                forced_width = dpi(15),
+                shape = gears.shape.circle,
+                bg = beautiful.titlebar_button_normal,
+                widget = wibox.container.background,
+            },
+            margins = 5,
+            widget = wibox.container.margin,
+        },
+        widget = wibox.container.background,
+    }
+
+    -- Hover effect
+    w:connect_signal("mouse::enter", function()
+        w.children[1].children[1].bg = beautiful.titlebar_button_normal_hover
+    end)
+    w:connect_signal("mouse::leave", function()
+        --require("naughty").notify({ title = "Achtung!", text = beautiful.titlebar_button_normal, timeout = 0 })
+        w.children[1].children[1].bg = beautiful.titlebar_button_normal
+    end)
+
+    -- Press effect
+    w:connect_signal("button::press", function()
+        w.children[1].children[1].bg = beautiful.titlebar_button_normal
+    end)
+    w:connect_signal("button::release", function()
+        w.children[1].children[1].bg = beautiful.titlebar_button_normal
+    end)
+
+    -- Button action
+    w:buttons(gears.table.join(w:buttons(), awful.button({}, 1, nil, command)))
+
+    return w
+end
+
+-- ===================================================================
 -- Build
 -- ===================================================================
 
-local get_titlebar = function(c)
+return function(c)
     local buttons = gears.table.join(
         awful.button({}, 1, function()
             client.focus = c
@@ -35,44 +81,44 @@ local get_titlebar = function(c)
     )
 
     local left = {
-        -- awful.titlebar.widget.iconwidget(c),
         buttons = buttons,
-        layout  = wibox.layout.fixed.horizontal,
+        layout = wibox.layout.fixed.horizontal,
     }
 
     local middle = {
-        {
-            align = "center",
-            font = beautiful.font,
-            widget = awful.titlebar.widget.titlewidget(c),
-        },
         buttons = buttons,
         layout  = wibox.layout.flex.horizontal,
     }
 
     local right = {
         {
-            awful.titlebar.widget.minimizebutton(c),
-            awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.closebutton(c),
+            create_button(function()
+                c.minimized = true
+            end, c),
+
+            create_button(function()
+                c.maximized = not c.maximized
+                c:raise()
+            end, c),
+
+            create_button(function()
+                c:kill()
+            end, c),
+
             layout = wibox.layout.fixed.horizontal,
         },
-        top = dpi(2), bottom = dpi(2), left = dpi(4),
+
         widget = wibox.container.margin
     }
 
-    local titlebar = {
+    return {
         {
             left,
             middle,
             right,
             layout = wibox.layout.align.horizontal,
         },
-        --bg = beautiful.bg_normal,
         widget = wibox.container.background,
     }
 
-    return titlebar
 end
-
-return get_titlebar
