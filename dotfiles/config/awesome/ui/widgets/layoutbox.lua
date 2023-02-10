@@ -21,44 +21,41 @@ local dpi = beautiful.xresources.apply_dpi
 -- Buttons
 -- ===================================================================
 
-local layoutbox = wibox.widget {
-    bg = beautiful.bg_subtle,
-    fg = beautiful.fg_time,
-    widget = wibox.container.background,
-    buttons = {
-      awful.button({}, 1, function()
-        require "ui.widget.layoutlist"()
-      end),
-      awful.button({}, 4, function()
-        awful.layout.inc(1)
-      end),
-      awful.button({}, 5, function()
-        awful.layout.inc(-1)
-      end),
-    },
-    {
-      widget = wibox.container.margin,
-      margins = 8,
-      {
-        widget = awful.widget.layoutbox,
-      },
-    },
-  }
+local buttons = gears.table.join(
+        awful.button({}, 1, function() awful.layout.inc(1) end),
+        awful.button({}, 3, function() awful.layout.inc( -1) end),
+        awful.button({}, 4, function() awful.layout.inc(1) end),
+        awful.button({}, 5, function() awful.layout.inc( -1) end)
+    )
 
-local w = wibox.widget {
-    widget = wibox.container.background,
-    bg = beautiful.panel_item_normal,
-    shape = gears.shape.rect,
-    {
-        widget = wibox.container.margin,
-        margins = dpi(5),
-        {
-            layoutbox,
-            layout = wibox.layout.fixed.horizontal,
-        },
-    }
-}
+-- ===================================================================
+-- Layoutbox
+-- ===================================================================
 
-helpers.add_hover_cursor(w, "hand1")
+local layoutbox = function(s)
+    local w = wibox.widget {
+            {
+                awful.widget.layoutbox(s),
+                margins = dpi(5),
+                widget = wibox.container.margin,
+            },
+            bg = beautiful.panel_item_normal,
+            shape = gears.shape.rect,
+            widget = wibox.container.background,
+        }
 
-return w
+    w:buttons(buttons)
+
+    w:connect_signal("mouse::enter", function()
+        w.bg = beautiful.panel_item_hover
+    end)
+    w:connect_signal("mouse::leave", function()
+        w.bg = beautiful.panel_item_normal
+    end)
+
+    helpers.add_hover_cursor(w, "hand1")
+
+    return w
+end
+
+return layoutbox

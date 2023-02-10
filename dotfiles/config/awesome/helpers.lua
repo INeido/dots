@@ -1,16 +1,6 @@
-local awful = require "awful"
-local beautiful = require "beautiful"
-local gears = require "gears"
-local wibox = require "wibox"
-
+---@diagnostic disable: undefined-field
 local helpers = {}
 
--- Add a hover cursor to a widget by changing the cursor on
--- mouse::enter and mouse::leave
--- You can find the names of the available cursors by opening any
--- cursor theme and looking in the "cursors folder"
--- For example: "hand1" is the cursor that appears when hovering over
--- links
 function helpers.add_hover_cursor(w, hover_cursor)
     local original_cursor = "left_ptr"
 

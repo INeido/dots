@@ -17,7 +17,7 @@ local beautiful = require("beautiful")
 -- ===================================================================
 
 local add_decorations = function(c)
-    require("ui.decorations.top")(c)
+    -- require("ui.decorations.top")(c)
     -- require("ui.decorations.left")(c)
     -- require("ui.decorations.right")(c)
     -- require("ui.decorations.bottom")(c)
@@ -30,6 +30,6 @@ end
 -- Apply
 -- ===================================================================
 
-client.connect_signal("request::titlebars", function(c)
-    add_decorations(c)
-end)
+client.connect_signal("request::titlebars", function(c) add_decorations(c) end)
+client.connect_signal("focus", function(c) c.border_color = beautiful.accent end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)

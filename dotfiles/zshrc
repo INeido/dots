@@ -88,5 +88,8 @@ alias ai='cd /AI/stable-diffusion-webui/'
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 
+# Spacer
+echo
+
 # Greeter
 neofetch | lolcat -S 25

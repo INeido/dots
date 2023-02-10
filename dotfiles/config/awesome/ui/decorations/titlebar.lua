@@ -22,22 +22,22 @@ local dpi = beautiful.xresources.apply_dpi
 
 local function create_button(command, c)
     local w = wibox.widget {
-        {
             {
                 {
-                    widget = wibox.widget.textbox,
+                    {
+                        widget = wibox.widget.textbox,
+                    },
+                    forced_height = dpi(15),
+                    forced_width = dpi(15),
+                    shape = gears.shape.circle,
+                    bg = beautiful.titlebar_button_normal,
+                    widget = wibox.container.background,
                 },
-                forced_height = dpi(15),
-                forced_width = dpi(15),
-                shape = gears.shape.circle,
-                bg = beautiful.titlebar_button_normal,
-                widget = wibox.container.background,
+                margins = 5,
+                widget = wibox.container.margin,
             },
-            margins = 5,
-            widget = wibox.container.margin,
-        },
-        widget = wibox.container.background,
-    }
+            widget = wibox.container.background,
+        }
 
     -- Hover effect
     w:connect_signal("mouse::enter", function()
@@ -63,22 +63,37 @@ local function create_button(command, c)
 end
 
 -- ===================================================================
+-- Double Click
+-- ===================================================================
+
+local last_click_time = 0
+local function leftclick(c)
+    local current_time = os.time()
+    if current_time - last_click_time < 0.2 then
+        c.maximized = not c.maximized
+    else
+        last_click_time = current_time
+        client.focus = c
+        awful.mouse.client.move(c)
+        c:raise()
+    end
+end
+
+-- ===================================================================
 -- Build
 -- ===================================================================
 
 return function(c)
     local buttons = gears.table.join(
-        awful.button({}, 1, function()
-            client.focus = c
-            awful.mouse.client.move(c)
-            c:raise()
-        end),
-        awful.button({}, 3, function()
-            client.focus = c
-            c:raise()
-            awful.mouse.client.resize(c)
-        end)
-    )
+            awful.button({}, 1, function()
+                leftclick(c)
+            end),
+            awful.button({}, 3, function()
+                client.focus = c
+                c:raise()
+                awful.mouse.client.resize(c)
+            end)
+        )
 
     local left = {
         buttons = buttons,
@@ -107,7 +122,6 @@ return function(c)
 
             layout = wibox.layout.fixed.horizontal,
         },
-
         widget = wibox.container.margin
     }
 
@@ -120,5 +134,4 @@ return function(c)
         },
         widget = wibox.container.background,
     }
-
 end

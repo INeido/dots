@@ -1,0 +1,6 @@
+-- require("config.notifications")
+require("config.wallpaper")
+require("config.layout")
+require("config.rules")
+require("config.tags")
+require("config.keys")

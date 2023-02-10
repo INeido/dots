@@ -13,6 +13,7 @@
 # Dotfiles
 Requires Arch Linux and AwesomeWM.
 
+![](https://github.com/INeido/dots/samples/sample0.png?raw=true)
 
 # Installation
 First, clone the package.

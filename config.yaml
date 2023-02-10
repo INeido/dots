@@ -47,6 +47,12 @@ dotfiles:
   f_theme.lua:
     src: config/awesome/theme.lua
     dst: ~/.config/awesome/theme.lua
+  f_setup.lua:
+    src: config/awesome/setup.lua
+    dst: ~/.config/awesome/setup.lua
+  f_picom.conf:
+    src: config/picom/picom.conf
+    dst: ~/.config/picom/picom.conf
 profiles:
   PC0:
     dotfiles:
@@ -63,3 +69,5 @@ profiles:
     - f_helpers.lua
     - d_icons
     - f_theme.lua
+    - f_setup.lua
+    - f_picom.conf

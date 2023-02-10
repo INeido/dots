@@ -35,7 +35,7 @@ end)
 local widget_icon = " "
 local icon = wibox.widget {
     font   = beautiful.iconfont,
-    markup = "<span foreground='" .. beautiful.scheme .. "'>" .. widget_icon .. "</span>",
+    markup = "<span foreground='" .. beautiful.accent .. "'>" .. widget_icon .. "</span>",
     widget = wibox.widget.textbox,
     valign = "center",
     align  = "center"
@@ -57,7 +57,7 @@ return wibox.widget {
         bottom = dpi(5),
         {
             icon,
-            wibox.widget {
+            {
                 cpu,
                 fg = beautiful.text_bright,
                 widget = wibox.container.background

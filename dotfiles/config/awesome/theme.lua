@@ -22,6 +22,18 @@ local gfs = require("gears.filesystem")
 local theme = {}
 
 -- ===================================================================
+-- Settings
+-- ===================================================================
+
+-- Switches
+theme.switch_titlebar = 0
+
+
+-- Border
+theme.useless_gap   = dpi(5)
+theme.border_width  = dpi(1)
+
+-- ===================================================================
 -- Fonts
 -- ===================================================================
 
@@ -35,8 +47,7 @@ theme.iconfont   = "Font Awesome 6 Free Solid 11"
 -- Colors
 -- ===================================================================
 
--- Background Colors
-theme.scheme = "#b5ea8c"
+theme.accent = "#b5ea8c"
 
 -- Background Colors
 theme.bg_normal   = "#1C1E26"
@@ -51,14 +62,14 @@ theme.fg_focus    = "#FFFFFF"
 theme.fg_urgent   = "#FFFFFF"
 theme.fg_minimize = "#FFFFFF"
 
--- Foreground Colors
+-- Text Colors
 theme.text_normal = "#EEEEEE"
 theme.text_bright = "#FFFFFF"
 theme.text_dark   = "#DDDDDD"
 
 -- Border Colors
 theme.border_normal = "#000000"
-theme.border_focus  = "#535d6c"
+theme.border_focus  = theme.accent
 theme.border_marked = "#91231c"
 
 -- Titlebar Button Colors
@@ -73,12 +84,19 @@ theme.panel_item_press  = "#3F3F3F"
 theme.panel_item_select = "#505050"
 theme.panel_item_active = "#606060"
 
+-- Tasklist Colors
+theme.tasklist_bg_minimize = theme.panel_item_normal
+
 -- ===================================================================
 -- Icons
 -- ===================================================================
 
--- Apps
-theme.spotify_icon = icon_path .. "64x64/apps/spotify-client.svg"
+-- You can use your own layout icons like this:
+theme.layout_floating  = config_path.."icons/layouts/floating.svg"
+theme.layout_max = config_path.."icons/layouts/max.svg"
+theme.layout_fullscreen = config_path.."icons/layouts/fullscreen.svg"
+theme.layout_tile = config_path.."icons/layouts/tile.svg"
+theme.layout_dwindle = config_path.."icons/layouts/dwindle.svg"
 
 -- Top-Panel
 theme.start_icon = config_path .. "icons/arch.svg"

@@ -51,7 +51,7 @@ window:
   #decorations: full
 
   # Background opacity
-  opacity: 0.5
+  opacity: 0.85
 
   # Startup Mode (changes require restart)
   startup_mode: Windowed

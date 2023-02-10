@@ -3,7 +3,7 @@
 --       ██████╔╝███████║██║     ██╔████╔██║███████║██╔██╗ ██║
 --       ██╔═══╝ ██╔══██║██║     ██║╚██╔╝██║██╔══██║██║╚██╗██║
 --       ██║     ██║  ██║╚██████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║
---       ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝                                                  
+--       ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
 
 
 -- ===================================================================
@@ -34,39 +34,39 @@ end)
 
 local widget_icon = " "
 local icon = wibox.widget {
-    font   = beautiful.iconfont,
-    markup = "<span foreground='" .. beautiful.scheme .. "'>" .. widget_icon .. "</span>",
-    widget = wibox.widget.textbox,
-    valign = "center",
-    align  = "center"
-}
+        font   = beautiful.iconfont,
+        markup = "<span foreground='" .. beautiful.accent .. "'>" .. widget_icon .. "</span>",
+        widget = wibox.widget.textbox,
+        valign = "center",
+        align  = "center"
+    }
 
 -- ===================================================================
 -- Widget
 -- ===================================================================
 
 local w = wibox.widget {
-    widget = wibox.container.background,
-    bg = beautiful.panel_item_normal,
-    shape = gears.shape.rect,
-    {
-        widget = wibox.container.margin,
-        left = dpi(10),
-        right = dpi(10),
-        top = dpi(5),
-        bottom = dpi(5),
+        widget = wibox.container.background,
+        bg = beautiful.panel_item_normal,
+        shape = gears.shape.rect,
         {
-            icon,
-            wibox.widget {
-                pacman,
-                fg = beautiful.text_bright,
-                widget = wibox.container.background
-            },
-            spacing = dpi(2),
-            layout = wibox.layout.fixed.horizontal
-        },
+            widget = wibox.container.margin,
+            left = dpi(10),
+            right = dpi(10),
+            top = dpi(5),
+            bottom = dpi(5),
+            {
+                icon,
+                {
+                    pacman,
+                    fg = beautiful.text_bright,
+                    widget = wibox.container.background
+                },
+                spacing = dpi(2),
+                layout = wibox.layout.fixed.horizontal
+            }
+        }
     }
-}
 
 -- ===================================================================
 -- Tooltip

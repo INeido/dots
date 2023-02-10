@@ -7,3 +7,4 @@ vlc
 shutter
 steam
 spotify-launcher
+adobe-source-han-sans-jp-fonts

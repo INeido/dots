@@ -22,18 +22,18 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local w = wibox.widget {
-    widget = wibox.container.background,
-    bg = beautiful.panel_item_normal,
-    shape = gears.shape.rect,
-    {
-        widget = wibox.container.margin,
-        margins = dpi(5),
         {
-            widget = wibox.widget.imagebox,
-            image = beautiful.start_icon,
+            {
+                image = beautiful.start_icon,
+                widget = wibox.widget.imagebox,
+            },
+            margins = dpi(5),
+            widget = wibox.container.margin,
         },
+        bg = beautiful.panel_item_normal,
+        shape = gears.shape.rect,
+        widget = wibox.container.background,
     }
-}
 
 -- ===================================================================
 -- Actions

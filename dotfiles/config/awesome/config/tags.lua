@@ -21,16 +21,20 @@ local naughty = require('naughty')
 local tags = {
     { -- home
         icon = beautiful.tag_home,
-        selected = true
+        layout = awful.layout.suit.max,
+        selected = true,
     },
     { -- gaming
         icon = beautiful.tag_gaming,
+        layout = awful.layout.suit.max,
     },
     { -- dev
         icon = beautiful.tag_dev,
+        layout = awful.layout.suit.tile,
     },
     { -- ai
         icon = beautiful.tag_ai,
+        layout = awful.layout.suit.floating,
     },
 }
 
@@ -43,7 +47,7 @@ awful.screen.connect_for_each_screen(function(s)
         awful.tag.add(i, {
             icon = tag.icon,
             icon_only = true,
-            layout = awful.layout.layouts[1],
+            layout = tag.layout,
             screen = s,
             selected = tag.selected
         })
