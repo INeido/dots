@@ -12,3 +12,4 @@ playerctl
 brightnessctl
 acpi
 ttf-font-awesome
+picom
