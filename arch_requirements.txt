@@ -1,11 +1,10 @@
 zsh
 alacritty
-thunderbird
 htop
 code
 python
 dolphin
-firefox
+qutebrowser
 lolcat
 neofetch
 playerctl
