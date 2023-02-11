@@ -53,6 +53,22 @@ dotfiles:
   f_picom.conf:
     src: config/picom/picom.conf
     dst: ~/.config/picom/picom.conf
+  f_config.rasi:
+    src: config/rofi/config.rasi
+    dst: ~/.config/rofi/config.rasi
+  f_launcher.rasi:
+    src: config/rofi/launcher.rasi
+    dst: ~/.config/rofi/launcher.rasi
+  f_onedark.rasi:
+    src: config/rofi/onedark.rasi
+    dst: ~/.config/rofi/onedark.rasi
+  f_powermenu.rasi:
+    src: config/rofi/powermenu.rasi
+    dst: ~/.config/rofi/powermenu.rasi
+  f_powermenu.sh:
+    src: config/rofi/powermenu.sh
+    dst: ~/.config/rofi/powermenu.sh
+    chmod: '755'
 profiles:
   PC0:
     dotfiles:
@@ -71,3 +87,8 @@ profiles:
     - f_theme.lua
     - f_setup.lua
     - f_picom.conf
+    - f_config.rasi
+    - f_launcher.rasi
+    - f_onedark.rasi
+    - f_powermenu.rasi
+    - f_powermenu.sh

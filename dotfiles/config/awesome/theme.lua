@@ -31,7 +31,7 @@ theme.switch_titlebar = 0
 
 -- Border
 theme.useless_gap   = dpi(5)
-theme.border_width  = dpi(1)
+theme.border_width  = dpi(3)
 
 -- ===================================================================
 -- Fonts
@@ -67,22 +67,19 @@ theme.text_normal = "#EEEEEE"
 theme.text_bright = "#FFFFFF"
 theme.text_dark   = "#DDDDDD"
 
--- Border Colors
-theme.border_normal = "#000000"
-theme.border_focus  = theme.accent
-theme.border_marked = "#91231c"
-
 -- Titlebar Button Colors
 theme.titlebar_button_normal       = "#888888"
 theme.titlebar_button_normal_hover = "#B2B2B2"
 
 -- Panel Colors
 theme.panel_item_normal = "#1C1E26"
-theme.panel_item_focus  = "#3F3F3F"
 theme.panel_item_hover  = "#3F3F3F"
-theme.panel_item_press  = "#3F3F3F"
-theme.panel_item_select = "#505050"
-theme.panel_item_active = "#606060"
+theme.panel_item_press  = "#4F3F3F"
+
+-- Border Colors
+theme.border_normal = theme.panel_item_normal
+theme.border_focus  = theme.panel_item_hover
+theme.border_marked = "#91231c"
 
 -- Tasklist Colors
 theme.tasklist_bg_minimize = theme.panel_item_normal

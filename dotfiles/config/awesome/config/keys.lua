@@ -74,19 +74,25 @@ keys.globalkeys = gears.table.join(
             { description = "Play Previous Track", group = "Multimedia" }),
 
         -- Custom manipulation
-        awful.key({ altkey }, "space",
+        awful.key({ modkey }, "space",
             function()
-                awful.spawn("rofi -show drun")
+                awful.spawn("rofi -show drun -theme ~/.config/rofi/launcher.rasi")
             end,
-            { description = "Show Rofi drun", group = "launcher" }),
-        awful.key({ altkey }, "v",
+            { description = "Rofi drun", group = "launcher" }),
+        awful.key({ modkey }, "v",
             function()
-                awful.spawn("rofi -show window")
+                awful.spawn("rofi -show window -theme ~/.config/rofi/launcher.rasi")
             end,
-            { description = "Show Rofi window", group = "launcher" }),
+            { description = "Rofi window", group = "launcher" }),
+        awful.key({ modkey }, "p",
+            function()
+                awful.spawn.with_shell("~/.config/rofi/powermenu.sh")
+            end,
+            { description = "Power Menu", group = "launcher" }),
+
         awful.key({ modkey, }, "e",
             function()
-                awful.spawn("dolphin")
+                awful.spawn("pcmanfm")
             end,
             { description = "Start Dolphin", group = "launcher" }),
         awful.key({ modkey, }, "Left",
@@ -98,18 +104,6 @@ keys.globalkeys = gears.table.join(
         awful.key({ modkey, }, "Escape",
             awful.tag.history.restore,
             { description = "Go Back", group = "tag" }),
-        awful.key({ modkey, }, "j",
-            function()
-                awful.client.focus.byidx(1)
-            end,
-            { description = "focus next by index", group = "client" }
-        ),
-        awful.key({ modkey, }, "k",
-            function()
-                awful.client.focus.byidx( -1)
-            end,
-            { description = "focus previous by index", group = "client" }
-        ),
         awful.key({ altkey, }, "Tab",
             function()
                 awful.client.focus.history.previous()
@@ -118,6 +112,21 @@ keys.globalkeys = gears.table.join(
                 end
             end,
             { description = "Go Back", group = "client" }),
+        awful.key({ modkey, }, "q",
+            function()
+                awful.client.focus.byidx( -1)
+            end,
+            { description = "Cycle Backwards", group = "client" }),
+        awful.key({ modkey, }, "w",
+            function()
+                awful.client.focus.byidx(1)
+            end,
+            { description = "Cycle Forwards", group = "client" }),
+        awful.key({ modkey, }, "s",
+            function()
+                awful.layout.inc(1)
+            end,
+            { description = "Cycle Layouts", group = "client" }),
 
         -- Standard program
         awful.key({ modkey, }, "Return",

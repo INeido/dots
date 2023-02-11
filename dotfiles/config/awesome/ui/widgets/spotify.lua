@@ -36,19 +36,14 @@ local function open_spotify()
     for _, c in pairs(clients) do
         if c.name == "Spotify" then
             c.minimized = not c.minimized
-            if not c.minimized then
-
-            end
-
             c:raise()
             return
         end
     end
 end
 
-local play_icon = "/usr/share/icons/Papirus/64x64/apps/spotify.svg"
-local pause_icon = "/usr/share/icons/Papirus/24x24/panel/spotify-indicator.svg"
-local font = beautiful.widgetfont
+local titelfont = beautiful.widgetfont
+local artistfont = beautiful.font
 local dim_when_paused = true
 local dim_opacity = 0.75
 local max_length = -1
@@ -56,6 +51,7 @@ local show_tooltip = false
 local timeout = 1
 local sp_bin = 'sp'
 
+local GET_SPOTIFY_ART = sp_bin .. ' art'
 local GET_SPOTIFY_STATUS_CMD = sp_bin .. ' status'
 local GET_CURRENT_SONG_CMD = sp_bin .. ' current'
 local PLAY_PAUSE_CMD = sp_bin .. ' play'
@@ -65,68 +61,80 @@ local PREVIOUS_SONG_CMD = sp_bin .. ' prev'
 local cur_artist = ''
 local cur_title = ''
 local cur_album = ''
+local cur_art = ''
 
 local spotify = wibox.widget {
-
-    {
-        id = 'artistw',
-        font = font,
-        widget = wibox.widget.textbox,
-    },
-    {
-        layout = wibox.layout.stack,
         {
-            widget = wibox.container.margin,
-            margins = dpi(4),
             {
-                id = "icon",
-                widget = wibox.widget.imagebox,
-            }
+                id = "artw",
+                resize = true,
+                widget = wibox.widget.imagebox
+            },
+            right = dpi(10),
+            widget = wibox.container.margin,
         },
         {
-            widget = wibox.widget.textbox,
-            font = font,
-            text = ' ',
-            forced_height = dpi(1)
-        }
-    },
-    {
-        layout = wibox.container.scroll.horizontal,
-        max_size = dpi(100),
-        step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
-        speed = 40,
-        {
-            id = 'titlew',
-            font = font,
-            widget = wibox.widget.textbox
-        }
-    },
-    layout = wibox.layout.align.horizontal,
-    set_status = function(self, is_playing)
-        self:get_children_by_id('icon')[1]:set_image(is_playing and play_icon or pause_icon)
-        if dim_when_paused then
-            self:get_children_by_id('icon')[1]:set_opacity(is_playing and 1 or dim_opacity)
+            {
+                layout = wibox.container.scroll.horizontal,
+                max_size = dpi(160),
+                step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
+                speed = 40,
+                {
+                    id = 'titlew',
+                    font = titelfont,
+                    widget = wibox.widget.textbox
+                }
+            },
+            {
+                id = 'artistw',
+                font = artistfont,
+                widget = wibox.widget.textbox,
+            },
+            layout = wibox.layout.align.vertical,
+        },
+        layout = wibox.layout.align.horizontal,
 
-            self:get_children_by_id('titlew')[1]:set_opacity(is_playing and 1 or dim_opacity)
-            self:get_children_by_id('titlew')[1]:emit_signal('widget::redraw_needed')
+        set_art = function(self, link)
+            awful.spawn.easy_async("curl -o /tmp/spotify.png " .. link,
+                function(stdout, stderr, reason, exit_code)
+                    self:get_children_by_id("artw")[1]:set_image(gears.surface.load_uncached("/tmp/spotify.png"))
+                    self:get_children_by_id("artw")[1]:emit_signal("widget::redraw_needed")
+                end)
+        end,
 
-            self:get_children_by_id('artistw')[1]:set_opacity(is_playing and 1 or dim_opacity)
-            self:get_children_by_id('artistw')[1]:emit_signal('widget::redraw_needed')
+        set_status = function(self, is_playing)
+            if dim_when_paused then
+                self:get_children_by_id("artw")[1]:set_opacity(is_playing and 1 or dim_opacity)
+                self:get_children_by_id('titlew')[1]:emit_signal('widget::redraw_needed')
+
+                self:get_children_by_id('titlew')[1]:set_opacity(is_playing and 1 or dim_opacity)
+                self:get_children_by_id('titlew')[1]:emit_signal('widget::redraw_needed')
+
+                self:get_children_by_id('artistw')[1]:set_opacity(is_playing and 1 or dim_opacity)
+                self:get_children_by_id('artistw')[1]:emit_signal('widget::redraw_needed')
+            end
+        end,
+
+        set_text = function(self, artist, song)
+            local artist_to_display = ellipsize(artist, max_length)
+            if self:get_children_by_id('artistw')[1]:get_markup() ~= artist_to_display then
+                self:get_children_by_id('artistw')[1]:set_markup(artist_to_display)
+            end
+            local title_to_display = ellipsize(song, max_length)
+            if self:get_children_by_id('titlew')[1]:get_markup() ~= title_to_display then
+                self:get_children_by_id('titlew')[1]:set_markup(title_to_display)
+            end
         end
-    end,
-    set_text = function(self, artist, song)
-        local artist_to_display = ellipsize(artist, max_length)
-        if self:get_children_by_id('artistw')[1]:get_markup() ~= artist_to_display then
-            self:get_children_by_id('artistw')[1]:set_markup(artist_to_display)
-        end
-        local title_to_display = ellipsize(song, max_length)
-        if self:get_children_by_id('titlew')[1]:get_markup() ~= title_to_display then
-            self:get_children_by_id('titlew')[1]:set_markup(title_to_display)
-        end
+    }
+
+local update_art = function(widget, stdout, _, _, _)
+    if cur_art ~= stdout then
+        cur_art = stdout
+        widget:set_art(cur_art)
     end
-}
+end
 
-local update_widget_icon = function(widget, stdout, _, _, _)
+local update_status = function(widget, stdout, _, _, _)
     stdout = string.gsub(stdout, "\n", "")
     widget:set_status(stdout == 'Playing' and true or false)
 end
@@ -140,7 +148,7 @@ local update_widget_text = function(widget, stdout, _, _, _)
 
     local escaped = string.gsub(stdout, "&", '&amp;')
     local album, _, artist, title =
-    string.match(escaped, 'Album%s*(.*)\nAlbumArtist%s*(.*)\nArtist%s*(.*)\nTitle%s*(.*)\n')
+        string.match(escaped, 'Album%s*(.*)\nAlbumArtist%s*(.*)\nArtist%s*(.*)\nTitle%s*(.*)\n')
 
     if album ~= nil and title ~= nil and artist ~= nil then
         cur_artist = artist
@@ -152,7 +160,8 @@ local update_widget_text = function(widget, stdout, _, _, _)
     end
 end
 
-awful.widget.watch(GET_SPOTIFY_STATUS_CMD, timeout, update_widget_icon, spotify)
+awful.widget.watch(GET_SPOTIFY_ART, timeout, update_art, spotify)
+awful.widget.watch(GET_SPOTIFY_STATUS_CMD, timeout, update_status, spotify)
 awful.widget.watch(GET_CURRENT_SONG_CMD, timeout, update_widget_text, spotify)
 
 --- Adds mouse controls to the widget:
@@ -166,21 +175,23 @@ spotify:connect_signal("button::press", function(_, _, _, button)
     elseif (button == 3) then
         awful.spawn(PLAY_PAUSE_CMD, false) -- right click
     elseif (button == 4) then
-        awful.spawn.with_shell("pactl set-sink-input-volume $(pactl list sink-inputs | grep \"Spotify\" -B 18 | grep \"Sink Input\" | awk '{print $3}' | tr -d '#') +2%") -- scroll up
+        awful.spawn.with_shell(
+            "pactl set-sink-input-volume $(pactl list sink-inputs | grep \"Spotify\" -B 18 | grep \"Sink Input\" | awk '{print $3}' | tr -d '#') +2%") -- scroll up
     elseif (button == 5) then
-        awful.spawn.with_shell("pactl set-sink-input-volume $(pactl list sink-inputs | grep \"Spotify\" -B 18 | grep \"Sink Input\" | awk '{print $3}' | tr -d '#') -2%") -- scroll down
+        awful.spawn.with_shell(
+            "pactl set-sink-input-volume $(pactl list sink-inputs | grep \"Spotify\" -B 18 | grep \"Sink Input\" | awk '{print $3}' | tr -d '#') -2%") -- scroll down
     end
     awful.spawn.easy_async(GET_SPOTIFY_STATUS_CMD, function(stdout, stderr, exitreason, exitcode)
-        update_widget_icon(spotify, stdout, stderr, exitreason, exitcode)
+        update_status(spotify, stdout, stderr, exitreason, exitcode)
     end)
 end)
 
 
 if show_tooltip then
     local spotify_tooltip = awful.tooltip {
-        mode = 'outside',
-        preferred_positions = { 'bottom' },
-    }
+            mode = 'outside',
+            preferred_positions = { 'bottom' },
+        }
 
     spotify_tooltip:add_to_object(spotify)
 
@@ -192,18 +203,18 @@ if show_tooltip then
 end
 
 return wibox.widget {
-    widget = wibox.container.background,
-    bg = beautiful.panel_item_normal,
-    shape = gears.shape.rect,
-    {
-        widget = wibox.container.margin,
-        left = dpi(10),
-        right = dpi(10),
-        top = dpi(5),
-        bottom = dpi(5),
+        widget = wibox.container.background,
+        bg = beautiful.panel_item_normal,
+        shape = gears.shape.rect,
         {
-            spotify,
-            layout = wibox.layout.fixed.horizontal
-        },
+            widget = wibox.container.margin,
+            left = dpi(5),
+            right = dpi(10),
+            top = dpi(5),
+            bottom = dpi(5),
+            {
+                spotify,
+                layout = wibox.layout.fixed.horizontal
+            },
+        }
     }
-}

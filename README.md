@@ -44,6 +44,27 @@ Optional requirements.
 pacman -S --needed - < opt_requirements.txt
 ```
 
+# Some more Installation
+A few more things to watch out for.
+
+1. The Spotify widget needs the CLI:
+    ```bash
+    git clone https://gist.github.com/fa6258f3ff7b17747ee3.git
+    cd ./fa6258f3ff7b17747ee3 
+    chmod +x sp
+    # This widget will work by default if the binary is in the system PATH
+    sudo cp ./sp /usr/local/bin/
+    # Alternatively, you may save the binary anywhere and supply the path via this widget's sp_bin argument:
+    # cp ./sp ~/.config/awesome/scripts/
+    ```
+2. To have transparency in VS-Code you either need to force it with picom or install the [Glassit](https://open-vsx.org/vscode/item?itemName=s-nlf-fh.glassit) extension. I also recommend enabeling the custom titlebar in the settings.
+My settings look like this:
+    ```json
+    "glassit.alpha": 240,
+    "window.titleBarStyle": "custom",
+    "workbench.statusBar.visible": false,
+    ```
+
 # Components
 | | Name | Package | Links |
 |-| ---- | ------- | ----- |
