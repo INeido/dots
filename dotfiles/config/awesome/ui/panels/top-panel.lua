@@ -48,7 +48,6 @@ awful.screen.connect_for_each_screen(function(s)
         left = dpi(10),
         right = dpi(10),
         top = dpi(10),
-        bottom = dpi(10),
         {
             wibox.container.margin(starticon, dpi(0), dpi(6), dpi(0), dpi(0)),
             wibox.container.margin(layoutbox(s), dpi(0), dpi(6), dpi(0), dpi(0)),
@@ -67,7 +66,6 @@ awful.screen.connect_for_each_screen(function(s)
         left = dpi(10),
         right = dpi(10),
         top = dpi(10),
-        bottom = dpi(10),
         {
             tasklist,
             layout = wibox.layout.fixed.horizontal,
@@ -83,7 +81,6 @@ awful.screen.connect_for_each_screen(function(s)
         left = dpi(10),
         right = dpi(10),
         top = dpi(10),
-        bottom = dpi(10),
         {
             wibox.container.margin(spotify, dpi(0), dpi(6), dpi(0), dpi(0)),
             wibox.container.margin(pacman, dpi(0), dpi(6), dpi(0), dpi(0)),
@@ -103,7 +100,7 @@ awful.screen.connect_for_each_screen(function(s)
     s.top_panel = awful.wibar({
             screen = s,
             bg = "transparent",
-            height = dpi(60),
+            height = dpi(50),
         })
 
     -- Add widgets to the wibox

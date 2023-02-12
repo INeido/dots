@@ -75,6 +75,12 @@ dotfiles:
   f_config.py:
     src: config/qutebrowser/config.py
     dst: ~/.config/qutebrowser/config.py
+  d_plugins:
+    src: config/ranger/plugins
+    dst: ~/.config/ranger/plugins
+  f_rc.conf:
+    src: config/ranger/rc.conf
+    dst: ~/.config/ranger/rc.conf
 profiles:
   PC0:
     dotfiles:
@@ -100,3 +106,5 @@ profiles:
     - f_powermenu.sh
     - f_autoconfig.yml
     - f_config.py
+    - d_plugins
+    - f_rc.conf

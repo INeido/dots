@@ -43,11 +43,6 @@ awful.rules.rules = {
   },
 
   -- Application rules
-  { rule = { class = "Firefox" },
-    properties = {
-      maximized = true,
-    },
-  },
   { rule = { class = "Dolphin" },
     properties = { floating = true },
     callback = function(c)

@@ -65,6 +65,15 @@ My settings look like this:
     "workbench.statusBar.visible": false,
     ```
 
+2. You can install the ranger plugins with the following code:
+    ```bash
+    # Devicons
+    git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
+    # Archiver
+    git clone https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugins/ranger-archives
+    ```
+    
+
 # Components
 | | Name | Package | Links |
 |-| ---- | ------- | ----- |
@@ -75,7 +84,7 @@ My settings look like this:
 | **Terminal** | Alacritty | `alacritty` <sup>[Arch](https://archlinux.org/packages/community/x86_64/alacritty/)</sup> | [GitHub](https://github.com/alacritty/alacritty), [Docs](https://github.com/alacritty/alacritty/wiki)
 | **Monitor** | HTOP | `htop` <sup>[Arch](https://archlinux.org/packages/extra/x86_64/htop/)</sup> | [GitHub](https://github.com/htop-dev/htop), [Docs](https://man.archlinux.org/man/htop.1.en)
 | **Browser** | Qutebrowser | `qutebrowser` <sup>[Arch](https://archlinux.org/packages/community/x86_64/qutebrowser/)</sup> | [Docs](https://www.qutebrowser.org/doc/help/index.html)
-| **File Manager** | Dolphin | `dolphin` <sup>[Arch](https://wiki.archlinux.org/title/Dolphin)</sup> | [GitHub](https://github.com/KDE/dolphin), [Docs](https://userbase.kde.org/Dolphin)
+| **File Manager** | Ranger | `ranger` <sup>[Arch](https://archlinux.org/packages/community/any/ranger/)</sup> | [GitHub](https://github.com/ranger/ranger), [Docs](https://ranger.github.io/documentation.html)
 | **Application Launcher** | Rofi | `rofi` <sup>[Arch](https://archlinux.org/packages/community/x86_64/rofi/)</sup> | [GitHub](https://github.com/davatorium/rofi), [Docs](https://github.com/davatorium/rofi/wiki)
 | **System Font** | Inter | `inter-font`<sup>[Arch](https://archlinux.org/packages/community/any/inter-font/)</sup> | [GitHub](https://github.com/rsms/inter)
 | **VS Code Font** | Fira Code | `ttf-fira-code`<sup>[Arch](https://archlinux.org/packages/community/any/ttf-fira-code/)</sup> | [GitHub](https://github.com/tonsky/FiraCode), [Docs](https://github.com/tonsky/FiraCode/wiki)

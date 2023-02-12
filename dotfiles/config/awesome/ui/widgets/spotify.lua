@@ -63,6 +63,34 @@ local cur_title = ''
 local cur_album = ''
 local cur_art = ''
 
+local placeholder = wibox.widget {
+        {
+            {
+                id = "icon",
+                image = beautiful.icon_spotify,
+                resize = true,
+                widget = wibox.widget.imagebox
+            },
+            right = dpi(5),
+            widget = wibox.container.margin,
+        },
+        {
+            font = titelfont,
+            text = "Spotify is not running",
+            widget = wibox.widget.textbox
+        },
+        layout = wibox.layout.align.horizontal,
+    }
+
+--- Adds mouse controls to the widget:
+--  - left click - start spotify
+placeholder:connect_signal("button::press", function(_, _, _, button)
+    if (button == 1) then -- left click
+        awful.spawn("spotify-launcher")
+        open_spotify()
+    end
+end)
+
 local spotify = wibox.widget {
         {
             {
@@ -142,7 +170,9 @@ end
 local update_widget_text = function(widget, stdout, _, _, _)
     if string.find(stdout, 'Error: Spotify is not running.') ~= nil then
         widget:set_text('', '')
-        widget:set_visible(false)
+        widget:get_children_by_id("artw")[1]:set_image(beautiful.icon_spotify)
+        widget:get_children_by_id('titelw')[1]:set_markup(ellipsize("Spotify not running", max_length))
+        widget:get_children_by_id('artistw')[1]:set_markup(ellipsize("Click to open", max_length))
         return
     end
 

@@ -92,7 +92,7 @@ keys.globalkeys = gears.table.join(
 
         awful.key({ modkey, }, "e",
             function()
-                awful.spawn("pcmanfm")
+                awful.spawn.with_shell("alacritty -e ranger")
             end,
             { description = "Start Dolphin", group = "launcher" }),
         awful.key({ modkey, }, "Left",
@@ -112,14 +112,9 @@ keys.globalkeys = gears.table.join(
                 end
             end,
             { description = "Go Back", group = "client" }),
-        awful.key({ modkey, }, "q",
+        awful.key({ modkey, }, "Tab",
             function()
-                awful.client.focus.byidx( -1)
-            end,
-            { description = "Cycle Backwards", group = "client" }),
-        awful.key({ modkey, }, "w",
-            function()
-                awful.client.focus.byidx(1)
+                awful.client.focus.byidx( 1)
             end,
             { description = "Cycle Forwards", group = "client" }),
         awful.key({ modkey, }, "s",
@@ -153,7 +148,7 @@ keys.clientkeys = gears.table.join(
                 c:raise()
             end,
             { description = "Toggle Fullscreen", group = "client" }),
-        awful.key({ modkey, "Shift" }, "c",
+        awful.key({ modkey, }, "q",
             function(c)
                 c:kill()
             end,

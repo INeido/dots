@@ -15,7 +15,6 @@ local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
 local config_path = "~/.config/awesome/"
-local icon_path = "/usr/share/icons/Papirus/"
 local gears = require("gears")
 local gfs = require("gears.filesystem")
 
@@ -32,6 +31,12 @@ theme.switch_titlebar = 0
 -- Border
 theme.useless_gap   = dpi(5)
 theme.border_width  = dpi(3)
+
+-- ===================================================================
+-- Icon Theme
+-- ===================================================================
+
+theme.icon_theme = "Papirus"
 
 -- ===================================================================
 -- Fonts
@@ -102,6 +107,9 @@ theme.tag_gaming = config_path .. "icons/gaming.svg"
 theme.tag_dev    = config_path .. "icons/dev.svg"
 theme.tag_ai     = config_path .. "icons/ai.svg"
 
+-- Apps
+theme.icon_spotify = "/usr/share/icons/" .. theme.icon_theme ..  "/64x64/apps/spotify.svg"
+
 -- ===================================================================
 -- Wallpapers
 -- ===================================================================
@@ -110,11 +118,5 @@ theme.wallpaper0 = config_path .. "wallpapers/wallpaper0.jpg" -- Tag 0 (home)
 theme.wallpaper1 = config_path .. "wallpapers/wallpaper1.png" -- Tag 1 (gaming)
 theme.wallpaper2 = config_path .. "wallpapers/wallpaper2.jpg" -- Tag 2 (dev)
 theme.wallpaper3 = config_path .. "wallpapers/wallpaper3.jpg" -- Tag 3 (ai)
-
--- ===================================================================
--- Icon Theme
--- ===================================================================
-
-theme.icon_theme = "Papirus"
 
 return theme
