@@ -8,3 +8,6 @@ shutter
 steam
 spotify-launcher
 adobe-source-han-sans-jp-fonts
+freeredp
+network-manager-applet 
+networkmanager-openvpn

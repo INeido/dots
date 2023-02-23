@@ -72,6 +72,31 @@ My settings look like this:
     # Archiver
     git clone https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugins/ranger-archives
     ```
+
+3. Network Manager service has to be enabled:
+    ```bash
+    sudo systemctl start NetworkManager.service
+    ```
+
+4. Powermenu and the Network Manager Applet has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
+    ```bash
+    # Changes to sudoers have to be done using visudo
+    # Optional: Change your editor from vi
+    export EDITOR="nano" 
+    # Open visudo using the variable you just set
+    sudo -E visudo
+    ```
+    Now you can add the following line:
+    ```bash
+    # Of course, change <Username> to your username
+    <Username> ALL=NOPASSWD: /usr/bin/halt, /usr/bin/reboot, /usr/bin/shutdown, /usr/bin/nm-applet
+    ```
+
+    Start the service
+    ```bash
+    sudo systemctl start NetworkManager.service
+    ```
+    
     
 
 # Components
