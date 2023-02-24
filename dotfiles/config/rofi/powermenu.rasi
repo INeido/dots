@@ -4,7 +4,7 @@ configuration {
 }
 
 /*****----- Global Properties -----*****/
-@import                          "onedark.rasi"
+@import                          "code.rasi"
 
 /*
 USE_BUTTONS=YES
@@ -92,7 +92,7 @@ message {
     text-color:                  @foreground;
 }
 textbox {
-    background-color:            inherit;
+    background-color:            transparent;
     text-color:                  inherit;
     vertical-align:              0.5;
     horizontal-align:            0.5;
@@ -143,7 +143,7 @@ element {
     border-radius:               0px;
     border-color:                @selected;
     background-color:            @background-alt;
-    text-color:                  @foreground;
+    text-color:                  @foreground-alt;
     cursor:                      pointer;
 }
 element-text {
@@ -155,6 +155,5 @@ element-text {
     horizontal-align:            0.5;
 }
 element selected.normal {
-    background-color:            var(selected);
-    text-color:                  var(background);
+    text-color:                  var(foreground-selected);
 }

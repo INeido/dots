@@ -1,10 +1,7 @@
 /**
  *
- * Author : Aditya Shakya (adi1090x)
- * Github : @adi1090x
- * 
- * Rofi Theme File
- * Rofi Version: 1.7.3
+ * Modified from@adi1090x
+ *
  **/
 
 /*****----- Configuration -----*****/
@@ -20,7 +17,7 @@ configuration {
 }
 
 /*****----- Global Properties -----*****/
-@import                          "onedark.rasi"
+@import                          "code.rasi"
 
 * {
     border-colour:               var(selected);
@@ -35,7 +32,7 @@ configuration {
     active-background:           var(active);
     active-foreground:           var(background);
     selected-normal-background:  var(selected);
-    selected-normal-foreground:  var(background);
+    selected-normal-foreground:  var(foreground-selected);
     selected-urgent-background:  var(active);
     selected-urgent-foreground:  var(background);
     selected-active-background:  var(urgent);
@@ -55,7 +52,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       600px;
+    width:                       500px;
     x-offset:                    0px;
     y-offset:                    0px;
 
@@ -103,20 +100,20 @@ prompt {
     border:                      0px 1px 0px 0px;
     border-radius:               0px;
     border-color:                @alternate-background;
-    background-color:            inherit;
+    background-color:            transparent;
     text-color:                  inherit;
 }
 textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
     str:                         "::";
-    background-color:            inherit;
+    background-color:            transparent;
     text-color:                  inherit;
 }
 entry {
     enabled:                     true;
     padding:                     15px;
-    background-color:            inherit;
+    background-color:            transparent;
     text-color:                  inherit;
     cursor:                      text;
     placeholder:                 "";

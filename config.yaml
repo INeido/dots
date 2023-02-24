@@ -81,6 +81,9 @@ dotfiles:
   f_rc.conf:
     src: config/ranger/rc.conf
     dst: ~/.config/ranger/rc.conf
+  f_code.rasi:
+    src: config/rofi/code.rasi
+    dst: ~/.config/rofi/code.rasi
 profiles:
   PC0:
     dotfiles:
@@ -108,3 +111,4 @@ profiles:
     - f_config.py
     - d_plugins
     - f_rc.conf
+    - f_code.rasi

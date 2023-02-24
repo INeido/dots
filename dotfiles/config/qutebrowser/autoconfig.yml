@@ -6,10 +6,17 @@
 
 config_version: 2
 settings:
+  bindings.commands:
+    global:
+      normal:
+        <Backspace>: back
+        <Ctrl+n>: open -t https://start.duckduckgo.com/
+        <Ctrl+q>: tab-close
+        <Shift+Backspace>: forward
   colors.webpage.darkmode.algorithm:
-    global: brightness-rgb
+    global: lightness-hsl
   colors.webpage.darkmode.enabled:
-    global: true
+    global: false
   completion.show:
     global: always
   fonts.default_family:
