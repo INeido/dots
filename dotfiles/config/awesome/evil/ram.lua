@@ -20,18 +20,23 @@ local dpi = require('beautiful').xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local script = [[bash -c "free | awk '/Mem/ {printf \"%.1fGB\", $3 / 1024 / 1024}'"]]
-local interval = 2
+local script = [[bash -c "free -m | awk '/^Mem/ {printf \"%d\", \$2}'; printf \"\n\" && free -m | awk '/^Mem/ {printf \"%d\", \$3}'; printf \"\n\" && free -m | awk '/^Mem/ {printf \"%d\", \$4}'"]]
+local interval = 1
 
 -- ===================================================================
 -- Daemon
 -- ===================================================================
 
 awful.widget.watch(script, interval, function(_, stdout)
-    local used = string.gsub(stdout, "\n", "")
+    local total, used, free = stdout:match("(%d+)\n(%d+)\n(%d+)")
+
+    total = string.format("%.0f", tonumber(total))
+    used = string.format("%.0f", tonumber(used))
+    free = string.format("%.0f", tonumber(free))
 
     awesome.emit_signal("evil::ram", {
-        used = used,
+        total = total or "0",
+        used = used or "0",
+        free = free or "0",
     })
-
 end)

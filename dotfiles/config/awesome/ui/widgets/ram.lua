@@ -23,11 +23,6 @@ local dpi = beautiful.xresources.apply_dpi
 local ram = wibox.widget.textbox()
 ram.font = beautiful.widgetfont
 
-awesome.connect_signal("evil::ram", function(args)
-    ram.text = args.used
-    collectgarbage('collect')
-end)
-
 -- ===================================================================
 -- Icon
 -- ===================================================================
@@ -45,7 +40,7 @@ local icon = wibox.widget {
 -- Widget
 -- ===================================================================
 
-return wibox.widget {
+local w = wibox.widget {
     widget = wibox.container.background,
     bg = beautiful.panel_item_normal,
     shape = gears.shape.rect,
@@ -67,3 +62,26 @@ return wibox.widget {
         },
     }
 }
+
+-- ===================================================================
+-- Tooltip
+-- ===================================================================
+
+local tooltip = awful.tooltip {
+    objects = { w },
+    mode = "outside",
+    align = "right",
+    preferred_positions = { "right", "left", "bottom" }
+}
+
+-- ===================================================================
+-- Signal
+-- ===================================================================
+
+awesome.connect_signal("evil::ram", function(args)
+    ram.text = string.format("%.2f", args.used / 1024) .. "GB"
+    tooltip.text = "Total: " .. args.total .. "MB\n" .. "Used: " .. args.used .. "MB\n" .. "Free: " .. args.free .. "MB"
+    collectgarbage('collect')
+end)
+
+return w

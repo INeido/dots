@@ -27,7 +27,6 @@ local theme = {}
 -- Switches
 theme.switch_titlebar = 0
 
-
 -- Border
 theme.useless_gap   = dpi(5)
 theme.border_width  = dpi(3)

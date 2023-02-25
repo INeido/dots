@@ -8,6 +8,7 @@ function run {
 }
 
 run picom
+run sudo nm-applet
 run spotify-launcher
 run discord
 run steam

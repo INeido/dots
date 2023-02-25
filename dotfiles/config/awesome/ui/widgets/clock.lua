@@ -13,6 +13,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
+local helpers = require("helpers")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
@@ -21,6 +22,7 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local clock = wibox.widget.textclock("%H : %M")
+local date = wibox.widget.textclock("%a, %b %d")
 clock.font = beautiful.widgetfont
 
 -- ===================================================================
@@ -40,7 +42,7 @@ local icon = wibox.widget {
 -- Widget
 -- ===================================================================
 
-return wibox.widget {
+local w = wibox.widget {
     widget = wibox.container.background,
     bg = beautiful.panel_item_normal,
     shape = gears.shape.rect,
@@ -62,3 +64,31 @@ return wibox.widget {
         },
     }
 }
+
+-- ===================================================================
+-- Actions
+-- ===================================================================
+
+w:buttons(gears.table.join(w:buttons(), awful.button({}, 1, nil, function()
+    if current_widget == clock then
+        current_widget = date
+    else
+        current_widget = date
+    end
+end)))
+
+helpers.add_hover_cursor(w, "hand1")
+
+-- ===================================================================
+-- Tooltip
+-- ===================================================================
+
+local tooltip = awful.tooltip {
+    --objects = { w },
+    text = "Click me to toggle time/date display.",
+    mode = "outside",
+    align = "right",
+    preferred_positions = { "right", "left", "bottom" }
+}
+
+return w

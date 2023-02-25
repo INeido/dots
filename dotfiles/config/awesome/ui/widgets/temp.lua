@@ -23,11 +23,6 @@ local dpi = beautiful.xresources.apply_dpi
 local temp = wibox.widget.textbox()
 temp.font = beautiful.widgetfont
 
-awesome.connect_signal("evil::temp", function(args)
-    temp.text = args.core0
-    collectgarbage('collect')
-end)
-
 -- ===================================================================
 -- Icon
 -- ===================================================================
@@ -45,7 +40,7 @@ local icon = wibox.widget {
 -- Widget
 -- ===================================================================
 
-return wibox.widget {
+local w = wibox.widget {
     widget = wibox.container.background,
     bg = beautiful.panel_item_normal,
     shape = gears.shape.rect,
@@ -67,3 +62,27 @@ return wibox.widget {
         },
     }
 }
+
+-- ===================================================================
+-- Tooltip
+-- ===================================================================
+
+local tooltip = awful.tooltip {
+    objects = { w },
+    mode = "outside",
+    align = "right",
+    preferred_positions = { "right", "left", "bottom" }
+}
+
+-- ===================================================================
+-- Signal
+-- ===================================================================
+
+awesome.connect_signal("evil::temp", function(args)
+    temp.text = args.cpu .. "°C" .. " / " .. args.gpu .. "°C"
+    tooltip.text = "CPU Temparature: " .. args.cpu .. "°C" .. "\n" .. "GPU Temparature: " .. args.gpu .. "°C"
+
+    collectgarbage('collect')
+end)
+
+return w

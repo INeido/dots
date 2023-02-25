@@ -20,7 +20,7 @@ local dpi = require('beautiful').xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local script = [[bash -c "grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf \"%.0f%%\", usage}'"]]
+local script = [[awk '$1~/cpu[0-9]/{usage=($2+$4)*100/($2+$4+$5); printf "%.2f\n", usage}' /proc/stat]]
 local interval = 1
 
 -- ===================================================================
@@ -28,10 +28,20 @@ local interval = 1
 -- ===================================================================
 
 awful.widget.watch(script, interval, function(_, stdout)
-    local avg = string.gsub(stdout, "\n", "")
+    local cores = {}
+    for core in stdout:gmatch("[^\r\n]+") do
+        table.insert(cores, core)
+    end
+
+    local sum = 0
+    for i = 1, #cores do
+        sum = sum + cores[i]
+    end
+
+    local avg = string.format("%.1f", sum / #cores)
 
     awesome.emit_signal("evil::cpu", {
-        avg = avg,
+        cores = cores or { 0 },
+        avg = avg or "0",
     })
-
 end)
