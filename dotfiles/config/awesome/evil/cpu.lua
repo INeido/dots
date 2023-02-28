@@ -38,10 +38,10 @@ awful.widget.watch(script, interval, function(_, stdout)
         sum = sum + cores[i]
     end
 
-    local avg = string.format("%.1f", sum / #cores)
+    local util = string.format("%.1f", sum / #cores)
 
     awesome.emit_signal("evil::cpu", {
         cores = cores or { 0 },
-        avg = avg or "0",
+        util = util or 0,
     })
 end)

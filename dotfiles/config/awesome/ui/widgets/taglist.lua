@@ -13,8 +13,8 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
-local beautiful = require("beautiful")
 local helpers = require("helpers")
+local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
@@ -32,6 +32,7 @@ local buttons = gears.table.join(
 -- Taglist
 -- ===================================================================
 
+-- Create the widget
 local w = awful.widget.taglist {
         screen          = "primary",
         filter          = awful.widget.taglist.filter.all,
@@ -44,7 +45,7 @@ local w = awful.widget.taglist {
                             id     = "icon_role",
                             widget = wibox.widget.imagebox,
                         },
-                        margins = dpi(6),
+                        margins = dpi(3),
                         widget  = wibox.container.margin,
                     },
                     id     = "background_role",
@@ -74,5 +75,8 @@ local w = awful.widget.taglist {
             end
         }
     }
+
+-- Box the widget
+w = helpers.box_tp_widget(w)
 
 return w

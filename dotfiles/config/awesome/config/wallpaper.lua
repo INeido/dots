@@ -46,8 +46,10 @@ tag.connect_signal("property::selected", function(t)
 
     if #selected_tags > 0 then
         set_wallpaper(0, selected_tags[1].index)
+        awesome.emit_signal("db::wallpaper", selected_tags[1].index)
     else
         set_wallpaper(0, 0)
+        awesome.emit_signal("db::wallpaper", 1)
     end
 end)
 

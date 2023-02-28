@@ -13,11 +13,12 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
+local helpers = require("helpers")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
--- Get CPU
+-- Texbox
 -- ===================================================================
 
 local cpu = wibox.widget.textbox()
@@ -40,28 +41,28 @@ local icon = wibox.widget {
 -- Widget
 -- ===================================================================
 
+-- Create the widget
 local w = wibox.widget {
-    widget = wibox.container.background,
-    bg = beautiful.panel_item_normal,
-    shape = gears.shape.rect,
+    -- Add margins outside
     {
-        widget = wibox.container.margin,
-        left = dpi(10),
-        right = dpi(10),
-        top = dpi(5),
-        bottom = dpi(5),
+        icon,
+        -- Add Icon
         {
-            icon,
-            {
-                cpu,
-                fg = beautiful.text_bright,
-                widget = wibox.container.background
-            },
-            spacing = dpi(2),
-            layout = wibox.layout.fixed.horizontal
+            -- Add Widget
+            cpu,
+            fg = beautiful.text_bright,
+            widget = wibox.container.background
         },
-    }
+        spacing = dpi(2),
+        layout = wibox.layout.fixed.horizontal
+    },
+    widget = wibox.container.margin,
+    left = dpi(8),
+    right = dpi(8),
 }
+
+-- Box the widget
+w = helpers.box_tp_widget(w)
 
 -- ===================================================================
 -- Tooltip
@@ -79,12 +80,12 @@ local tooltip = awful.tooltip {
 -- ===================================================================
 
 awesome.connect_signal("evil::cpu", function(args)
-    cpu.text = args.avg .. "%"
+    cpu.text = args.util .. "%"
 
     local text = ""
 
     for i = 1, #args.cores do
-        text = text .. "Core" .. i - 1 .. ": " .. args.cores[i] .. "\n"
+        text = text .. "Core" .. i - 1 .. ": " .. args.cores[i] .. "%\n"
     end
 
     text = string.sub(text, 1, -2)

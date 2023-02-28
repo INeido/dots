@@ -13,6 +13,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
+local helpers = require("helpers")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
@@ -29,9 +30,7 @@ local tasklist = require("ui.widgets.tasklist")
 
 local spotify = require("ui.widgets.spotify")
 local pacman = require("ui.widgets.pacman")
-local temp = require("ui.widgets.temp")
-local cpu = require("ui.widgets.cpu")
-local ram = require("ui.widgets.ram")
+local date = require("ui.widgets.date")
 local clock = require("ui.widgets.clock")
 
 -- ===================================================================
@@ -44,17 +43,17 @@ awful.screen.connect_for_each_screen(function(s)
     -- ===================================================================
 
     local left = {
-        widget = wibox.container.margin,
+        {
+            starticon,
+            layoutbox(s),
+            systray,
+            taglist,
+            layout = wibox.layout.fixed.horizontal,
+        },
         left = dpi(10),
         right = dpi(10),
         top = dpi(10),
-        {
-            wibox.container.margin(starticon, dpi(0), dpi(6), dpi(0), dpi(0)),
-            wibox.container.margin(layoutbox(s), dpi(0), dpi(6), dpi(0), dpi(0)),
-            wibox.container.margin(systray, dpi(0), dpi(6), dpi(0), dpi(0)),
-            wibox.container.margin(taglist, dpi(0), dpi(6), dpi(0), dpi(0)),
-            layout = wibox.layout.fixed.horizontal,
-        },
+        widget = wibox.container.margin,
     }
 
     -- ===================================================================
@@ -62,14 +61,14 @@ awful.screen.connect_for_each_screen(function(s)
     -- ===================================================================
 
     local middle = {
-        widget = wibox.container.margin,
-        left = dpi(10),
-        right = dpi(10),
-        top = dpi(10),
         {
             tasklist,
             layout = wibox.layout.fixed.horizontal,
-        }
+        },
+        left = dpi(10),
+        right = dpi(10),
+        top = dpi(10),
+        widget = wibox.container.margin,
     }
 
     -- ===================================================================
@@ -77,19 +76,17 @@ awful.screen.connect_for_each_screen(function(s)
     -- ===================================================================
 
     local right = {
-        widget = wibox.container.margin,
+        {
+            spotify,
+            pacman,
+            date,
+            clock,
+            layout = wibox.layout.fixed.horizontal,
+        },
         left = dpi(10),
         right = dpi(10),
         top = dpi(10),
-        {
-            wibox.container.margin(spotify, dpi(0), dpi(6), dpi(0), dpi(0)),
-            wibox.container.margin(pacman, dpi(0), dpi(6), dpi(0), dpi(0)),
-            wibox.container.margin(temp, dpi(0), dpi(6), dpi(0), dpi(0)),
-            wibox.container.margin(cpu, dpi(0), dpi(6), dpi(0), dpi(0)),
-            wibox.container.margin(ram, dpi(0), dpi(6), dpi(0), dpi(0)),
-            wibox.container.margin(clock, dpi(0), dpi(0), dpi(0), dpi(0)),
-            layout = wibox.layout.fixed.horizontal,
-        },
+        widget = wibox.container.margin,
     }
 
     -- ===================================================================
@@ -98,10 +95,10 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Create the wibox
     s.top_panel = awful.wibar({
-            screen = s,
-            bg = "transparent",
-            height = dpi(50),
-        })
+        screen = s,
+        bg = "transparent",
+        height = dpi(beautiful.top_panel_height),
+    })
 
     -- Add widgets to the wibox
     s.top_panel:setup {

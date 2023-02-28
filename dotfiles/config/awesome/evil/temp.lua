@@ -20,7 +20,7 @@ local dpi = require('beautiful').xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local script = "bash -c \"sensors | grep 'Tctl' | awk '{print $2}' | cut -c2-3 && nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader\""
+local script = [[bash -c "sensors | grep 'Tctl' | awk '{print $2}' | cut -c2-3"]]
 local interval = 5
 
 -- ===================================================================
@@ -28,10 +28,9 @@ local interval = 5
 -- ===================================================================
 
 awful.widget.watch(script, interval, function(_, stdout)
-    local cpu, gpu = stdout:match("(%d+)\n(%d+)")
+    local cpu = stdout:gsub("\n", "")
 
     awesome.emit_signal("evil::temp", {
-        cpu = cpu or "0",
-        gpu = gpu or "0",
+        cpu = cpu or 0,
     })
 end)

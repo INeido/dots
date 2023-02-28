@@ -10,112 +10,134 @@
 -- Initialization
 -- ===================================================================
 
-local theme_assets = require("beautiful.theme_assets")
-local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local theme_assets                 = require("beautiful.theme_assets")
+local beautiful                    = require("beautiful")
+local dpi                          = beautiful.xresources.apply_dpi
 
-local config_path = "~/.config/awesome/"
-local gears = require("gears")
-local gfs = require("gears.filesystem")
+local config_path                  = "~/.config/awesome/"
+local gears                        = require("gears")
+local gfs                          = require("gears.filesystem")
 
-local theme = {}
+local theme                        = {}
+theme.config_path                  = "~/.config/awesome/"
 
 -- ===================================================================
 -- Settings
 -- ===================================================================
 
--- Switches
-theme.switch_titlebar = 0
-
--- Border
-theme.useless_gap   = dpi(5)
-theme.border_width  = dpi(3)
+theme.enable_titlebar              = 0
+-- Network Interface for the widget
+theme.network_interface            = "enp42s0"
+-- Enter the drives you want to get data for the widget
+theme.drive_names                  = { "/", "/Games" }
 
 -- ===================================================================
 -- Icon Theme
 -- ===================================================================
 
-theme.icon_theme = "Papirus"
+theme.icon_theme                   = "Papirus"
 
 -- ===================================================================
 -- Fonts
 -- ===================================================================
 
-theme.font       = "Inter 9"
-theme.widgetfont = "Inter Bold 10"
-theme.titlefont  = "Inter 9"
-theme.fontname   = "Inter 9"
-theme.iconfont   = "Font Awesome 6 Free Solid 11"
+theme.font                         = "Inter 9"
+theme.widgetfont_small             = "Inter Bold 10"
+theme.widgetfont                   = "Inter Bold 10"
+theme.widgetfont_big               = "Inter Bold 14"
+theme.dashboardfont_small          = "Inter Bold 16"
+theme.dashboardfont_thin           = "Inter 16"
+theme.dashboardfont_normal         = "Inter Bold 20"
+theme.dashboardfont_huge           = "Inter Bold 30"
+theme.titlefont                    = "Inter 9"
+theme.fontname                     = "Inter 9"
+theme.iconfont                     = "Font Awesome 6 Free Solid 11"
+theme.iconfont_medium              = "Font Awesome 6 Free Solid 18"
+theme.iconfont_big                 = "Font Awesome 6 Free Solid 22"
+
+-- ===================================================================
+-- Sizes
+-- ===================================================================
+
+theme.top_panel_height             = dpi(50)
+
+theme.systray_icon_size            = dpi(29)
+
+theme.useless_gap                  = dpi(5)
+theme.border_width                 = dpi(3)
 
 -- ===================================================================
 -- Colors
 -- ===================================================================
 
-theme.accent = "#b5ea8c"
+theme.accent                       = "#B5EA8C"
 
 -- Background Colors
-theme.bg_normal   = "#1C1E26"
-theme.bg_focus    = "#1C1E26"
-theme.bg_urgent   = "#1C1E26"
-theme.bg_minimize = "#aaaaaa"
-theme.bg_systray  = theme.bg_normal
+theme.bg_normal                    = "#1E1E1E"
+theme.bg_focus                     = "#1C1E26"
+theme.bg_urgent                    = "#1C1E26"
+theme.bg_minimize                  = "#AAAAAA"
+theme.bg_systray                   = theme.bg_normal
+theme.bg_dashboard                 = "#1C1E2688"
 
 -- Foreground Colors
-theme.fg_normal   = "#DDDDDD"
-theme.fg_focus    = "#FFFFFF"
-theme.fg_urgent   = "#FFFFFF"
-theme.fg_minimize = "#FFFFFF"
+theme.fg_normal                    = "#DDDDDD"
+theme.fg_deselected                = "#AAAAAA"
+theme.fg_focus                     = "#FFFFFF"
+theme.fg_urgent                    = "#FFFFFF"
+theme.fg_minimize                  = "#FFFFFF"
 
 -- Text Colors
-theme.text_normal = "#EEEEEE"
-theme.text_bright = "#FFFFFF"
-theme.text_dark   = "#DDDDDD"
+theme.text_normal                  = "#EEEEEE"
+theme.text_bright                  = "#FFFFFF"
+theme.text_dark                    = "#DDDDDD"
 
 -- Titlebar Button Colors
 theme.titlebar_button_normal       = "#888888"
 theme.titlebar_button_normal_hover = "#B2B2B2"
 
 -- Panel Colors
-theme.panel_item_normal = "#1C1E26"
-theme.panel_item_hover  = "#3F3F3F"
-theme.panel_item_press  = "#4F3F3F"
+theme.panel_item_normal            = "#1E1E1E"
+theme.panel_item_hover             = "#3F3F3F"
+theme.panel_item_press             = "#4F3F3F"
 
 -- Border Colors
-theme.border_normal = theme.panel_item_normal
-theme.border_focus  = theme.panel_item_hover
-theme.border_marked = "#91231c"
+theme.border_normal                = theme.panel_item_normal
+theme.border_focus                 = theme.panel_item_hover
+theme.border_marked                = "#91231c"
 
 -- Tasklist Colors
-theme.tasklist_bg_minimize = theme.panel_item_normal
+theme.tasklist_bg_minimize         = theme.panel_item_normal
 
 -- ===================================================================
 -- Icons
 -- ===================================================================
 
 -- You can use your own layout icons like this:
-theme.layout_floating  = config_path.."icons/layouts/floating.svg"
-theme.layout_max = config_path.."icons/layouts/max.svg"
-theme.layout_fullscreen = config_path.."icons/layouts/fullscreen.svg"
-theme.layout_tile = config_path.."icons/layouts/tile.svg"
-theme.layout_dwindle = config_path.."icons/layouts/dwindle.svg"
+theme.layout_floating              = config_path .. "icons/layouts/floating.svg"
+theme.layout_max                   = config_path .. "icons/layouts/max.svg"
+theme.layout_fullscreen            = config_path .. "icons/layouts/fullscreen.svg"
+theme.layout_tile                  = config_path .. "icons/layouts/tile.svg"
+theme.layout_dwindle               = config_path .. "icons/layouts/dwindle.svg"
 
--- Top-Panel
-theme.start_icon = config_path .. "icons/arch.svg"
-theme.tag_home   = config_path .. "icons/home.svg"
-theme.tag_gaming = config_path .. "icons/gaming.svg"
-theme.tag_dev    = config_path .. "icons/dev.svg"
-theme.tag_ai     = config_path .. "icons/ai.svg"
+-- Top-Panel - You can change the icons for your tags here
+theme.start_icon                   = config_path .. "icons/arch.svg"
+theme.tag_home                     = config_path .. "icons/home.svg"
+theme.tag_gaming                   = config_path .. "icons/gaming.svg"
+theme.tag_dev                      = config_path .. "icons/dev.svg"
+theme.tag_ai                       = config_path .. "icons/ai.svg"
 
 -- Apps
-theme.icon_spotify = "/usr/share/icons/" .. theme.icon_theme ..  "/64x64/apps/spotify.svg"
+theme.icon_spotify                 = "/usr/share/icons/" .. theme.icon_theme .. "/128x128/apps/spotify.svg"
 
 -- ===================================================================
 -- Wallpapers
 -- ===================================================================
 
-theme.wallpaper0 = config_path .. "wallpapers/wallpaper0.jpg" -- Tag 0 (home)
-theme.wallpaper1 = config_path .. "wallpapers/wallpaper1.png" -- Tag 1 (gaming)
-theme.wallpaper2 = config_path .. "wallpapers/wallpaper2.jpg" -- Tag 2 (dev)
-theme.wallpaper3 = config_path .. "wallpapers/wallpaper3.jpg" -- Tag 3 (ai)
+-- You can change the wallpapers for your tags here
+theme.wallpaper0                   = config_path .. "wallpapers/wallpaper0.png" -- Tag 0 (home)
+theme.wallpaper1                   = config_path .. "wallpapers/wallpaper1.png" -- Tag 1 (gaming)
+theme.wallpaper2                   = config_path .. "wallpapers/wallpaper2.png" -- Tag 2 (dev)
+theme.wallpaper3                   = config_path .. "wallpapers/wallpaper3.png" -- Tag 3 (ai)
 
 return theme

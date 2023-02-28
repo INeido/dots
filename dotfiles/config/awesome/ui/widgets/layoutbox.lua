@@ -13,8 +13,8 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
-local beautiful = require("beautiful")
 local helpers = require("helpers")
+local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
@@ -22,27 +22,19 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local buttons = gears.table.join(
-        awful.button({}, 1, function() awful.layout.inc(1) end),
-        awful.button({}, 3, function() awful.layout.inc( -1) end),
-        awful.button({}, 4, function() awful.layout.inc(1) end),
-        awful.button({}, 5, function() awful.layout.inc( -1) end)
-    )
+    awful.button({}, 1, function() awful.layout.inc(1) end),
+    awful.button({}, 3, function() awful.layout.inc( -1) end),
+    awful.button({}, 4, function() awful.layout.inc(1) end),
+    awful.button({}, 5, function() awful.layout.inc( -1) end)
+)
 
 -- ===================================================================
 -- Layoutbox
 -- ===================================================================
 
 local layoutbox = function(s)
-    local w = wibox.widget {
-            {
-                awful.widget.layoutbox(s),
-                margins = dpi(5),
-                widget = wibox.container.margin,
-            },
-            bg = beautiful.panel_item_normal,
-            shape = gears.shape.rect,
-            widget = wibox.container.background,
-        }
+    -- Create the widget
+    local w = awful.widget.layoutbox(s)
 
     w:buttons(buttons)
 
@@ -54,6 +46,9 @@ local layoutbox = function(s)
     end)
 
     helpers.add_hover_cursor(w, "hand1")
+
+    -- Box the widget
+    w = helpers.box_tp_widget(w)
 
     return w
 end

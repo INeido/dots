@@ -18,6 +18,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
+local helpers = require("helpers")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
@@ -54,7 +55,7 @@ local cur_art = ''
 local running = false
 
 -- ===================================================================
--- Widget
+-- Spotify
 -- ===================================================================
 
 local spotify = wibox.widget {
@@ -219,19 +220,18 @@ if false then
     end)
 end
 
-return wibox.widget {
-    widget = wibox.container.background,
-    bg = beautiful.panel_item_normal,
-    shape = gears.shape.rect,
-    {
-        widget = wibox.container.margin,
-        left = dpi(5),
-        right = dpi(10),
-        top = dpi(5),
-        bottom = dpi(5),
-        {
-            spotify,
-            layout = wibox.layout.fixed.horizontal
-        },
-    }
+-- ===================================================================
+-- Widget
+-- ===================================================================
+
+-- Create the widget
+local w = wibox.widget {
+    spotify,
+    right = dpi(3),
+    widget = wibox.container.margin,
 }
+
+-- Box the widget
+w = helpers.box_tp_widget(w)
+
+return w

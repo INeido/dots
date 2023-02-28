@@ -13,6 +13,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
+local helpers = require("helpers")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
@@ -40,28 +41,28 @@ local icon = wibox.widget {
 -- Widget
 -- ===================================================================
 
+-- Create the widget
 local w = wibox.widget {
-    widget = wibox.container.background,
-    bg = beautiful.panel_item_normal,
-    shape = gears.shape.rect,
+    -- Add margins outside
     {
-        widget = wibox.container.margin,
-        left = dpi(10),
-        right = dpi(10),
-        top = dpi(5),
-        bottom = dpi(5),
+        icon,
+        -- Add Icon
         {
-            icon,
-            {
-                pacman,
-                fg = beautiful.text_bright,
-                widget = wibox.container.background
-            },
-            spacing = dpi(2),
-            layout = wibox.layout.fixed.horizontal
-        }
-    }
+            -- Add Widget
+            pacman,
+            fg = beautiful.text_bright,
+            widget = wibox.container.background
+        },
+        spacing = dpi(2),
+        layout = wibox.layout.fixed.horizontal
+    },
+    widget = wibox.container.margin,
+    left = dpi(8),
+    right = dpi(8),
 }
+
+-- Box the widget
+w = helpers.box_tp_widget(w)
 
 -- ===================================================================
 -- Tooltip

@@ -15,6 +15,8 @@ Requires Arch Linux and AwesomeWM.
 
 ![](https://github.com/INeido/dots/blob/main/samples/sample1.png?raw=true)
 
+![](https://github.com/INeido/dots/blob/main/samples/sample2.png?raw=true)
+
 # Installation
 First, clone the package.
 ```bash
@@ -31,8 +33,6 @@ Dont forget the python requirements.
 ```bash
 pip install -e python_requirements.txt
 ```
-
-Components where the package is `-` have to be installed manually.
 
 Finally, the dots can be installed using dotdrop.
 ```bash
@@ -97,6 +97,11 @@ My settings look like this:
     sudo systemctl start NetworkManager.service
     ```
     
+4. The wallpapers are a bit finicky. You have to make sure that they have the exact aspect ration of your display. If that is given, you have to run a script every time you change a wallpaper:
+    ```bash
+    # You are prompted to enter your screen res as <width>x<height>
+    ~/.config/awesome/config/blur_backgrounds.sh
+    ```
     
 
 # Components
