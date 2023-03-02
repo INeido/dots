@@ -10,27 +10,31 @@
 -- Initialization
 -- ===================================================================
 
-local beautiful = require("beautiful")
-local gears = require("gears")
 local awful = require("awful")
+local gears = require("gears")
+local wibox = require("wibox")
+local helpers = require("helpers")
+local beautiful = require("beautiful")
+local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Load Wallpapers
 -- ===================================================================
 
-local wallpapers = {
-    gears.surface.load(beautiful.wallpaper0),
-    gears.surface.load(beautiful.wallpaper1),
-    gears.surface.load(beautiful.wallpaper2),
-    gears.surface.load(beautiful.wallpaper3),
-}
+local wp = {}
+
+helpers.get_wallpapers(function(wallpapers)
+    for _, wallpaper in ipairs(wallpapers) do
+        table.insert(wp, gears.surface.load(wallpaper))
+    end
+end)
 
 -- ===================================================================
 -- Set Wallpaper
 -- ===================================================================
 
 local function set_wallpaper(s, id)
-    local wallpaper = wallpapers[id]
+    local wallpaper = wp[id]
     if type(wallpaper) == "function" then
         wallpaper = wallpaper(s)
     end
@@ -54,7 +58,7 @@ tag.connect_signal("property::selected", function(t)
 end)
 
 -- ===================================================================
--- Recenter Wallpaper
+-- Re-Center Wallpaper
 -- ===================================================================
 
 screen.connect_signal("property::geometry", set_wallpaper)

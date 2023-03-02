@@ -20,7 +20,7 @@ local dpi = require('beautiful').xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local script = [[bash -c "pacman -Qu | wc -l"]]
+local script = "sudo " .. beautiful.config_path .. "scripts/pacman.sh check"
 local interval = 600
 
 -- ===================================================================

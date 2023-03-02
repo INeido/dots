@@ -84,6 +84,9 @@ dotfiles:
   f_code.rasi:
     src: config/rofi/code.rasi
     dst: ~/.config/rofi/code.rasi
+  d_scripts:
+    src: config/awesome/scripts
+    dst: ~/.config/awesome/scripts
 profiles:
   PC0:
     dotfiles:
@@ -112,3 +115,4 @@ profiles:
     - d_plugins
     - f_rc.conf
     - f_code.rasi
+    - d_scripts

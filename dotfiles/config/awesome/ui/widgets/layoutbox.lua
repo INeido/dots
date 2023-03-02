@@ -45,10 +45,8 @@ local layoutbox = function(s)
         w.bg = beautiful.panel_item_normal
     end)
 
-    helpers.add_hover_cursor(w, "hand1")
-
     -- Box the widget
-    w = helpers.box_tp_widget(w)
+    w = helpers.box_tp_widget(w, true, 5)
 
     return w
 end

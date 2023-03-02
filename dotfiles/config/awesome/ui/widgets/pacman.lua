@@ -62,7 +62,7 @@ local w = wibox.widget {
 }
 
 -- Box the widget
-w = helpers.box_tp_widget(w)
+w = helpers.box_tp_widget(w, true, 5)
 
 -- ===================================================================
 -- Tooltip
@@ -92,6 +92,24 @@ awesome.connect_signal("evil::pacman", function(args)
     tooltip.text = text
 
     collectgarbage('collect')
+end)
+
+-- ===================================================================
+-- Buttons
+-- ===================================================================
+
+w:connect_signal("button::press", function(_, _, _, button)
+    -- Run the updates in the background when left-clicked
+    if button == 1 then
+        -- Before the Update
+        tooltip.text = "Updating..."
+        -- After the update
+        awful.spawn.easy_async("sudo " .. beautiful.config_path .. "scripts/pacman.sh",
+        function(_, _, _, _)
+            tooltip.text = "You are up to date!"
+            pacman.text = 0
+        end)
+    end
 end)
 
 return w

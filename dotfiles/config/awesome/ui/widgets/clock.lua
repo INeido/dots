@@ -62,8 +62,6 @@ local w = wibox.widget {
 }
 
 -- Box the widget
-w = helpers.box_tp_widget(w)
-
-helpers.add_hover_cursor(w, "hand1")
+w = helpers.box_tp_widget(w, false, 5)
 
 return w

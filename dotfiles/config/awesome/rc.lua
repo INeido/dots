@@ -47,4 +47,4 @@ require("evil")
 -- Autorun
 -- ===================================================================
 
-require("awful").spawn.with_shell("~/.config/awesome/config/autorun.sh")
+require("awful").spawn.with_shell("~/.config/awesome/scripts/autorun.sh")

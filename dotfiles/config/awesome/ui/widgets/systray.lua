@@ -32,6 +32,6 @@ local w = wibox.widget {
 }
 
 -- Box the widget
-w = helpers.box_tp_widget(w)
+w = helpers.box_tp_widget(w, false, 5)
 
 return w

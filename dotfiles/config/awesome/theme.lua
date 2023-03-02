@@ -10,26 +10,36 @@
 -- Initialization
 -- ===================================================================
 
-local theme_assets                 = require("beautiful.theme_assets")
-local beautiful                    = require("beautiful")
-local dpi                          = beautiful.xresources.apply_dpi
+local theme_assets      = require("beautiful.theme_assets")
+local beautiful         = require("beautiful")
+local dpi               = beautiful.xresources.apply_dpi
 
-local config_path                  = "~/.config/awesome/"
-local gears                        = require("gears")
-local gfs                          = require("gears.filesystem")
+local config_path       = "~/.config/awesome/"
+local gears             = require("gears")
+local gfs               = require("gears.filesystem")
 
-local theme                        = {}
-theme.config_path                  = "~/.config/awesome/"
+local theme             = {}
+theme.config_path       = "~/.config/awesome/"
 
 -- ===================================================================
 -- Settings
 -- ===================================================================
 
-theme.enable_titlebar              = 0
+-- Apps
+theme.terminal          = "alacritty"
+theme.browser           = "firefox"
+theme.fileexplorer      = "thunar"
+theme.editor            = os.getenv("EDITOR") or "nano"
+
+-- Switches
+theme.enable_titlebar   = false
+
 -- Network Interface for the widget
-theme.network_interface            = "enp42s0"
+theme.network_interface = "enp42s0"
+
 -- Enter the drives you want to get data for the widget
-theme.drive_names                  = { "/", "/Games" }
+theme.drive_names       = { "/", "/Games" }
+
 
 -- ===================================================================
 -- Icon Theme
@@ -99,7 +109,19 @@ theme.titlebar_button_normal_hover = "#B2B2B2"
 -- Panel Colors
 theme.panel_item_normal            = "#1E1E1E"
 theme.panel_item_hover             = "#3F3F3F"
-theme.panel_item_press             = "#4F3F3F"
+theme.panel_item_press             = "#4F4F4F"
+theme.panel_item_inactive          = "#5F5F5F"
+theme.panel_item_selected          = "#FFFFFF"
+theme.panel_item_urgent            = "#B30000"
+theme.taglist_bg_urgent            = theme.panel_item_urgent
+
+-- Dashboard Colors
+theme.dashboard_item_normal        = "#1E1E1E"
+theme.dashboard_item_hover         = "#3F3F3F"
+theme.dashboard_item_press         = "#4F3F3F"
+theme.dashboard_item_inactive      = "#4F3F3F"
+theme.dashboard_item_selected      = "#4F3F3F"
+theme.dashboard_item_urgent        = "#4F3F3F"
 
 -- Border Colors
 theme.border_normal                = theme.panel_item_normal
@@ -135,9 +157,6 @@ theme.icon_spotify                 = "/usr/share/icons/" .. theme.icon_theme .. 
 -- ===================================================================
 
 -- You can change the wallpapers for your tags here
-theme.wallpaper0                   = config_path .. "wallpapers/wallpaper0.png" -- Tag 0 (home)
-theme.wallpaper1                   = config_path .. "wallpapers/wallpaper1.png" -- Tag 1 (gaming)
-theme.wallpaper2                   = config_path .. "wallpapers/wallpaper2.png" -- Tag 2 (dev)
-theme.wallpaper3                   = config_path .. "wallpapers/wallpaper3.png" -- Tag 3 (ai)
+theme.wallpaperpath                = config_path .. "wallpapers/"
 
 return theme

@@ -78,7 +78,7 @@ My settings look like this:
     sudo systemctl start NetworkManager.service
     ```
 
-4. Powermenu and the Network Manager Applet has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
+4. Powermenu, the Network Manager Applet and the pacman update script has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
     ```bash
     # Changes to sudoers have to be done using visudo
     # Optional: Change your editor from vi
@@ -89,7 +89,7 @@ My settings look like this:
     Now you can add the following line:
     ```bash
     # Of course, change <Username> to your username
-    <Username> ALL=NOPASSWD: /usr/bin/halt, /usr/bin/reboot, /usr/bin/shutdown, /usr/bin/nm-applet
+    <Username> ALL=NOPASSWD: /usr/bin/halt, /usr/bin/reboot, /usr/bin/shutdown, /usr/bin/nm-applet, /home/<Username>/.config/awesome/scripts/pacman.sh
     ```
 
     Start the service
@@ -100,7 +100,7 @@ My settings look like this:
 4. The wallpapers are a bit finicky. You have to make sure that they have the exact aspect ration of your display. If that is given, you have to run a script every time you change a wallpaper:
     ```bash
     # You are prompted to enter your screen res as <width>x<height>
-    ~/.config/awesome/config/blur_backgrounds.sh
+    ~/.config/awesome/scripts/blur_backgrounds.sh
     ```
     
 

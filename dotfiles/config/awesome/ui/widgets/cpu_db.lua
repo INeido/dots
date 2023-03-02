@@ -21,7 +21,7 @@ local dpi = beautiful.xresources.apply_dpi
 -- Create Widgets
 -- ===================================================================
 
-local create_widget = function(min, max)
+local create_widget = function(icon, min, max)
     local w = wibox.widget {
         {
             {
@@ -39,7 +39,7 @@ local create_widget = function(min, max)
                 widget = wibox.container.arcchart
             },
             {
-                markup = "<span foreground='" .. beautiful.accent .. "'></span>",
+                markup = "<span foreground='" .. beautiful.accent .. "'>" .. icon .. "</span>",
                 valign = "center",
                 align  = "center",
                 font   = beautiful.iconfont_medium,
@@ -63,9 +63,9 @@ end
 -- Widget
 -- ===================================================================
 
-local util = create_widget(0, 100)
-local ram = create_widget(0, 100)
-local temp = create_widget(30, 100)
+local util = create_widget("", 0, 100)
+local ram = create_widget("", 0, 100)
+local temp = create_widget("", 30, 100)
 
 local w = wibox.widget {
     {

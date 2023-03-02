@@ -40,7 +40,7 @@ local dashboard = wibox({
     ontop = true,
     type = "dock",
     screen = screen.primary,
-    bgimage = gears.surface.load(beautiful.config_path .. "wallpapers/wallpaper" .. 0 .. "_blurred.png"),
+    bgimage = gears.surface.load(beautiful.config_path .. "wallpapers/blurred/wallpaper" .. 0 .. ".png"),
 })
 
 awful.placement.maximize(dashboard)
@@ -50,7 +50,7 @@ awful.placement.maximize(dashboard)
 -- ===================================================================
 
 dashboard.wallpaper = function(id)
-    dashboard.bgimage = gears.surface.load(beautiful.config_path .. "wallpapers/wallpaper" .. id - 1 .. "_blurred.png")
+    dashboard.bgimage = gears.surface.load(beautiful.config_path .. "wallpapers/blurred/wallpaper" .. id - 1 .. ".png")
 end
 
 dashboard.close = function()

@@ -52,11 +52,11 @@ helpers.box_db_widget = function(widget, width, height)
                     nil,
                     -- The actual widget goes here
                     widget,
+                    expand = "none",
                     layout = wibox.layout.align.vertical,
-                    expand = "none"
                 },
+                expand = "none",
                 layout = wibox.layout.align.horizontal,
-                expand = "none"
             },
             bg = beautiful.panel_item_normal,
             forced_height = height,
@@ -65,13 +65,13 @@ helpers.box_db_widget = function(widget, width, height)
             widget = wibox.container.background,
         },
         margins = beautiful.useless_gap,
-        widget = wibox.container.margin
+        widget = wibox.container.margin,
     }
 end
 
 -- For Top-Panel Widgets
-helpers.box_tp_widget = function(widget)
-    return wibox.widget {
+helpers.box_tp_widget = function(widget, effects, margin)
+    local w = wibox.widget {
         -- Add margins outside
         {
             -- Add background color
@@ -85,15 +85,16 @@ helpers.box_tp_widget = function(widget)
                         nil,
                         -- The actual widget goes here
                         widget,
+                        expand = "none",
                         layout = wibox.layout.align.vertical,
-                        expand = "none"
                     },
+                    expand = "none",
                     layout = wibox.layout.align.horizontal,
-                    expand = "none"
                 },
-                margins = dpi(5),
+                margins = dpi(margin),
                 widget = wibox.container.margin,
             },
+            id = "bg",
             bg = beautiful.panel_item_normal,
             shape = gears.shape.rect,
             widget = wibox.container.background,
@@ -101,6 +102,31 @@ helpers.box_tp_widget = function(widget)
         right = dpi(5),
         widget = wibox.container.margin,
     }
+
+    if effects then
+        w:connect_signal("mouse::enter", function()
+            w:get_children_by_id("bg")[1]:set_bg(beautiful.panel_item_hover)
+        end)
+        w:connect_signal("mouse::leave", function()
+            w:get_children_by_id("bg")[1]:set_bg(beautiful.panel_item_normal)
+        end)
+    end
+
+    return w
+end
+
+-- Gets all the wallpapers
+helpers.get_wallpapers = function(callback)
+    local wallpapers = {}
+    local script = "ls " .. beautiful.wallpaperpath .. "*.png"
+
+    awful.spawn.easy_async_with_shell(script, function(stdout)
+        for wallpaper in string.gmatch(stdout, '[^\n]+') do
+            table.insert(wallpapers, wallpaper)
+        end
+
+        callback(wallpapers)
+    end)
 end
 
 return helpers

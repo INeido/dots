@@ -12,10 +12,10 @@
 
 local awful = require("awful")
 local gears = require("gears")
-
-local hotkeys_popup = require("awful.hotkeys_popup")
-
-local apps = require("config.apps")
+local wibox = require("wibox")
+local helpers = require("helpers")
+local beautiful = require("beautiful")
+local dpi = beautiful.xresources.apply_dpi
 
 -- Define mod keys
 local modkey = "Mod4"
@@ -130,7 +130,7 @@ keys.globalkeys = gears.table.join(
         { modkey, },
         "e",
         function()
-            awful.spawn.with_shell("alacritty -e ranger")
+            awful.spawn.with_shell(beautiful.fileexplorer)
         end,
         {
             description = "Start Ranger",
@@ -209,7 +209,7 @@ keys.globalkeys = gears.table.join(
         { modkey, },
         "Return",
         function()
-            awful.spawn(apps.terminal)
+            awful.spawn(beautiful.terminal)
         end,
         {
             description = "Open a Terminal",
