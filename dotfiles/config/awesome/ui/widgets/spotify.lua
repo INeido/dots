@@ -41,12 +41,7 @@ end
 -- Variables
 -- ===================================================================
 
-local titelfont = beautiful.widgetfont
-local artistfont = beautiful.font
 local dim_opacity = 0.75
-
-local sp_bin = 'sp'
-local PLAY_PAUSE_CMD = sp_bin .. ' play'
 
 local cur_artist = ''
 local cur_title = ''
@@ -76,13 +71,13 @@ local spotify = wibox.widget {
             speed = 40,
             {
                 id = 'titlew',
-                font = titelfont,
+                font = beautiful.widgetfont,
                 widget = wibox.widget.textbox
             }
         },
         {
             id = 'artistw',
-            font = artistfont,
+            font = beautiful.font,
             widget = wibox.widget.textbox,
         },
         layout = wibox.layout.align.vertical,
@@ -90,9 +85,9 @@ local spotify = wibox.widget {
     layout = wibox.layout.align.horizontal,
 
     set_art = function(self, link)
-        awful.spawn.easy_async("curl -o /tmp/spotify.png " .. link,
+        awful.spawn.easy_async("curl -o " .. beautiful.spotify_temp .. "/spotify.png " .. link,
             function(stdout, stderr, reason, exit_code)
-                self:get_children_by_id("artw")[1]:set_image(gears.surface.load_uncached("/tmp/spotify.png"))
+                self:get_children_by_id("artw")[1]:set_image(gears.surface.load_uncached("" .. beautiful.spotify_temp .. "/spotify.png"))
                 self:get_children_by_id("artw")[1]:emit_signal("widget::redraw_needed")
             end)
     end,
@@ -124,59 +119,44 @@ local spotify = wibox.widget {
 -- Actions
 -- ===================================================================
 
-local update_art = function(widget, stdout, _, _, _)
-    if cur_art ~= stdout then
-        cur_art = stdout
-        widget:set_art(cur_art)
-    end
-end
+local update = function(widget, args, _, _, _)
+    -- Update status
+    --local status = string.gsub(args.status, "\n", "")
+    widget:set_status(args.status == 'Playing' and true or false)
 
-local update_status = function(widget, stdout, _, _, _)
-    local status = string.gsub(stdout, "\n", "")
-    widget:set_status(status == 'Playing' and true or false)
-end
-
-local update_widget_text = function(widget, stdout, _, _, _)
-    if string.find(stdout, 'Error: Spotify is not running.') ~= nil then
+    -- Update running
+    if args.status ~= "Playing" and args.status ~= "Paused" then
         running = false
         widget:get_children_by_id("artw")[1]:set_image(beautiful.icon_spotify)
         widget:set_text("Click to open", "Spotify not running")
         return
     end
-
     running = true
 
-    local escaped = string.gsub(stdout, "&", '&amp;')
-    local album, _, artist, title =
-        string.match(escaped, 'Album%s*(.*)\nAlbumArtist%s*(.*)\nArtist%s*(.*)\nTitle%s*(.*)\n')
+    -- Update cover art
+    if cur_art ~= args.art then
+        cur_art = args.art
+        widget:set_art(cur_art)
+    end
 
-    if album ~= nil and title ~= nil and artist ~= nil then
-        cur_artist = artist
-        cur_title = title
-        cur_album = album
+    -- Update text
+    if args.artist ~= nil and args.title ~= nil and args.album ~= nil then
+        cur_artist = args.artist
+        cur_title = args.title
+        cur_album = args.album
 
-        widget:set_text(title, artist)
+        widget:set_text(cur_title, cur_artist)
         widget:set_visible(true)
     end
 end
+
 
 -- ===================================================================
 -- Signal
 -- ===================================================================
 
-awesome.connect_signal("evil::spotify_art", function(args)
-    update_art(spotify, args.art)
-    collectgarbage('collect')
-end)
-
-awesome.connect_signal("evil::spotify_status", function(args)
-    update_status(spotify, args.status)
-    collectgarbage('collect')
-end)
-
-awesome.connect_signal("evil::spotify_song", function(args)
-    update_widget_text(spotify, args.song)
-    collectgarbage('collect')
+awesome.connect_signal("evil::spotify", function(args)
+    update(spotify, args)
 end)
 
 --- Adds mouse controls to the widget:
@@ -191,13 +171,13 @@ spotify:connect_signal("button::press", function(_, _, _, button)
         end
         open_spotify()
     elseif (button == 3) then
-        awful.spawn(PLAY_PAUSE_CMD, false) -- right click
+        awful.spawn("playerctl -p spotify play-pause", false) -- right click
     elseif (button == 4) then
         awful.spawn.with_shell(
-            "pactl set-sink-input-volume $(pactl list sink-inputs | grep \"Spotify\" -B 18 | grep \"Sink Input\" | awk '{print $3}' | tr -d '#') +2%") -- scroll up
+            "playerctl -p spotify volume 0.03+") -- scroll up
     elseif (button == 5) then
         awful.spawn.with_shell(
-            "pactl set-sink-input-volume $(pactl list sink-inputs | grep \"Spotify\" -B 18 | grep \"Sink Input\" | awk '{print $3}' | tr -d '#') -2%") -- scroll down
+            "playerctl -p spotify volume 0.03-") -- scroll down
     end
 end)
 

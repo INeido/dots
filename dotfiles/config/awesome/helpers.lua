@@ -116,17 +116,24 @@ helpers.box_tp_widget = function(widget, effects, margin)
 end
 
 -- Gets all the wallpapers
-helpers.get_wallpapers = function(callback)
-    local wallpapers = {}
-    local script = "ls " .. beautiful.wallpaperpath .. "*.png"
-
-    awful.spawn.easy_async_with_shell(script, function(stdout)
-        for wallpaper in string.gmatch(stdout, '[^\n]+') do
-            table.insert(wallpapers, wallpaper)
+helpers.get_wallpapers = function(blurred)
+    return function(callback)
+        local wallpapers = {}
+        local script = ""
+        if blurred then
+            script = "ls " .. beautiful.wallpaperpath .. "blurred/*.png"
+        else
+            script = "ls " .. beautiful.wallpaperpath .. "*.png"
         end
 
-        callback(wallpapers)
-    end)
+        awful.spawn.easy_async_with_shell(script, function(stdout)
+            for wallpaper in string.gmatch(stdout, '[^\n]+') do
+                table.insert(wallpapers, wallpaper)
+            end
+
+            callback(wallpapers)
+        end)
+    end
 end
 
 return helpers

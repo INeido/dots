@@ -44,7 +44,7 @@ local function create_button(command, c)
         w.children[1].children[1].bg = beautiful.titlebar_button_normal_hover
     end)
     w:connect_signal("mouse::leave", function()
-        --require("naughty").notify({ title = "Achtung!", text = beautiful.titlebar_button_normal, timeout = 0 })
+        --require("naughty").notify({ title = "Achtung!", text = text, timeout = 0 })
         w.children[1].children[1].bg = beautiful.titlebar_button_normal
     end)
 

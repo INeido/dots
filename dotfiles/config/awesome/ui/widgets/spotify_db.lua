@@ -18,26 +18,15 @@ local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
--- Helper
--- ===================================================================
-
-local function open_spotify()
-    local clients = client.get()
-    for _, c in pairs(clients) do
-        if c.name == "Spotify" then
-            c.minimized = not c.minimized
-            c:raise()
-            return
-        end
-    end
-end
-
--- ===================================================================
 -- Variables
 -- ===================================================================
 
-local cur_art = ""
-local running = false
+local cur_artist = ''
+local cur_title = ''
+local cur_album = ''
+local cur_art = ''
+local vol_timer = nil
+local prog_timer = nil
 
 -- ===================================================================
 -- Spotify
@@ -80,10 +69,12 @@ local w = wibox.widget {
                     -- Previous
                     {
                         id = "prevw",
-                        markup = "<b></b>",
+                        markup = "<span foreground='" .. beautiful.fg_deselected .. "'></span>",
+                        text = "",
                         font = beautiful.iconfont_big,
                         align = "center",
                         valign = "center",
+                        forced_height = dpi(30),
                         widget = wibox.widget.textbox,
                         buttons = awful.util.table.join(
                             awful.button({}, 1, function()
@@ -97,6 +88,7 @@ local w = wibox.widget {
                         font = beautiful.iconfont_big,
                         align = "center",
                         valign = "center",
+                        forced_height = dpi(30),
                         widget = wibox.widget.textbox,
                         buttons = awful.util.table.join(
                             awful.button({}, 1, function()
@@ -107,16 +99,18 @@ local w = wibox.widget {
                     -- Next
                     {
                         id = "nextw",
-                        markup = "<b></b>",
+                        markup = "<span foreground='" .. beautiful.fg_deselected .. "'></span>",
+                        text = "",
                         font = beautiful.iconfont_big,
                         align = "center",
                         valign = "center",
+                        forced_height = dpi(30),
                         widget = wibox.widget.textbox,
                         buttons = awful.util.table.join(
                             awful.button({}, 1, function()
                                 awful.util.spawn("playerctl next")
                             end)
-                        )
+                        ),
                     },
                     layout = wibox.layout.flex.horizontal,
                 },
@@ -128,6 +122,34 @@ local w = wibox.widget {
             right = dpi(25),
             widget = wibox.container.margin,
         },
+        {
+            {
+                id               = "progressw",
+                max_value        = 1,
+                forced_height    = dpi(10),
+                color            = beautiful.accent,
+                background_color = beautiful.bg_normal,
+                visible          = false,
+                widget           = wibox.widget.progressbar,
+            },
+            fill_horizontal = true,
+            valign          = "bottom",
+            widget          = wibox.container.place,
+        },
+        {
+            {
+                id = "iconw",
+                markup = "<span foreground='" .. beautiful.accent .. "'></span>",
+                font = beautiful.iconfont_huge,
+                align = "center",
+                visible = false,
+                widget = wibox.widget.textbox,
+            },
+            fill_horizontal = true,
+            align           = "center",
+            valign          = "center",
+            widget          = wibox.container.place,
+        },
         layout = wibox.layout.stack,
     },
     forced_height = dpi(320),
@@ -136,13 +158,16 @@ local w = wibox.widget {
     widget = wibox.container.background,
 
     set_art = function(self, link)
-        awful.spawn.easy_async("curl -o /tmp/spotify.png " .. link,
+        awful.spawn.easy_async("curl -o " .. beautiful.spotify_temp .. "/spotify.png " .. link,
             function(_, _, _, _)
                 awful.spawn.easy_async(
-                    "convert /tmp/spotify.png -alpha set -channel A -evaluate set 20% /tmp/spotify_faded.png",
+                    "convert " ..
+                    beautiful.spotify_temp ..
+                    "/spotify.png -alpha set -channel A -evaluate set 20% " ..
+                    beautiful.spotify_temp .. "/spotify_faded.png",
                     function(_, _, _, _)
                         self:get_children_by_id("artw")[1]:set_image(gears.surface.load_uncached(
-                            "/tmp/spotify_faded.png"))
+                            "" .. beautiful.spotify_temp .. "/spotify_faded.png"))
                         self:get_children_by_id("artw")[1]:emit_signal("widget::redraw_needed")
                     end)
             end)
@@ -150,8 +175,8 @@ local w = wibox.widget {
 
     set_status = function(self, is_playing)
         self:get_children_by_id("ppw")[1]:set_markup(is_playing and
-        "<span foreground='" .. beautiful.accent .. "'></span>" or
-        "<span foreground='" .. beautiful.accent .. "'></span>")
+            "<span foreground='" .. beautiful.accent .. "'></span>" or
+            "<span foreground='" .. beautiful.accent .. "'></span>")
         self:get_children_by_id("ppw")[1]:emit_signal("widget::redraw_needed")
     end,
 
@@ -171,55 +196,115 @@ local w = wibox.widget {
 -- Actions
 -- ===================================================================
 
-local update_art = function(widget, stdout, _, _, _)
-    if cur_art ~= stdout then
-        cur_art = stdout
-        widget:set_art(cur_art)
-    end
-end
+local update = function(args, _, _, _)
+    -- Update status
+    w:set_status(args.status == 'Playing' and true or false)
 
-local update_status = function(widget, stdout, _, _, _)
-    local status = string.gsub(stdout, "\n", "")
-    widget:set_status(status == "Playing" and true or false)
-end
-
-local update_widget_text = function(widget, stdout, _, _, _)
-    if string.find(stdout, "Error: Spotify is not running.") ~= nil then
-        running = false
-        widget:get_children_by_id("artw")[1]:set_image(beautiful.icon_spotify)
-        widget:set_text("Click to open", "Spotify not running")
+    -- Update running
+    if args.status ~= "Playing" and args.status ~= "Paused" then
+        w:get_children_by_id("artw")[1]:set_image(beautiful.icon_spotify)
+        w:set_text("Click to open", "Spotify not running")
         return
     end
 
-    running = true
+    -- Update cover art
+    if cur_art ~= args.art then
+        cur_art = args.art
+        w:set_art(cur_art)
+    end
 
-    local escaped = string.gsub(stdout, "&", "&amp;")
-    local album, _, artist, title =
-        string.match(escaped, "Album%s*(.*)\nAlbumArtist%s*(.*)\nArtist%s*(.*)\nTitle%s*(.*)\n")
+    -- Update text
+    if args.artist ~= nil and args.title ~= nil and args.album ~= nil then
+        cur_artist = args.artist
+        cur_title = args.title
+        cur_album = args.album
 
-    if album ~= nil and title ~= nil and artist ~= nil then
-        widget:set_text(title, artist)
-        widget:set_visible(true)
+        w:set_text(cur_title, cur_artist)
+        w:set_visible(true)
+    end
+
+    -- Update progress
+    local pos = 0
+    if args.position ~= nil and args.length ~= nil and args.volume ~= nil then
+        if vol_timer ~= nil then
+            pos = args.volume
+        else
+            pos = args.position / (args.length / 1000 / 1000)
+        end
+    end
+    w:get_children_by_id("progressw")[1]:set_value(tonumber(pos))
+end
+
+local change_volume = function(value)
+    awful.spawn.with_shell("playerctl -p spotify volume " .. value)
+
+    w:get_children_by_id("iconw")[1]:set_visible(true)
+
+    if vol_timer ~= nil then
+        vol_timer:again()
+    else
+        vol_timer = gears.timer {
+            timeout = 1,
+            autostart = true,
+            callback = function()
+                w:get_children_by_id("iconw")[1]:set_visible(false)
+                vol_timer:stop()
+                vol_timer = nil
+            end
+        }
+    end
+end
+
+local hide_progressbar = function()
+    if prog_timer ~= nil then
+        prog_timer:again()
+    else
+        prog_timer = gears.timer {
+            timeout = 1,
+            autostart = true,
+            callback = function()
+                w:get_children_by_id("progressw")[1]:set_visible(false)
+                prog_timer:stop()
+                prog_timer = nil
+            end
+        }
     end
 end
 
 -- ===================================================================
--- Signal
+-- Signals
 -- ===================================================================
 
-awesome.connect_signal("evil::spotify_art", function(args)
-    update_art(w, args.art)
-    collectgarbage("collect")
+w:connect_signal("mouse::enter", function()
+    w:get_children_by_id("progressw")[1]:set_visible(true)
+end)
+w:connect_signal("mouse::leave", function()
+    hide_progressbar()
 end)
 
-awesome.connect_signal("evil::spotify_status", function(args)
-    update_status(w, args.status)
-    collectgarbage("collect")
+w:get_children_by_id("prevw")[1]:connect_signal("mouse::enter", function()
+    w:get_children_by_id("prevw")[1]:set_markup("<span foreground='" .. beautiful.fg_normal .. "'>" .. w:get_children_by_id("prevw")[1]:get_text() .."</span>")
+end)
+w:get_children_by_id("prevw")[1]:connect_signal("mouse::leave", function()
+    w:get_children_by_id("prevw")[1]:set_markup("<span foreground='" .. beautiful.fg_deselected .. "'>" .. w:get_children_by_id("prevw")[1]:get_text() .."</span>")
 end)
 
-awesome.connect_signal("evil::spotify_song", function(args)
-    update_widget_text(w, args.song)
-    collectgarbage("collect")
+w:get_children_by_id("ppw")[1]:connect_signal("mouse::enter", function()
+    w:get_children_by_id("ppw")[1]:set_font(beautiful.iconfont_bigger)
+end)
+w:get_children_by_id("ppw")[1]:connect_signal("mouse::leave", function()
+    w:get_children_by_id("ppw")[1]:set_font(beautiful.iconfont_big)
+end)
+
+w:get_children_by_id("nextw")[1]:connect_signal("mouse::enter", function()
+    w:get_children_by_id("nextw")[1]:set_markup("<span foreground='" .. beautiful.fg_normal .. "'>" .. w:get_children_by_id("nextw")[1]:get_text() .."</span>")
+end)
+w:get_children_by_id("nextw")[1]:connect_signal("mouse::leave", function()
+    w:get_children_by_id("nextw")[1]:set_markup("<span foreground='" .. beautiful.fg_deselected .. "'>" .. w:get_children_by_id("nextw")[1]:get_text() .."</span>")
+end)
+
+awesome.connect_signal("evil::spotify", function(args)
+    update(args)
 end)
 
 --- Adds mouse controls to the widget:
@@ -229,13 +314,11 @@ end)
 --  - scroll down - volume down
 w:connect_signal("button::press", function(_, _, _, button)
     if (button == 3) then
-        awful.spawn("sp play", false) -- right click
+        awful.spawn("playerctl -p spotify play-pause", false) -- right click
     elseif (button == 4) then
-        awful.spawn.with_shell(
-            "pactl set-sink-input-volume $(pactl list sink-inputs | grep \"Spotify\" -B 18 | grep \"Sink Input\" | awk '{print $3}' | tr -d '#') +2%") -- scroll up
+        change_volume("0.01+")                                -- scroll up
     elseif (button == 5) then
-        awful.spawn.with_shell(
-            "pactl set-sink-input-volume $(pactl list sink-inputs | grep \"Spotify\" -B 18 | grep \"Sink Input\" | awk '{print $3}' | tr -d '#') -2%") -- scroll down
+        change_volume("0.01-")                                -- scroll down
     end
 end)
 

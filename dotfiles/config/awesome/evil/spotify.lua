@@ -20,37 +20,45 @@ local dpi = require('beautiful').xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local sp_bin = 'sp'
-local GET_SPOTIFY_ART = sp_bin .. ' art'
-local GET_SPOTIFY_STATUS_CMD = sp_bin .. ' status'
-local GET_CURRENT_SONG_CMD = sp_bin .. ' current'
+local script_metadata = "playerctl -p spotify metadata"
+local script_status = "playerctl -p spotify status"
+local script_position = "playerctl -p spotify position"
+local script_volume = "playerctl -p spotify volume"
 
-local interval = 1
+local interval = 0.1
 
 -- ===================================================================
 -- Daemon
 -- ===================================================================
 
-awful.widget.watch(GET_SPOTIFY_ART, interval, function(_, stdout)
-    local art = stdout
+awful.widget.watch(script_status, interval, function(_, stat)
+    local status = stat:gsub("%s+", "")
+    awful.spawn.easy_async_with_shell(script_position, function(pos)
+        local position = pos:gsub("%s+", "")
+        awful.spawn.easy_async_with_shell(script_volume, function(vol)
+            local volume = vol:gsub("%s+", "")
+            awful.spawn.easy_async_with_shell(script_metadata, function(data)
+                local metadata = {}
 
-    awesome.emit_signal("evil::spotify_art", {
-        art = art or "",
-    })
-end)
+                for line in data:gmatch("[^\r\n]+") do
+                    local key, value = line:match("^%s*spotify%s+(%S+)%s+(.+)$")
+                    key = key:gsub("^.-%:", "")
+                    if key and value then
+                        metadata[key:lower()] = value
+                    end
+                end
 
-awful.widget.watch(GET_SPOTIFY_STATUS_CMD, interval, function(_, stdout)
-    local status = stdout
-
-    awesome.emit_signal("evil::spotify_status", {
-        status = status or "",
-    })
-end)
-
-awful.widget.watch(GET_CURRENT_SONG_CMD, interval, function(_, stdout)
-    local song = stdout
-
-    awesome.emit_signal("evil::spotify_song", {
-        song = song or "",
-    })
+                awesome.emit_signal("evil::spotify", {
+                    status = status or "",
+                    position = position or 0,
+                    volume = volume or 0,
+                    length = metadata.length or 0,
+                    album = metadata.album or "",
+                    artist = metadata.artist or "",
+                    title = metadata.title or "",
+                    art = metadata.arturl or "",
+                })
+            end)
+        end)
+    end)
 end)

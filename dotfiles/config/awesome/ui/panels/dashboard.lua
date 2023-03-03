@@ -40,17 +40,30 @@ local dashboard = wibox({
     ontop = true,
     type = "dock",
     screen = screen.primary,
-    bgimage = gears.surface.load(beautiful.config_path .. "wallpapers/blurred/wallpaper" .. 0 .. ".png"),
 })
 
 awful.placement.maximize(dashboard)
+
+-- ===================================================================
+-- Get Wallpapers
+-- ===================================================================
+
+local wp = {}
+
+helpers.get_wallpapers(true)(function(wallpapers)
+    for _, wallpaper in ipairs(wallpapers) do
+        table.insert(wp, gears.surface.load(wallpaper))
+    end
+    -- Set Default wallpaper
+    dashboard.bgimage = wp[1]
+end)
 
 -- ===================================================================
 -- Functions
 -- ===================================================================
 
 dashboard.wallpaper = function(id)
-    dashboard.bgimage = gears.surface.load(beautiful.config_path .. "wallpapers/blurred/wallpaper" .. id - 1 .. ".png")
+    dashboard.bgimage = wp[id]
 end
 
 dashboard.close = function()
@@ -145,7 +158,6 @@ dashboard:setup {
         nil,
         expand = "none",
         layout = wibox.layout.align.horizontal
-
     },
     nil,
     expand = "none",

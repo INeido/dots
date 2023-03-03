@@ -47,17 +47,7 @@ pacman -S --needed - < opt_requirements.txt
 # Some more Installation
 A few more things to watch out for.
 
-1. The Spotify widget needs the CLI:
-    ```bash
-    git clone https://gist.github.com/fa6258f3ff7b17747ee3.git
-    cd ./fa6258f3ff7b17747ee3 
-    chmod +x sp
-    # This widget will work by default if the binary is in the system PATH
-    sudo cp ./sp /usr/local/bin/
-    # Alternatively, you may save the binary anywhere and supply the path via this widget's sp_bin argument:
-    # cp ./sp ~/.config/awesome/scripts/
-    ```
-2. To have transparency in VS-Code you either need to force it with picom or install the [Glassit](https://open-vsx.org/vscode/item?itemName=s-nlf-fh.glassit) extension. I also recommend enabeling the custom titlebar in the settings.
+1. To have transparency in VS-Code you either need to force it with picom or install the [Glassit](https://open-vsx.org/vscode/item?itemName=s-nlf-fh.glassit) extension. I also recommend enabeling the custom titlebar in the settings.
 My settings look like this:
     ```json
     "glassit.alpha": 240,
@@ -65,20 +55,12 @@ My settings look like this:
     "workbench.statusBar.visible": false,
     ```
 
-2. You can install the ranger plugins with the following code:
-    ```bash
-    # Devicons
-    git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
-    # Archiver
-    git clone https://github.com/maximtrp/ranger-archives.git ~/.config/ranger/plugins/ranger-archives
-    ```
-
-3. Network Manager service has to be enabled:
+2. Network Manager service has to be enabled:
     ```bash
     sudo systemctl start NetworkManager.service
     ```
 
-4. Powermenu, the Network Manager Applet and the pacman update script has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
+3. Powermenu, the Network Manager Applet and the pacman update script has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
     ```bash
     # Changes to sudoers have to be done using visudo
     # Optional: Change your editor from vi
@@ -114,7 +96,7 @@ My settings look like this:
 | **Terminal** | Alacritty | `alacritty` <sup>[Arch](https://archlinux.org/packages/community/x86_64/alacritty/)</sup> | [GitHub](https://github.com/alacritty/alacritty), [Docs](https://github.com/alacritty/alacritty/wiki)
 | **Monitor** | HTOP | `htop` <sup>[Arch](https://archlinux.org/packages/extra/x86_64/htop/)</sup> | [GitHub](https://github.com/htop-dev/htop), [Docs](https://man.archlinux.org/man/htop.1.en)
 | **Browser** | Qutebrowser | `qutebrowser` <sup>[Arch](https://archlinux.org/packages/community/x86_64/qutebrowser/)</sup> | [Docs](https://www.qutebrowser.org/doc/help/index.html)
-| **File Manager** | Ranger | `ranger` <sup>[Arch](https://archlinux.org/packages/community/any/ranger/)</sup> | [GitHub](https://github.com/ranger/ranger), [Docs](https://ranger.github.io/documentation.html)
+| **File Manager** | Thunar | `thunar` <sup>[Arch]( https://archlinux.org/packages/extra/x86_64/thunar/)</sup> | [GitHub](https://github.com/xfce-mirror/thunar), [Docs](https://docs.xfce.org/xfce/thunar/start)
 | **Application Launcher** | Rofi | `rofi` <sup>[Arch](https://archlinux.org/packages/community/x86_64/rofi/)</sup> | [GitHub](https://github.com/davatorium/rofi), [Docs](https://github.com/davatorium/rofi/wiki)
 | **System Font** | Inter | `inter-font`<sup>[Arch](https://archlinux.org/packages/community/any/inter-font/)</sup> | [GitHub](https://github.com/rsms/inter)
 | **VS Code Font** | Fira Code | `ttf-fira-code`<sup>[Arch](https://archlinux.org/packages/community/any/ttf-fira-code/)</sup> | [GitHub](https://github.com/tonsky/FiraCode), [Docs](https://github.com/tonsky/FiraCode/wiki)

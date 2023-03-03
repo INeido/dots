@@ -10,36 +10,38 @@
 -- Initialization
 -- ===================================================================
 
-local theme_assets      = require("beautiful.theme_assets")
-local beautiful         = require("beautiful")
-local dpi               = beautiful.xresources.apply_dpi
+local theme_assets                 = require("beautiful.theme_assets")
+local beautiful                    = require("beautiful")
+local dpi                          = beautiful.xresources.apply_dpi
 
-local config_path       = "~/.config/awesome/"
-local gears             = require("gears")
-local gfs               = require("gears.filesystem")
+local config_path                  = "~/.config/awesome/"
+local gears                        = require("gears")
+local gfs                          = require("gears.filesystem")
 
-local theme             = {}
-theme.config_path       = "~/.config/awesome/"
+local theme                        = {}
+theme.config_path                  = "~/.config/awesome/"
 
 -- ===================================================================
 -- Settings
 -- ===================================================================
 
 -- Apps
-theme.terminal          = "alacritty"
-theme.browser           = "firefox"
-theme.fileexplorer      = "thunar"
-theme.editor            = os.getenv("EDITOR") or "nano"
+theme.terminal                     = "alacritty"
+theme.browser                      = "firefox"
+theme.fileexplorer                 = "thunar"
+theme.editor                       = os.getenv("EDITOR") or "nano"
 
 -- Switches
-theme.enable_titlebar   = false
+theme.enable_titlebar              = false
 
 -- Network Interface for the widget
-theme.network_interface = "enp42s0"
+theme.network_interface            = "enp42s0"
 
 -- Enter the drives you want to get data for the widget
-theme.drive_names       = { "/", "/Games" }
+theme.drive_names                  = { "/", "/Games" }
 
+-- Spotify art temp folder
+theme.spotify_temp                 = "/tmp"
 
 -- ===================================================================
 -- Icon Theme
@@ -64,6 +66,8 @@ theme.fontname                     = "Inter 9"
 theme.iconfont                     = "Font Awesome 6 Free Solid 11"
 theme.iconfont_medium              = "Font Awesome 6 Free Solid 18"
 theme.iconfont_big                 = "Font Awesome 6 Free Solid 22"
+theme.iconfont_bigger              = "Font Awesome 6 Free Solid 24"
+theme.iconfont_huge                = "Font Awesome 6 Free Solid 30"
 
 -- ===================================================================
 -- Sizes

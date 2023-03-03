@@ -23,7 +23,7 @@ local dpi = beautiful.xresources.apply_dpi
 
 local wp = {}
 
-helpers.get_wallpapers(function(wallpapers)
+helpers.get_wallpapers(false)(function(wallpapers)
     for _, wallpaper in ipairs(wallpapers) do
         table.insert(wp, gears.surface.load(wallpaper))
     end
