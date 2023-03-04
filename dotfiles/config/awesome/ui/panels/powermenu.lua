@@ -46,10 +46,15 @@ local powermenu = wibox({
 awful.placement.maximize(powermenu)
 
 -- ===================================================================
--- Get Wallpapers
+-- Variables
 -- ===================================================================
 
 local wp = {}
+powermenu.grabber = nil
+
+-- ===================================================================
+-- Get Wallpapers
+-- ===================================================================
 
 helpers.get_wallpapers(true)(function(wallpapers)
     for _, wallpaper in ipairs(wallpapers) do
@@ -68,18 +73,20 @@ powermenu.wallpaper = function(id)
 end
 
 powermenu.close = function()
-    awful.keygrabber.stop(powermenu_grabber)
+    awful.keygrabber.stop(powermenu.grabber)
     powermenu.visible = false
 end
 
 powermenu.open = function()
+    -- Close the Dashboard, if open
     awesome.emit_signal("db::close", nil)
-    powermenu_grabber = awful.keygrabber.run(function(_, key, event)
+    -- Open Powermenu
+    powermenu.visible = true
+    -- Start Keygrabber
+    powermenu.grabber = awful.keygrabber.run(function(_, key, event)
         if event == "release" then return end
-        -- Press Escape or q or F1 to hide it
-        if key == 'Escape' or key == 'q' or key == 'd' or key == 'F1' then
+        if key == "Escape" or key == "q" or key == "F1" then
             powermenu.close()
-            -- Cycle through buttons
         elseif key == "Left" then
             local focus = false
             for i, button in ipairs(buttons) do
@@ -121,16 +128,15 @@ powermenu.open = function()
         elseif key == "Return" or key == "space" then
             for _, button in ipairs(buttons) do
                 if helpers.button_isfocused(button) then
+                    require("naughty").notify({ title = "Achtung!", text = "1", timeout = 0 })
+
                     button:emit_signal("button::press")
+                    require("naughty").notify({ title = "Achtung!", text = "2", timeout = 0 })
                     break
                 end
             end
-        else
-            -- Pass all other key events to the system TO-DO: Doenst work
-            awful.key.execute(key, event)
         end
     end)
-    powermenu.visible = true
 end
 
 powermenu.toggle = function()

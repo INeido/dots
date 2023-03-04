@@ -13,6 +13,7 @@ acpi
 ttf-font-awesome
 picom
 highlight
-w3m
 imagemagick
 networkmanager
+maim
+xlcip

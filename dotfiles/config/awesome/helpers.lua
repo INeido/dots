@@ -154,8 +154,17 @@ helpers.box_pm_widget = function(widget, action, width, height)
     w:connect_signal("mouse::leave", function()
         widget:set_markup("<span foreground='" .. beautiful.fg_deselected .. "'>" .. widget:get_text() .. "</span>")
     end)
+
+    w:connect_signal("button::press", function()
+        require("naughty").notify({ title = "Achtung!", text = "4", timeout = 0 })
+
+        awful.spawn.with_shell(action)
+    end)
+
     w:buttons(gears.table.join(
         awful.button({}, 1, function()
+            require("naughty").notify({ title = "Achtung!", text = "5", timeout = 0 })
+
             awful.spawn.with_shell(action)
         end)
     ))

@@ -62,7 +62,6 @@ keys.clientbuttons = gears.table.join(
 -- ===================================================================
 
 keys.globalkeys = gears.table.join(
--- Multimedia
     awful.key(
         {},
         "XF86AudioPlay",
@@ -93,8 +92,6 @@ keys.globalkeys = gears.table.join(
             description = "Play Previous Track",
             group = "Multimedia"
         }),
-
-    -- Custom manipulation
     awful.key(
         { modkey },
         "space",
@@ -107,12 +104,23 @@ keys.globalkeys = gears.table.join(
         }),
     awful.key(
         { modkey },
-        "v",
+        "r",
         function()
-            awful.spawn("rofi -show window -theme ~/.config/rofi/launcher.rasi")
+            awful.spawn.easy_async_with_shell("file=$(mktemp -t screenshot_XXXXXX.png) && maim -suBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png")
         end,
         {
-            description = "Rofi window",
+            description = "Screenshot Selection",
+            group = "launcher"
+        }),
+
+    awful.key(
+        { modkey },
+        "t",
+        function()
+            awful.spawn.easy_async_with_shell("file=$(mktemp -t screenshot_XXXXXX.png) && maim -uBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png")
+        end,
+        {
+            description = "Screenshot Screen",
             group = "launcher"
         }),
     awful.key(
@@ -203,8 +211,6 @@ keys.globalkeys = gears.table.join(
             description = "Cycle Layouts",
             group = "client"
         }),
-
-    -- Standard program
     awful.key(
         { modkey, },
         "Return",

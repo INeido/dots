@@ -256,19 +256,15 @@ local change_volume = function(value)
 end
 
 local hide_progressbar = function()
-    if prog_timer ~= nil then
-        prog_timer:again()
-    else
-        prog_timer = gears.timer {
-            timeout = 1,
-            autostart = true,
-            callback = function()
-                w:get_children_by_id("progressw")[1]:set_visible(false)
-                prog_timer:stop()
-                prog_timer = nil
-            end
-        }
-    end
+    prog_timer = gears.timer {
+        timeout = 1,
+        autostart = true,
+        callback = function()
+            w:get_children_by_id("progressw")[1]:set_visible(false)
+            prog_timer:stop()
+            prog_timer = nil
+        end
+    }
 end
 
 -- ===================================================================
@@ -276,6 +272,9 @@ end
 -- ===================================================================
 
 w:connect_signal("mouse::enter", function()
+    if prog_timer ~= nil then
+        prog_timer:again()
+    end
     w:get_children_by_id("progressw")[1]:set_visible(true)
 end)
 w:connect_signal("mouse::leave", function()
@@ -283,10 +282,12 @@ w:connect_signal("mouse::leave", function()
 end)
 
 w:get_children_by_id("prevw")[1]:connect_signal("mouse::enter", function()
-    w:get_children_by_id("prevw")[1]:set_markup("<span foreground='" .. beautiful.fg_normal .. "'>" .. w:get_children_by_id("prevw")[1]:get_text() .."</span>")
+    w:get_children_by_id("prevw")[1]:set_markup("<span foreground='" ..
+    beautiful.fg_normal .. "'>" .. w:get_children_by_id("prevw")[1]:get_text() .. "</span>")
 end)
 w:get_children_by_id("prevw")[1]:connect_signal("mouse::leave", function()
-    w:get_children_by_id("prevw")[1]:set_markup("<span foreground='" .. beautiful.fg_deselected .. "'>" .. w:get_children_by_id("prevw")[1]:get_text() .."</span>")
+    w:get_children_by_id("prevw")[1]:set_markup("<span foreground='" ..
+    beautiful.fg_deselected .. "'>" .. w:get_children_by_id("prevw")[1]:get_text() .. "</span>")
 end)
 
 w:get_children_by_id("ppw")[1]:connect_signal("mouse::enter", function()
@@ -297,10 +298,12 @@ w:get_children_by_id("ppw")[1]:connect_signal("mouse::leave", function()
 end)
 
 w:get_children_by_id("nextw")[1]:connect_signal("mouse::enter", function()
-    w:get_children_by_id("nextw")[1]:set_markup("<span foreground='" .. beautiful.fg_normal .. "'>" .. w:get_children_by_id("nextw")[1]:get_text() .."</span>")
+    w:get_children_by_id("nextw")[1]:set_markup("<span foreground='" ..
+    beautiful.fg_normal .. "'>" .. w:get_children_by_id("nextw")[1]:get_text() .. "</span>")
 end)
 w:get_children_by_id("nextw")[1]:connect_signal("mouse::leave", function()
-    w:get_children_by_id("nextw")[1]:set_markup("<span foreground='" .. beautiful.fg_deselected .. "'>" .. w:get_children_by_id("nextw")[1]:get_text() .."</span>")
+    w:get_children_by_id("nextw")[1]:set_markup("<span foreground='" ..
+    beautiful.fg_deselected .. "'>" .. w:get_children_by_id("nextw")[1]:get_text() .. "</span>")
 end)
 
 awesome.connect_signal("evil::spotify", function(args)

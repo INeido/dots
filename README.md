@@ -20,6 +20,8 @@ Requires Arch Linux and AwesomeWM.
 ![](https://github.com/INeido/dots/blob/main/samples/sample3.png?raw=true)
 
 ![](https://github.com/INeido/dots/blob/main/samples/sample0.png?raw=true)
+
+<image align="right" width="450px" src="https://github.com/INeido/dots/blob/main/samples/sample0.png?raw=true"/>
     
 
 # Components

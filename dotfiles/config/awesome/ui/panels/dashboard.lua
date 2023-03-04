@@ -45,10 +45,15 @@ local dashboard = wibox({
 awful.placement.maximize(dashboard)
 
 -- ===================================================================
--- Get Wallpapers
+-- Variables
 -- ===================================================================
 
 local wp = {}
+dashboard.grabber = nil
+
+-- ===================================================================
+-- Get Wallpapers
+-- ===================================================================
 
 helpers.get_wallpapers(true)(function(wallpapers)
     for _, wallpaper in ipairs(wallpapers) do
@@ -67,23 +72,22 @@ dashboard.wallpaper = function(id)
 end
 
 dashboard.close = function()
-    awful.keygrabber.stop(dashboard_grabber)
+    awful.keygrabber.stop(dashboard.grabber)
     dashboard.visible = false
 end
 
 dashboard.open = function()
+    -- Close the Powermenu, if open
     awesome.emit_signal("pm::close", nil)
-    dashboard_grabber = awful.keygrabber.run(function(_, key, event)
+    -- Open Dashboard
+    dashboard.visible = true
+    -- Start Keygrabber
+    dashboard.grabber = awful.keygrabber.run(function(_, key, event)
         if event == "release" then return end
-        -- Press Escape or q or F1 to hide it
-        if key == 'Escape' or key == 'q' or key == 'd' or key == 'F1' then
+        if key == "Escape" or key == "q" or key == "F1" then
             dashboard.close()
-        else
-            -- Pass all other key events to the system TO-DO: Doenst work
-            awful.key.execute(key, event)
         end
     end)
-    dashboard.visible = true
 end
 
 dashboard.toggle = function()
