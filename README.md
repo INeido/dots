@@ -9,7 +9,6 @@
 
 </div>
 
-
 # Dotfiles
 Requires Arch Linux and AwesomeWM.
 
@@ -18,11 +17,6 @@ Requires Arch Linux and AwesomeWM.
 ![](https://github.com/INeido/dots/blob/main/samples/sample2.png?raw=true)
 
 ![](https://github.com/INeido/dots/blob/main/samples/sample3.png?raw=true)
-
-![](https://github.com/INeido/dots/blob/main/samples/sample0.png?raw=true)
-
-<image align="right" width="450px" src="https://github.com/INeido/dots/blob/main/samples/sample0.png?raw=true"/>
-    
 
 # Components
 | | Name | Package | Links |
@@ -39,7 +33,6 @@ Requires Arch Linux and AwesomeWM.
 | **System Font** | Inter | `inter-font`<sup>[Arch](https://archlinux.org/packages/community/any/inter-font/)</sup> | [GitHub](https://github.com/rsms/inter)
 | **VS Code Font** | Fira Code | `ttf-fira-code`<sup>[Arch](https://archlinux.org/packages/community/any/ttf-fira-code/)</sup> | [GitHub](https://github.com/tonsky/FiraCode), [Docs](https://github.com/tonsky/FiraCode/wiki)
 | **Icon Theme** | Papirus | `papirus-icon-theme`<sup>[Arch](https://archlinux.org/packages/community/any/inter-font/)</sup> | [GitHub](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme)
-
 
 # Installation
 First, clone the package.
