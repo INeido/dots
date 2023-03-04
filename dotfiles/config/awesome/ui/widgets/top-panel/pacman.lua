@@ -28,13 +28,12 @@ pacman.font = beautiful.widgetfont
 -- Icon
 -- ===================================================================
 
-local widget_icon = " "
 local icon = wibox.widget {
     font   = beautiful.iconfont,
-    markup = "<span foreground='" .. beautiful.accent .. "'>" .. widget_icon .. "</span>",
-    widget = wibox.widget.textbox,
+    markup = "<span foreground='" .. beautiful.accent .. "'> </span>",
     valign = "center",
-    align  = "center"
+    align  = "center",
+    widget = wibox.widget.textbox,
 }
 
 -- ===================================================================

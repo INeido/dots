@@ -40,7 +40,7 @@ end
 
 -- For Dashboard Widgets
 helpers.box_db_widget = function(widget, width, height)
-    return wibox.widget {
+    local w = wibox.widget {
         -- Add margins
         {
             -- Add background color
@@ -67,6 +67,8 @@ helpers.box_db_widget = function(widget, width, height)
         margins = beautiful.useless_gap,
         widget = wibox.container.margin,
     }
+
+    return w
 end
 
 -- For Top-Panel Widgets
@@ -113,6 +115,58 @@ helpers.box_tp_widget = function(widget, effects, margin)
     end
 
     return w
+end
+
+-- For Powermenu Widgets
+helpers.box_pm_widget = function(widget, action, width, height)
+    local w = wibox.widget {
+        -- Add margins
+        {
+            -- Add background color
+            {
+                -- Center widget horizontally
+                nil,
+                {
+                    -- Center widget vertically
+                    nil,
+                    -- The actual widget goes here
+                    widget,
+                    expand = "none",
+                    layout = wibox.layout.align.vertical,
+                },
+                expand = "none",
+                layout = wibox.layout.align.horizontal,
+            },
+            bg = beautiful.panel_item_normal,
+            forced_height = height,
+            forced_width = width,
+            shape = gears.shape.rect,
+            widget = wibox.container.background,
+        },
+        margins = beautiful.useless_gap,
+        widget = wibox.container.margin,
+    }
+
+    w:connect_signal("mouse::enter", function()
+        awesome.emit_signal("pm::focused")
+        widget:set_markup("<span foreground='" .. beautiful.fg_normal .. "'>" .. widget:get_text() .. "</span>")
+    end)
+    w:connect_signal("mouse::leave", function()
+        widget:set_markup("<span foreground='" .. beautiful.fg_deselected .. "'>" .. widget:get_text() .. "</span>")
+    end)
+    w:buttons(gears.table.join(
+        awful.button({}, 1, function()
+            awful.spawn.with_shell(action)
+        end)
+    ))
+
+    return w
+end
+
+helpers.button_isfocused = function(widget)
+    local markup = widget:get_children()[1]:get_children()[1]:get_children()[1]:get_children()[1]:get_markup()
+    local text = widget:get_children()[1]:get_children()[1]:get_children()[1]:get_children()[1]:get_text()
+    return markup == "<span foreground='" .. beautiful.fg_normal .. "'>" .. text .. "</span>"
 end
 
 -- Gets all the wallpapers

@@ -60,6 +60,7 @@ theme.widgetfont_big               = "Inter Bold 14"
 theme.dashboardfont_small          = "Inter Bold 16"
 theme.dashboardfont_thin           = "Inter 16"
 theme.dashboardfont_normal         = "Inter Bold 20"
+theme.dashboardfont_big            = "Inter Bold 25"
 theme.dashboardfont_huge           = "Inter Bold 30"
 theme.titlefont                    = "Inter 9"
 theme.fontname                     = "Inter 9"
@@ -68,6 +69,7 @@ theme.iconfont_medium              = "Font Awesome 6 Free Solid 18"
 theme.iconfont_big                 = "Font Awesome 6 Free Solid 22"
 theme.iconfont_bigger              = "Font Awesome 6 Free Solid 24"
 theme.iconfont_huge                = "Font Awesome 6 Free Solid 30"
+theme.iconfont_massive             = "Font Awesome 6 Free Solid 50"
 
 -- ===================================================================
 -- Sizes

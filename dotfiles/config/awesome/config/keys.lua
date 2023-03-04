@@ -119,10 +119,10 @@ keys.globalkeys = gears.table.join(
         { modkey },
         "p",
         function()
-            awful.spawn.with_shell("~/.config/rofi/powermenu.sh")
+            awesome.emit_signal("pm::toggle", nil)
         end,
         {
-            description = "Power Menu",
+            description = "Toggle Powermenu",
             group = "launcher"
         }),
 

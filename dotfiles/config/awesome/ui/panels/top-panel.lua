@@ -21,17 +21,15 @@ local dpi = beautiful.xresources.apply_dpi
 -- Load Widgets
 -- ===================================================================
 
-local starticon = require("ui.widgets.starticon")
-local layoutbox = require("ui.widgets.layoutbox")
-local systray = require("ui.widgets.systray")
-local taglist = require("ui.widgets.taglist")
-
-local tasklist = require("ui.widgets.tasklist")
-
-local spotify = require("ui.widgets.spotify")
-local pacman = require("ui.widgets.pacman")
-local date = require("ui.widgets.date")
-local clock = require("ui.widgets.clock")
+local starticon = require("ui.widgets.top-panel.starticon")
+local layoutbox = require("ui.widgets.top-panel.layoutbox")
+local systray = require("ui.widgets.top-panel.systray")
+local taglist = require("ui.widgets.top-panel.taglist")
+local tasklist = require("ui.widgets.top-panel.tasklist")
+local spotify = require("ui.widgets.top-panel.spotify")
+local pacman = require("ui.widgets.top-panel.pacman")
+local date = require("ui.widgets.top-panel.date")
+local clock = require("ui.widgets.top-panel.clock")
 
 -- ===================================================================
 -- Wibox

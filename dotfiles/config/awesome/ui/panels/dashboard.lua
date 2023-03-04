@@ -22,14 +22,14 @@ local dpi = beautiful.xresources.apply_dpi
 -- Load Widgets
 -- ===================================================================
 
-local spotify_db = require("ui.widgets.spotify_db")
-local clock_db = require("ui.widgets.clock_db")
-local calendar_db = require("ui.widgets.calendar_db")
-local network_db = require("ui.widgets.network_db")
-local gpu_db = require("ui.widgets.gpu_db")
-local cpu_db = require("ui.widgets.cpu_db")
-local uptime_db = require("ui.widgets.uptime_db")
-local storage_db = require("ui.widgets.storage_db")
+local spotify = require("ui.widgets.dashboard.spotify")
+local clock = require("ui.widgets.dashboard.clock")
+local calendar = require("ui.widgets.dashboard.calendar")
+local network = require("ui.widgets.dashboard.network")
+local gpu = require("ui.widgets.dashboard.gpu")
+local cpu = require("ui.widgets.dashboard.cpu")
+local uptime = require("ui.widgets.dashboard.uptime")
+local storage = require("ui.widgets.dashboard.storage")
 
 -- ===================================================================
 -- Dashboard
@@ -72,6 +72,7 @@ dashboard.close = function()
 end
 
 dashboard.open = function()
+    awesome.emit_signal("pm::close", nil)
     dashboard_grabber = awful.keygrabber.run(function(_, key, event)
         if event == "release" then return end
         -- Press Escape or q or F1 to hide it
@@ -100,7 +101,7 @@ awesome.connect_signal("db::close", dashboard.close)
 awesome.connect_signal("db::open", dashboard.open)
 dashboard:connect_signal("property::visible", function()
     if dashboard.visible then
-        calendar_db.date = os.date('*t')
+        calendar.date = os.date('*t')
     end
 end)
 
@@ -128,10 +129,9 @@ dashboard:setup {
             -- Column container
             {
                 -- Column 1
-                helpers.box_db_widget(spotify_db, dpi(300), dpi(300)),
+                helpers.box_db_widget(spotify, dpi(300), dpi(300)),
                 {
-                    helpers.box_db_widget(storage_db, dpi(300), dpi(175)),
-                    --helpers.box_db_widget(cpu_db, dpi(160), dpi(410)),
+                    helpers.box_db_widget(storage, dpi(300), dpi(175)),
                     layout = wibox.layout.fixed.horizontal
                 },
                 layout = wibox.layout.fixed.vertical
@@ -139,18 +139,18 @@ dashboard:setup {
             {
                 -- Column 2
                 {
-                    helpers.box_db_widget(gpu_db, dpi(160), dpi(410)),
-                    helpers.box_db_widget(cpu_db, dpi(160), dpi(410)),
+                    helpers.box_db_widget(gpu, dpi(160), dpi(410)),
+                    helpers.box_db_widget(cpu, dpi(160), dpi(410)),
                     layout = wibox.layout.fixed.horizontal
                 },
-                helpers.box_db_widget(network_db, dpi(320), dpi(65)),
+                helpers.box_db_widget(network, dpi(320), dpi(65)),
                 layout = wibox.layout.fixed.vertical,
             },
             {
                 -- Column 3
-                helpers.box_db_widget(clock_db, dpi(300), dpi(80)),
-                helpers.box_db_widget(calendar_db, dpi(300), dpi(335)),
-                helpers.box_db_widget(uptime_db, dpi(300), dpi(50)),
+                helpers.box_db_widget(clock, dpi(300), dpi(80)),
+                helpers.box_db_widget(calendar, dpi(300), dpi(335)),
+                helpers.box_db_widget(uptime, dpi(300), dpi(50)),
                 layout = wibox.layout.fixed.vertical
             },
             layout = wibox.layout.fixed.horizontal
