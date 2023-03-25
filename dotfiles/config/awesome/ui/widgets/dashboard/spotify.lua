@@ -21,10 +21,10 @@ local dpi = beautiful.xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local cur_artist = ''
-local cur_title = ''
-local cur_album = ''
-local cur_art = ''
+local cur_artist = ""
+local cur_title = ""
+local cur_album = ""
+local cur_art = ""
 local vol_timer = nil
 local prog_timer = nil
 
@@ -43,17 +43,17 @@ local w = wibox.widget {
         },
         -- Vertical Stack of Widgets
         {
-            -- Add Margins
+            -- Margins
             {
                 {
-                    -- Titel
+                    -- Titel Text
                     {
                         id = "titlew",
                         font = beautiful.dashboardfont_normal,
                         align = "center",
                         widget = wibox.widget.textbox,
                     },
-                    -- Artist
+                    -- Artist Text
                     {
                         id = "artistw",
                         font = beautiful.dashboardfont_thin,
@@ -66,7 +66,7 @@ local w = wibox.widget {
                 nil,
                 -- Controls
                 {
-                    -- Previous
+                    -- Previous Button
                     {
                         id = "prevw",
                         markup = "<span foreground='" .. beautiful.fg_deselected .. "'></span>",
@@ -82,7 +82,7 @@ local w = wibox.widget {
                             end)
                         )
                     },
-                    -- Play/Pause
+                    -- Play/Pause Button
                     {
                         id = "ppw",
                         font = beautiful.iconfont_big,
@@ -96,7 +96,7 @@ local w = wibox.widget {
                             end)
                         )
                     },
-                    -- Next
+                    -- Next Button
                     {
                         id = "nextw",
                         markup = "<span foreground='" .. beautiful.fg_deselected .. "'></span>",
@@ -123,6 +123,7 @@ local w = wibox.widget {
             widget = wibox.container.margin,
         },
         {
+            -- Progressbar
             {
                 id               = "progressw",
                 max_value        = 1,
@@ -208,7 +209,7 @@ local update = function(args, _, _, _)
     end
 
     -- Update cover art
-    if cur_art ~= args.art then
+    if cur_art ~= args.art and args.art ~= nil then
         cur_art = args.art
         w:set_art(cur_art)
     end
@@ -229,7 +230,9 @@ local update = function(args, _, _, _)
         if vol_timer ~= nil then
             pos = args.volume
         else
-            pos = args.position / (args.length / 1000 / 1000)
+            local success, result = pcall(function()
+                pos = args.position / (args.length / 1000 / 1000)
+            end)
         end
     end
     w:get_children_by_id("progressw")[1]:set_value(tonumber(pos))
@@ -272,13 +275,15 @@ end
 -- ===================================================================
 
 w:connect_signal("mouse::enter", function()
-    if prog_timer ~= nil then
-        prog_timer:again()
-    end
+    -- TO-DO: Currently disabled because of bugs
+    --if prog_timer ~= nil then
+    --    prog_timer:again()
+    --end
     w:get_children_by_id("progressw")[1]:set_visible(true)
 end)
 w:connect_signal("mouse::leave", function()
-    hide_progressbar()
+    --hide_progressbar()
+    w:get_children_by_id("progressw")[1]:set_visible(false)
 end)
 
 w:get_children_by_id("prevw")[1]:connect_signal("mouse::enter", function()

@@ -10,27 +10,23 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
-local wibox = require("wibox")
-local helpers = require("helpers")
+local awful     = require("awful")
+local gears     = require("gears")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
-
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Load Widgets
 -- ===================================================================
 
-local goodbyer = require("ui.widgets.powermenu.goodbyer")
-local buttons  = {
+local goodbyer  = require("ui.widgets.powermenu.goodbyer")
+local buttons   = {
     require("ui.widgets.powermenu.shutdown"),
     require("ui.widgets.powermenu.reboot"),
     require("ui.widgets.powermenu.logout"),
 }
-
--- Set the first button as active by default
-buttons[1]:emit_signal("mouse::enter")
 
 -- ===================================================================
 -- Powermenu
@@ -68,6 +64,12 @@ end)
 -- Functions
 -- ===================================================================
 
+local unfocus = function()
+    for i, button in ipairs(buttons) do
+        button:emit_signal("mouse::leave")
+    end
+end
+
 powermenu.wallpaper = function(id)
     powermenu.bgimage = wp[id]
 end
@@ -78,6 +80,10 @@ powermenu.close = function()
 end
 
 powermenu.open = function()
+    -- Unfocus all buttons. For some reason they are all focused sometimes
+    unfocus()
+    -- Set the first button as active by default
+    buttons[1]:emit_signal("mouse::enter")
     -- Close the Dashboard, if open
     awesome.emit_signal("db::close", nil)
     -- Open Powermenu
@@ -128,10 +134,7 @@ powermenu.open = function()
         elseif key == "Return" or key == "space" then
             for _, button in ipairs(buttons) do
                 if helpers.button_isfocused(button) then
-                    require("naughty").notify({ title = "Achtung!", text = "1", timeout = 0 })
-
                     button:emit_signal("button::press")
-                    require("naughty").notify({ title = "Achtung!", text = "2", timeout = 0 })
                     break
                 end
             end
@@ -144,12 +147,6 @@ powermenu.toggle = function()
         powermenu.close()
     else
         powermenu.open()
-    end
-end
-
-local unfocus = function()
-    for i, button in ipairs(buttons) do
-        button:emit_signal("mouse::leave")
     end
 end
 

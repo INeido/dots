@@ -43,6 +43,7 @@ end
 
 local create_widget = function(name)
     local w = wibox.widget {
+        -- Header Text
         {
             text   = name,
             align  = "center",
@@ -51,6 +52,7 @@ local create_widget = function(name)
         },
         {
             {
+                -- Chart
                 id = "chart",
                 max_value = 100,
                 value = 100,
@@ -64,6 +66,7 @@ local create_widget = function(name)
                 widget = wibox.container.arcchart
             },
             {
+                -- Text in the center
                 id     = "val",
                 align  = "center",
                 font   = beautiful.widgetfont,
@@ -72,6 +75,7 @@ local create_widget = function(name)
             layout = wibox.layout.stack,
         },
         {
+            -- Text underneath
             id     = "text",
             align  = "center",
             font   = beautiful.widgetfont,
@@ -112,8 +116,6 @@ awesome.connect_signal("evil::storage", function(args)
         drives[i]:get_children_by_id("val")[1]:set_text(args.drives[i].usage .. "%")
         drives[i]:get_children_by_id("text")[1]:set_text(format_size(args.drives[i].free) .. " free")
     end
-
-    collectgarbage('collect')
 end)
 
 return w

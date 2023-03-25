@@ -14,14 +14,13 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local watch = require("awful.widget.watch")
-local dpi = require('beautiful').xresources.apply_dpi
+local dpi = require("beautiful").xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local script =
-"nvidia-smi --query-gpu=clocks.sm,utilization.gpu,temperature.gpu,memory.total,memory.used --format=csv,noheader,nounits"
+local script = "nvidia-smi --query-gpu=clocks.sm,utilization.gpu,temperature.gpu,memory.total,memory.used --format=csv,noheader,nounits"
 local interval = 2
 
 -- ===================================================================

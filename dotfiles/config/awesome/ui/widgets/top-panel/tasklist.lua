@@ -45,15 +45,21 @@ local buttons = gears.table.join(
 -- Taglist
 -- ===================================================================
 
+-- Create the Widget
 local w = awful.widget.tasklist {
     screen          = "primary",
     filter          = awful.widget.tasklist.filter.currenttags,
     buttons         = buttons,
     widget_template = {
+        -- Selected Indicator
         {
+            -- Margin for Indicator
             {
+                -- Container Background
                 {
+                    -- Margin for Icon
                     {
+                        -- Icon
                         id     = "clienticon",
                         widget = awful.widget.clienticon,
                     },

@@ -23,6 +23,7 @@ local dpi = beautiful.xresources.apply_dpi
 
 local w = wibox.widget {
     {
+        -- Text
         id     = "text",
         align  = "center",
         font   = beautiful.dashboardfont_small,
@@ -37,8 +38,6 @@ local w = wibox.widget {
 -- ===================================================================
 
 awesome.connect_signal("evil::uptime", function(args)
-    --require("naughty").notify({ title = "Achtung!", text = args.time, timeout = 0 })
-
     local minutes = math.floor(args.time / 60)
     local hours = math.floor(minutes / 60)
     local days = math.floor(hours / 24)
@@ -54,8 +53,6 @@ awesome.connect_signal("evil::uptime", function(args)
     end
 
     w:get_children_by_id("text")[1]:set_markup(text)
-
-    collectgarbage('collect')
 end)
 
 return w

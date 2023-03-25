@@ -25,6 +25,7 @@ local create_widget = function(icon, min, max)
     local w = wibox.widget {
         {
             {
+                -- Chart
                 id = "chart",
                 min_value = min,
                 max_value = max,
@@ -39,6 +40,7 @@ local create_widget = function(icon, min, max)
                 widget = wibox.container.arcchart
             },
             {
+                -- Icon in the center
                 markup = "<span foreground='" .. beautiful.accent .. "'>" .. icon .. "</span>",
                 valign = "center",
                 align  = "center",
@@ -48,6 +50,7 @@ local create_widget = function(icon, min, max)
             layout = wibox.layout.stack,
         },
         {
+            -- Text underneath
             id     = "text",
             align  = "center",
             font   = beautiful.widgetfont,
@@ -68,6 +71,7 @@ local ram = create_widget("", 0, 100)
 local temp = create_widget("", 30, 100)
 
 local w = wibox.widget {
+    -- Header Text
     {
         text   = "CPU",
         align  = "center",
@@ -89,24 +93,18 @@ awesome.connect_signal("evil::cpu", function(args)
     -- Util
     util:get_children_by_id("chart")[1]:set_value(args.util)
     util:get_children_by_id("text")[1]:set_text(args.util .. "%")
-
-    collectgarbage('collect')
 end)
 
 awesome.connect_signal("evil::ram", function(args)
     -- RAM
     ram:get_children_by_id("chart")[1]:set_value(args.usage)
     ram:get_children_by_id("text")[1]:set_text(string.format("%.1f", args.used / 1024) .. " GB")
-
-    collectgarbage('collect')
 end)
 
 awesome.connect_signal("evil::temp", function(args)
     -- Temp
     temp:get_children_by_id("chart")[1]:set_value(args.cpu)
     temp:get_children_by_id("text")[1]:set_text(args.cpu .. "°C")
-
-    collectgarbage('collect')
 end)
 
 return w

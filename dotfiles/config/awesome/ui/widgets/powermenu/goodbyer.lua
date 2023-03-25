@@ -19,15 +19,25 @@ local helpers = require("helpers")
 local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
+-- Variables
+-- ===================================================================
+
+local text = "See ya later"
+
+-- ===================================================================
 -- Widget
 -- ===================================================================
 
 -- Create the widget
 local w = wibox.widget {
+    -- Outer Margin
     {
+        -- Background
         {
+            -- Margins
             {
-                markup = "<span foreground='" .. beautiful.fg_focus .. "'>See ya later</span>",
+                -- Text
+                markup = "<span foreground='" .. beautiful.fg_focus .. "'>" .. text .. "</span>",
                 font   = beautiful.dashboardfont_big,
                 valign = "center",
                 align  = "center",

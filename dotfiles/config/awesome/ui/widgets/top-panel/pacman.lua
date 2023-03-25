@@ -89,8 +89,6 @@ awesome.connect_signal("evil::pacman", function(args)
     end
 
     tooltip.text = text
-
-    collectgarbage('collect')
 end)
 
 -- ===================================================================

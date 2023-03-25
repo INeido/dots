@@ -14,7 +14,7 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local watch = require("awful.widget.watch")
-local dpi = require('beautiful').xresources.apply_dpi
+local dpi = require("beautiful").xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
@@ -31,8 +31,8 @@ local interval = 2
 awful.widget.watch(script, interval, function(_, stdout)
     local down, up = stdout:match("(%d+)%s+(%d+)")
 
-    down = tonumber(down) * 8 / 1024 / 1024
-    up = tonumber(up) * 8 / 1024 / 1024
+    down = tonumber(down)
+    up = tonumber(up)
 
     awesome.emit_signal("evil::network", {
         up = up or 0,

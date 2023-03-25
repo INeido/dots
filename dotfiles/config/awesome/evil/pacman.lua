@@ -14,7 +14,7 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local watch = require("awful.widget.watch")
-local dpi = require('beautiful').xresources.apply_dpi
+local dpi = require("beautiful").xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
@@ -33,5 +33,4 @@ awful.widget.watch(script, interval, function(_, stdout)
     awesome.emit_signal("evil::pacman", {
         count = count,
     })
-
 end)

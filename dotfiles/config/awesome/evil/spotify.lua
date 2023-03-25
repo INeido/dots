@@ -14,7 +14,7 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local watch = require("awful.widget.watch")
-local dpi = require('beautiful').xresources.apply_dpi
+local dpi = require("beautiful").xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
@@ -49,14 +49,14 @@ awful.widget.watch(script_status, interval, function(_, stat)
                 end
 
                 awesome.emit_signal("evil::spotify", {
-                    status = status or "",
-                    position = position or 0,
-                    volume = volume or 0,
-                    length = metadata.length or 0,
-                    album = metadata.album or "",
-                    artist = metadata.artist or "",
-                    title = metadata.title or "",
-                    art = metadata.arturl or "",
+                    status = status or nil,
+                    position = position or nil,
+                    volume = volume or nil,
+                    length = metadata.length or nil,
+                    album = metadata.album or nil,
+                    artist = metadata.artist or nil,
+                    title = metadata.title or nil,
+                    art = metadata.arturl or nil,
                 })
             end)
         end)

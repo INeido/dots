@@ -105,7 +105,7 @@ awesome.connect_signal("db::close", dashboard.close)
 awesome.connect_signal("db::open", dashboard.open)
 dashboard:connect_signal("property::visible", function()
     if dashboard.visible then
-        calendar.date = os.date('*t')
+        calendar.date = os.date("*t")
     end
 end)
 

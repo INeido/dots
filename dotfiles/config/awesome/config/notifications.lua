@@ -10,9 +10,9 @@
 -- Initialization
 -- ===================================================================
 
-local naughty = require('naughty')
-local gears = require('gears')
-local beautiful = require('beautiful')
+local naughty = require("naughty")
+local gears = require("gears")
+local beautiful = require("beautiful")
 
 local dpi = beautiful.xresources.apply_dpi
 

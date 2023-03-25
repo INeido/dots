@@ -43,7 +43,7 @@ awful.rules.rules = {
   },
 
   -- Application rules
-  { rule = { class = "Dolphin" },
+  { rule = { class = "Thunar" },
     properties = { floating = true },
     callback = function(c)
       awful.placement.centered(c, nil)

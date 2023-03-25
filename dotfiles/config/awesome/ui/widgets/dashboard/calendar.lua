@@ -32,17 +32,17 @@ styles.normal   = {}
 styles.focus    = {
     fg_color = beautiful.accent,
     bg_color = transparent,
-    markup   = function(t) return '<b>' .. t .. '</b>' end,
+    markup   = function(t) return "<b>" .. t .. "</b>" end,
 }
 styles.header   = {
     fg_color = beautiful.fg_normal,
     bg_color = transparent,
-    markup   = function(t) return '<span font_desc="' .. beautiful.dashboardfont_normal .. '">' .. t .. '</span>' end,
+    markup   = function(t) return "<span font_desc='" .. beautiful.dashboardfont_normal .. "'>" .. t .. "</span>" end,
 }
 
 local function decorate_cell(widget, flag, _)
-    if flag == 'monthheader' and not styles.monthheader then
-        flag = 'header'
+    if flag == "monthheader" and not styles.monthheader then
+        flag = "header"
     end
 
     local props = styles[flag] or {}
@@ -71,7 +71,7 @@ end
 -- ===================================================================
 
 local w = wibox.widget {
-    date          = os.date('*t'),
+    date          = os.date("*t"),
     font          = beautiful.widgetfont,
     long_weekdays = false,
     spacing       = dpi(3),
@@ -83,19 +83,19 @@ local w = wibox.widget {
 w:buttons(gears.table.join(
 -- Left Click - Reset date to current date
     awful.button({}, 1, function()
-        w.date = os.date('*t')
+        w.date = os.date("*t")
     end),
     -- Scroll - Move to previous or next month
     awful.button({}, 4, function()
-        if w.date.month - 1 == os.date('*t').month then
-            w.date = os.date('*t')
+        if w.date.month - 1 == os.date("*t").month then
+            w.date = os.date("*t")
         else
             w.date = { month = w.date.month - 1, year = w.date.year }
         end
     end),
     awful.button({}, 5, function()
-        if w.date.month + 1 == os.date('*t').month then
-            w.date = os.date('*t')
+        if w.date.month + 1 == os.date("*t").month then
+            w.date = os.date("*t")
         else
             w.date = { month = w.date.month + 1, year = w.date.year }
         end

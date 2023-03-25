@@ -28,13 +28,12 @@ cpu.font = beautiful.widgetfont
 -- Icon
 -- ===================================================================
 
-local widget_icon = " "
 local icon = wibox.widget {
     font   = beautiful.iconfont,
-    markup = "<span foreground='" .. beautiful.accent .. "'>" .. widget_icon .. "</span>",
-    widget = wibox.widget.textbox,
+    markup = "<span foreground='" .. beautiful.accent .. "'> </span>",
     valign = "center",
-    align  = "center"
+    align  = "center",
+    widget = wibox.widget.textbox,
 }
 
 -- ===================================================================
@@ -43,12 +42,12 @@ local icon = wibox.widget {
 
 -- Create the widget
 local w = wibox.widget {
-    -- Add margins outside
+    -- Margins outside
     {
         icon,
-        -- Add Icon
+        -- Icon
         {
-            -- Add Widget
+            -- Widget
             cpu,
             fg = beautiful.text_bright,
             widget = wibox.container.background
@@ -91,7 +90,6 @@ awesome.connect_signal("evil::cpu", function(args)
     text = string.sub(text, 1, -2)
 
     tooltip.text = text
-    collectgarbage('collect')
 end)
 
 return w

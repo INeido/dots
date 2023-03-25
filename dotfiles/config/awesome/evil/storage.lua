@@ -14,7 +14,7 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local watch = require("awful.widget.watch")
-local dpi = require('beautiful').xresources.apply_dpi
+local dpi = require("beautiful").xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
@@ -44,8 +44,6 @@ awful.widget.watch(script, interval, function(_, stdout)
             })
         end
     end
-
-    --require("naughty").notify({ title = "Achtung!", text = script, timeout = 0 })
 
     awesome.emit_signal("evil::storage", {
         drives = drives or {},

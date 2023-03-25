@@ -25,6 +25,7 @@ local create_widget = function(icon, min, max)
     local w = wibox.widget {
         {
             {
+                -- Chart
                 id = "chart",
                 min_value = min,
                 max_value = max,
@@ -39,6 +40,7 @@ local create_widget = function(icon, min, max)
                 widget = wibox.container.arcchart
             },
             {
+                -- Icon in the center
                 markup = "<span foreground='" .. beautiful.accent .. "'>" .. icon .. "</span>",
                 valign = "center",
                 align  = "center",
@@ -48,6 +50,7 @@ local create_widget = function(icon, min, max)
             layout = wibox.layout.stack,
         },
         {
+            -- Text underneath
             id     = "text",
             align  = "center",
             font   = beautiful.widgetfont,
@@ -68,6 +71,7 @@ local ram = create_widget("", 0, 100)
 local temp = create_widget("", 25, 80)
 
 local w = wibox.widget {
+    -- Header Text
     {
         text   = "GPU",
         align  = "center",
@@ -97,8 +101,6 @@ awesome.connect_signal("evil::gpu", function(args)
     -- Temp
     temp:get_children_by_id("chart")[1]:set_value(args.temp)
     temp:get_children_by_id("text")[1]:set_text(args.temp .. "°C")
-
-    collectgarbage('collect')
 end)
 
 return w

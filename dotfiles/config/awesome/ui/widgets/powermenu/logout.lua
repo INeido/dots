@@ -1,9 +1,9 @@
 --      ██╗      ██████╗  ██████╗  ██████╗ ██╗   ██╗████████╗
 --      ██║     ██╔═══██╗██╔════╝ ██╔═══██╗██║   ██║╚══██╔══╝
---      ██║     ██║   ██║██║  ███╗██║   ██║██║   ██║   ██║   
---      ██║     ██║   ██║██║   ██║██║   ██║██║   ██║   ██║   
---      ███████╗╚██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝   ██║   
---      ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝    ╚═╝   
+--      ██║     ██║   ██║██║  ███╗██║   ██║██║   ██║   ██║
+--      ██║     ██║   ██║██║   ██║██║   ██║██║   ██║   ██║
+--      ███████╗╚██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝   ██║
+--      ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝    ╚═╝
 
 
 -- ===================================================================
@@ -23,12 +23,12 @@ local dpi = beautiful.xresources.apply_dpi
 
 local w = wibox.widget {
     id     = "button",
-    font   = beautiful.iconfont_massive,
     text   = "",
     markup = "<span foreground='" .. beautiful.fg_deselected .. "'></span>",
-    widget = wibox.widget.textbox,
     valign = "center",
-    align  = "center"
+    align  = "center",
+    font   = beautiful.iconfont_massive,
+    widget = wibox.widget.textbox,
 }
 
 -- Box the widget

@@ -28,13 +28,12 @@ ram.font = beautiful.widgetfont
 -- Icon
 -- ===================================================================
 
-local widget_icon = " "
 local icon = wibox.widget {
     font   = beautiful.iconfont,
-    markup = "<span foreground='" .. beautiful.accent .. "'>" .. widget_icon .. "</span>",
-    widget = wibox.widget.textbox,
+    markup = "<span foreground='" .. beautiful.accent .. "'> </span>",
     valign = "center",
-    align  = "center"
+    align  = "center",
+    widget = wibox.widget.textbox,
 }
 
 -- ===================================================================
@@ -82,7 +81,6 @@ local tooltip = awful.tooltip {
 awesome.connect_signal("evil::ram", function(args)
     ram.text = string.format("%.1f", args.used / 1024) .. "GB"
     tooltip.text = "Total: " .. args.total .. "MB\n" .. "Used: " .. args.used .. "MB\n" .. "Free: " .. args.free .. "MB"
-    collectgarbage('collect')
 end)
 
 return w
