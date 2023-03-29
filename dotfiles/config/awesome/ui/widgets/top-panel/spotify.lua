@@ -29,7 +29,7 @@ local dpi = beautiful.xresources.apply_dpi
 local function open_spotify()
     local clients = client.get()
     for _, c in pairs(clients) do
-        if c.name == "Spotify" then
+        if c.name == "Spotify" or c.name == "Spotify Premium" then
             c.minimized = not c.minimized
             c:raise()
             return
@@ -40,7 +40,7 @@ end
 local function min_spotify()
     local clients = client.get()
     for _, c in pairs(clients) do
-        if c.name == "Spotify" then
+        if c.name == "Spotify" or c.name == "Spotify Premium" then
             c.minimized = true
             c:raise()
             return
@@ -54,22 +54,23 @@ end
 
 local dim_opacity = 0.75
 
-local cur_artist = ""
-local cur_title = ""
-local cur_album = ""
+local cur_artist = nil
+local cur_title = nil
+local cur_album = nil
 local running = false
 
 -- ===================================================================
 -- Spotify
 -- ===================================================================
 
-local spotify = wibox.widget {
+local w = wibox.widget {
     -- Margins
     {
         {
             -- Title Text
             {
                 id = "titlew",
+                text = "Nothing playing",
                 font = beautiful.widgetfont,
                 widget = wibox.widget.textbox
             },
@@ -88,6 +89,7 @@ local spotify = wibox.widget {
         {
             -- Artist Text
             id = "artistw",
+            text = "wub wub",
             font = beautiful.widgetfont,
             widget = wibox.widget.textbox,
         },
@@ -135,6 +137,16 @@ local update = function(widget, args, _, _, _)
     end
     running = true
 
+
+    -- Catch podcast
+    if args.artist == nil and args.album ~= nil then
+        cur_artist = args.album -- Podcasts are whack. The artist is under the 'album' metadata
+        cur_title = args.title
+
+        widget:set_text(cur_title, cur_artist)
+        widget:set_visible(true)
+    end
+
     -- Update text
     if args.artist ~= nil and args.title ~= nil and args.album ~= nil then
         cur_artist = args.artist
@@ -152,8 +164,11 @@ end
 -- ===================================================================
 
 awesome.connect_signal("evil::spotify", function(args)
-    update(spotify, args)
+    update(w, args)
 end)
+
+-- Box the Widget
+local spotify = helpers.box_tp_widget(w, true, 5)
 
 --- Adds mouse controls to the widget:
 --  - left click - minimize/unminimize spotify
@@ -206,7 +221,4 @@ end
 -- Widget
 -- ===================================================================
 
--- Box the widget
-local w = helpers.box_tp_widget(spotify, true, 5)
-
-return w
+return spotify

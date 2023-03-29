@@ -33,10 +33,13 @@ local interval = 0.1
 
 awful.widget.watch(script_status, interval, function(_, stat)
     local status = stat:gsub("%s+", "")
+    if status == " " then status = nil end
     awful.spawn.easy_async_with_shell(script_position, function(pos)
         local position = pos:gsub("%s+", "")
+        if position == " " then position = nil end
         awful.spawn.easy_async_with_shell(script_volume, function(vol)
             local volume = vol:gsub("%s+", "")
+            if volume == " " then volume = nil end
             awful.spawn.easy_async_with_shell(script_metadata, function(data)
                 local metadata = {}
 
@@ -44,7 +47,7 @@ awful.widget.watch(script_status, interval, function(_, stat)
                     local key, value = line:match("^%s*spotify%s+(%S+)%s+(.+)$")
                     key = key:gsub("^.-%:", "")
                     if key and value then
-                        metadata[key:lower()] = value
+                        if value == " " then metadata[key:lower()] = nil  else metadata[key:lower()] = value end
                     end
                 end
 

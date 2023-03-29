@@ -49,6 +49,7 @@ local w = wibox.widget {
                     -- Titel Text
                     {
                         id = "titlew",
+                        text = "Nothing playing",
                         font = beautiful.dashboardfont_normal,
                         align = "center",
                         widget = wibox.widget.textbox,
@@ -56,6 +57,7 @@ local w = wibox.widget {
                     -- Artist Text
                     {
                         id = "artistw",
+                        text = "wub wub",
                         font = beautiful.dashboardfont_thin,
                         align = "center",
                         widget = wibox.widget.textbox,
@@ -212,6 +214,15 @@ local update = function(args, _, _, _)
     if cur_art ~= args.art and args.art ~= nil then
         cur_art = args.art
         w:set_art(cur_art)
+    end
+
+    -- Catch podcast
+    if args.artist == nil and args.album ~= nil then
+        cur_artist = args.album -- Podcasts are whack. The artist is under the 'album' metadata
+        cur_title = args.title
+
+        w:set_text(cur_title, cur_artist)
+        w:set_visible(true)
     end
 
     -- Update text
