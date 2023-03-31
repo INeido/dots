@@ -81,11 +81,14 @@ dashboard.open = function()
     awesome.emit_signal("pm::close", nil)
     -- Open Dashboard
     dashboard.visible = true
-    -- Start Keygrabber
+    -- Start Keygrabber TO-DO: Keygrabber is broken. It swallows every key and breaks the global keybinds.
     dashboard.grabber = awful.keygrabber.run(function(_, key, event)
         if event == "release" then return end
-        if key == "Escape" or key == "q" or key == "F1" then
+        if key == "Escape" or key == "q" or key == "F1" or key == "d" then
             dashboard.close()
+            return true
+        else
+            return false
         end
     end)
 end

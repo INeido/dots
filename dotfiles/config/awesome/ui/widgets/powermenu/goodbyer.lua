@@ -22,7 +22,7 @@ local dpi = beautiful.xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local text = "See ya later"
+local text = beautiful.goodbyer_text
 
 -- ===================================================================
 -- Widget

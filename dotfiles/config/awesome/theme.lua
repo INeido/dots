@@ -31,13 +31,20 @@ theme.browser                      = "firefox"
 theme.fileexplorer                 = "thunar"
 theme.editor                       = os.getenv("EDITOR") or "nano"
 
+-- Modkeys
+theme.modkey                       = "Mod4"
+theme.altkey                       = "Mod1"
+
+-- Goodbyer text
+theme.goodbyer_text                 = "See ya later"
+
 -- Switches
 theme.enable_titlebar              = false
 
 -- Network Interface for the widget
 theme.network_interface            = "enp42s0"
 
--- Enter the drives you want to get data for the widget
+-- Enter the drives you want to get data from for the widget
 theme.drive_names                  = { "/", "/Games" }
 
 -- Spotify art temp folder

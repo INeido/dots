@@ -217,7 +217,7 @@ local update = function(args, _, _, _)
     end
 
     -- Catch podcast
-    if args.artist == nil and args.album ~= nil then
+    if args.artist == nil and args.album ~= nil and args.title ~= nil then
         cur_artist = args.album -- Podcasts are whack. The artist is under the 'album' metadata
         cur_title = args.title
 
