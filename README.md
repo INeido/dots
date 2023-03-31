@@ -25,6 +25,7 @@
 
 </div>
 
+
 # Welcome
 
 Hello there, random internet person.
@@ -40,13 +41,12 @@ Please consider, that this rice is tailored for myself. I did try to make it as 
 
 <br>
 
+Dashboard
 ![](https://github.com/INeido/dots/blob/main/samples/sample2.png?raw=true)
 
 <br>
 
-
-<br>
-
+Powermenu
 ![](https://github.com/INeido/dots/blob/main/samples/sample3.png?raw=true)
 
 <br>
@@ -57,6 +57,7 @@ Please consider, that this rice is tailored for myself. I did try to make it as 
 
 
 # Info
+
 | | Name | Package | Links |
 |-| ---- | ------- | ----- |
 | **Shell** | zsh | `zsh` <sup>[Arch](https://archlinux.org/packages/extra/x86_64/zsh/)</sup> | [Website](https://www.zsh.org/)
@@ -71,6 +72,7 @@ Please consider, that this rice is tailored for myself. I did try to make it as 
 | **System Font** | Inter | `inter-font`<sup>[Arch](https://archlinux.org/packages/community/any/inter-font/)</sup> | [GitHub](https://github.com/rsms/inter)
 | **VS Code Font** | Fira Code | `ttf-fira-code`<sup>[Arch](https://archlinux.org/packages/community/any/ttf-fira-code/)</sup> | [GitHub](https://github.com/tonsky/FiraCode), [Docs](https://github.com/tonsky/FiraCode/wiki)
 | **Icon Theme** | Papirus | `papirus-icon-theme`<sup>[Arch](https://archlinux.org/packages/community/any/inter-font/)</sup> | [GitHub](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme)
+
 
 # Setup
 
@@ -149,22 +151,35 @@ My settings look like this:
 
 </details>
 
+
 # Features
 
 ### Spotify widget
 
 This widget is visible in the dashboard with the cover art and media buttons.
+
 ![](https://github.com/INeido/dots/blob/main/samples/feature0.png?raw=true)
 
 And also as a minimal display in the top panel.
+
 ![](https://github.com/INeido/dots/blob/main/samples/feature1.png?raw=true)
 
 <details close>
     <summary><samp><b>more info</b></samp></summary>
 
+When hovering over the widget it displays the song progress using a bar at the bottom.
+
 ![](https://github.com/INeido/dots/blob/main/samples/feature0_0.png?raw=true)
-    
+
+Using the scrollwheel you can adjust the volume. When doing so the progress bar transform into the volume bar.
+
 ![](https://github.com/INeido/dots/blob/main/samples/feature0_1.png?raw=true)
+
+You can interact with the minimal spotify widget in the top panel using:
+- Left click: Toggle Spotify Visibility
+- Right click: Toggle play/pause
+- Scroll up: Increase volume
+- Scroll down: Decrease volume
 
 </details>
 
@@ -191,9 +206,7 @@ A quick menu to turn off, restart or log off the computer.
 <details close>
     <summary><samp><b>more info</b></samp></summary>
 
-    You can use the arrow keys to switch the selection and press enter to execute. Or just use the mouse.
-
-<br>
+You can use the arrow keys to switch the selection and press enter to execute. Or just use the mouse.
 
 </details>
 
@@ -230,6 +243,8 @@ theme.drive_names                  = { "/", "/Games" }
 -- Spotify art temp folder
 theme.spotify_temp                 = "/tmp"
 ```
+
+You can edit the autostart apps in the ../scipts/autostart.sh file.
 
 
 # Keys
@@ -277,8 +292,10 @@ theme.spotify_temp                 = "/tmp"
 
 # Todos
 
-- [x] Add a dashboard
-- [x] Add a powermenu
+- [x] Make it useable
+- [x] Add autostart support
+- [x] Add dashboard
+- [x] Add powermenu
 - [x] Improve spotify widget
 - [ ] Better client switcher (alt+tab)
 - [ ] Better window decorations
