@@ -37,6 +37,7 @@ local w = wibox.widget {
             -- Margins
             {
                 -- Text
+                id = "textbox",
                 markup = helpers.text_color(text, beautiful.fg_focus),
                 font   = beautiful.font .. "24",
                 valign = "center",

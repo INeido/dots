@@ -35,13 +35,13 @@ settings.modkey            = "Mod4"
 settings.altkey            = "Mod1"
 
 -- Greeter text
-settings.greeter_text     = "Welcome back"
+settings.greeter_text      = "Welcome back"
 
 -- Goodbyer text
 settings.goodbyer_text     = "See ya later"
 
 -- Confirmation text
-settings.confirmation_text     = "Are you sure?"
+settings.confirmation_text = "Are you sure?"
 
 -- Switches
 settings.enable_titlebar   = false

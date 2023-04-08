@@ -61,8 +61,7 @@ local function confirmation_show(action)
     confirmation.no.visible = true
 
     -- Hide powermenu
-    goodbyer.text = helpers.text_color(settings.confirmation_text, beautiful.fg_focus)
-    goodbyer.visible = false
+    goodbyer:get_children_by_id("textbox")[1].markup = helpers.text_color(settings.confirmation_text, beautiful.fg_focus)
     for i, button in ipairs(buttons) do
         button.w.visible = false
     end
@@ -80,8 +79,7 @@ local function confirmation_hide()
     confirmation.no.visible = false
 
     -- Show powermenu
-    goodbyer.text = helpers.text_color(settings.goodbyer_text, beautiful.fg_focus)
-    goodbyer.visible = true
+    goodbyer:get_children_by_id("textbox")[1].markup = helpers.text_color(settings.goodbyer_text, beautiful.fg_focus)
     for i, button in ipairs(buttons) do
         button.w.visible = true
     end
@@ -95,6 +93,8 @@ function pm_unfocus()
     for i, button in ipairs(buttons) do
         button.w:emit_signal("mouse::leave")
     end
+    confirmation.yes:emit_signal("mouse::leave")
+    confirmation.no:emit_signal("mouse::leave")
 end
 
 function pm_close()
@@ -119,7 +119,7 @@ function pm_open()
         if key == "Escape" or key == "q" or key == "F1" then
             pm_close()
         elseif key == "Left" then
-            if confirmation.text.visible == true then
+            if confirmation.yes.visible == true then
                 if helpers.button_isfocused(confirmation.yes) then
                     confirmation.yes:emit_signal("mouse::leave")
                     confirmation.no:emit_signal("mouse::enter")
@@ -151,7 +151,7 @@ function pm_open()
                 end
             end
         elseif key == "Right" then
-            if confirmation.text.visible == true then
+            if confirmation.yes.visible == true then
                 if helpers.button_isfocused(confirmation.yes) then
                     confirmation.yes:emit_signal("mouse::leave")
                     confirmation.no:emit_signal("mouse::enter")
@@ -183,7 +183,7 @@ function pm_open()
                 end
             end
         elseif key == "Return" or key == "space" then
-            if confirmation.text.visible == true then
+            if confirmation.yes.visible == true then
                 if helpers.button_isfocused(confirmation.yes) then
                     confirmation.yes:emit_signal("button::press", _, _, _, 1)
                 else
@@ -214,9 +214,7 @@ end
 -- ===================================================================
 
 confirmation.yes:connect_signal("button::press", function(_, _, _, button)
-    if button == 1 then
-        selected_action()
-    end
+    selected_action()
 end)
 
 confirmation.no:connect_signal("button::press", function(_, _, _, button)
@@ -259,13 +257,12 @@ powermenu:setup {
         nil,
         {
             -- Column container
-            confirmation.text,
+            goodbyer,
             {
                 confirmation.yes,
                 confirmation.no,
                 layout = wibox.layout.fixed.horizontal,
             },
-            goodbyer,
             {
                 buttons[1].w,
                 buttons[2].w,
