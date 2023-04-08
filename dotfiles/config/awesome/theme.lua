@@ -22,35 +22,6 @@ local theme                        = {}
 theme.config_path                  = "~/.config/awesome/"
 
 -- ===================================================================
--- Settings
--- ===================================================================
-
--- Apps
-theme.terminal                     = "alacritty"
-theme.browser                      = "firefox"
-theme.fileexplorer                 = "thunar"
-theme.editor                       = os.getenv("EDITOR") or "nano"
-
--- Modkeys
-theme.modkey                       = "Mod4"
-theme.altkey                       = "Mod1"
-
--- Goodbyer text
-theme.goodbyer_text                 = "See ya later"
-
--- Switches
-theme.enable_titlebar              = false
-
--- Network Interface for the widget
-theme.network_interface            = "enp42s0"
-
--- Enter the drives you want to get data from for the widget
-theme.drive_names                  = { "/", "/Games" }
-
--- Spotify art temp folder
-theme.spotify_temp                 = "/tmp"
-
--- ===================================================================
 -- Icon Theme
 -- ===================================================================
 
@@ -60,23 +31,8 @@ theme.icon_theme                   = "Papirus"
 -- Fonts
 -- ===================================================================
 
-theme.font                         = "Inter 9"
-theme.widgetfont_small             = "Inter Bold 10"
-theme.widgetfont                   = "Inter Bold 10"
-theme.widgetfont_big               = "Inter Bold 14"
-theme.dashboardfont_small          = "Inter Bold 16"
-theme.dashboardfont_thin           = "Inter 16"
-theme.dashboardfont_normal         = "Inter Bold 20"
-theme.dashboardfont_big            = "Inter Bold 25"
-theme.dashboardfont_huge           = "Inter Bold 30"
-theme.titlefont                    = "Inter 9"
-theme.fontname                     = "Inter 9"
-theme.iconfont                     = "Font Awesome 6 Free Solid 11"
-theme.iconfont_medium              = "Font Awesome 6 Free Solid 18"
-theme.iconfont_big                 = "Font Awesome 6 Free Solid 22"
-theme.iconfont_bigger              = "Font Awesome 6 Free Solid 24"
-theme.iconfont_huge                = "Font Awesome 6 Free Solid 30"
-theme.iconfont_massive             = "Font Awesome 6 Free Solid 50"
+theme.font                         = "Inter" .. " "
+theme.iconfont                     = "Font Awesome 6 Free Solid" .. " "
 
 -- ===================================================================
 -- Sizes

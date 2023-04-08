@@ -22,12 +22,12 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local hours = wibox.widget.textclock()
-hours.font = beautiful.dashboardfont_huge
+hours.font = beautiful.font .. "Bold 30"
 hours.format = "%H"
 
 local minutes = wibox.widget.textclock()
-minutes.font = beautiful.dashboardfont_huge
-minutes.format = "<span foreground='" .. beautiful.accent .. "'>%M</span>"
+minutes.font = beautiful.font .. "Bold 30"
+minutes.format = helpers.text_color("%M", beautiful.accent)
 
 -- ===================================================================
 -- Widget

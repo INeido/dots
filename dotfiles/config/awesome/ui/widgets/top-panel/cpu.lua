@@ -22,15 +22,15 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local cpu = wibox.widget.textbox()
-cpu.font = beautiful.widgetfont
+cpu.font = beautiful.font .. " Bold 10"
 
 -- ===================================================================
 -- Icon
 -- ===================================================================
 
 local icon = wibox.widget {
-    font   = beautiful.iconfont,
-    markup = "<span foreground='" .. beautiful.accent .. "'> </span>",
+    font   = beautiful.iconfont .. " 11",
+    markup = helpers.text_color(" ", beautiful.accent),
     valign = "center",
     align  = "center",
     widget = wibox.widget.textbox,

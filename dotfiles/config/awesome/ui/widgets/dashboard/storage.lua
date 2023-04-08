@@ -47,7 +47,7 @@ local create_widget = function(name)
         {
             text   = name,
             align  = "center",
-            font   = beautiful.widgetfont_big,
+            font   = beautiful.font .. "Bold 14",
             widget = wibox.widget.textbox,
         },
         {
@@ -69,7 +69,7 @@ local create_widget = function(name)
                 -- Text in the center
                 id     = "val",
                 align  = "center",
-                font   = beautiful.widgetfont,
+                font   = beautiful.font .. "Bold 10",
                 widget = wibox.widget.textbox,
             },
             layout = wibox.layout.stack,
@@ -78,7 +78,7 @@ local create_widget = function(name)
             -- Text underneath
             id     = "text",
             align  = "center",
-            font   = beautiful.widgetfont,
+            font   = beautiful.font .. "Bold 10",
             widget = wibox.widget.textbox,
         },
         spacing = dpi(10),
@@ -101,7 +101,7 @@ local w = wibox.widget {
 -- ===================================================================
 
 local drives = {}
-for i, v in ipairs(beautiful.drive_names) do
+for i, v in ipairs(settings.drive_names) do
     table.insert(drives, create_widget(v))
     w:add(drives[i])
 end

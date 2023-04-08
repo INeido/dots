@@ -21,7 +21,7 @@ local naughty = require("naughty")
 local tags = {
     { -- home
         icon = beautiful.tag_home,
-        layout = awful.layout.suit.max,
+        layout = awful.layout.suit.tile,
         selected = true,
     },
     { -- gaming
@@ -30,7 +30,7 @@ local tags = {
     },
     { -- dev
         icon = beautiful.tag_dev,
-        layout = awful.layout.suit.tile,
+        layout = awful.layout.suit.max,
     },
     { -- ai
         icon = beautiful.tag_ai,
@@ -53,3 +53,15 @@ awful.screen.connect_for_each_screen(function(s)
         })
     end
 end)
+
+-- ===================================================================
+-- Signal
+-- ===================================================================
+
+-- Focus top client when switching tags
+-- tag.connect_signal("property::selected", function(t)
+--     local top_client = t:clients()[1]
+--     if top_client then
+--         top_client:jump_to()
+--     end
+-- end)

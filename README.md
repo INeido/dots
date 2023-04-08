@@ -51,6 +51,11 @@ Powermenu
 
 <br>
 
+Lockscreen
+![](https://github.com/INeido/dots/blob/main/samples/sample4.png?raw=true)
+
+<br>
+
 </details>
 
 <br>
@@ -203,6 +208,7 @@ A quick menu to turn off, restart or log off the computer.
 
 ![](https://github.com/INeido/dots/blob/main/samples/feature4.png?raw=true)
 
+
 <details close>
     <summary><samp><b>more info</b></samp></summary>
 
@@ -213,36 +219,9 @@ You can use the arrow keys to switch the selection and press enter to execute. O
 
 # Settings
 
-Using the theme.lua file you can change a few settings. After a change AwesomeWM has to be reloaded.
+Using the [settings.lua](https://github.com/INeido/dots/blob/main/dotfiles/config/awesome/config/settings.lua) file you can change a few settings. After a change AwesomeWM has to be reloaded.
 
 The options should be pretty self explanatory.
-
-```lua
--- Apps
-theme.terminal                     = "alacritty"
-theme.browser                      = "firefox"
-theme.fileexplorer                 = "thunar"
-theme.editor                       = os.getenv("EDITOR") or "nano"
-
--- Modkeys
-theme.modkey                       = "Mod4"
-theme.altkey                       = "Mod1"
-
--- Goodbyer text
-theme.goodbyer_text                 = "See ya later"
-
--- Switches
-theme.enable_titlebar              = false
-
--- Network Interface for the widget
-theme.network_interface            = "enp42s0"
-
--- Enter the drives you want to get data from for the widget
-theme.drive_names                  = { "/", "/Games" }
-
--- Spotify art temp folder
-theme.spotify_temp                 = "/tmp"
-```
 
 You can edit the autostart apps in the ../scipts/autostart.sh file.
 
@@ -297,9 +276,13 @@ You can edit the autostart apps in the ../scipts/autostart.sh file.
 - [x] Add dashboard
 - [x] Add powermenu
 - [x] Improve spotify widget
-- [ ] Better client switcher (alt+tab)
-- [ ] Better window decorations
-- [ ] Add lock screen
+- [x] Add lock screen
+- [ ] Improve client switcher (alt+tab)
+- [ ] Improve window decorations
+- [ ] Improve notifications
 - [ ] Add screen saver
 - [ ] Add settings menu
+- [ ] Laptop support
+- [ ] Multimonitor support
+- [ ] Add animations [(rubato)](https://open-vsx.org/vscode/item?itemName=s-nlf-fh.glassit)
 - [ ] Add more bugs

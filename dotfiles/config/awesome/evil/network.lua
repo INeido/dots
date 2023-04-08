@@ -20,7 +20,7 @@ local dpi = require("beautiful").xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local interface = beautiful.network_interface or "wlan0" -- default to wlan0 if not set
+local interface = settings.network_interface or "wlan0" -- default to wlan0 if not set
 local script = "awk '/" .. interface .. "/{print $2,$10}' /proc/net/dev"
 local interval = 2
 

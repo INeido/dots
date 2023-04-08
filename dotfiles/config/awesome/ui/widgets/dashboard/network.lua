@@ -58,7 +58,7 @@ local w = wibox.widget {
     {
       -- Download Text
       id = "downloadtext",
-      font = beautiful.dashboardfont_small,
+      font = beautiful.font .. "Bold 16",
       widget = wibox.widget.textbox,
     },
     spacing = dpi(3),
@@ -82,7 +82,7 @@ local w = wibox.widget {
     {
       -- Upload Text
       id = "uploadtext",
-      font = beautiful.dashboardfont_small,
+      font = beautiful.font .. "Bold 16",
       widget = wibox.widget.textbox,
     },
     spacing = dpi(3),

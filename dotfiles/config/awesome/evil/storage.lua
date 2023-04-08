@@ -21,7 +21,7 @@ local dpi = require("beautiful").xresources.apply_dpi
 -- ===================================================================
 
 local script = "df -BK "
-for _, v in ipairs(beautiful.drive_names) do
+for _, v in ipairs(settings.drive_names) do
     script = script .. v .. " "
 end
 local interval = 10

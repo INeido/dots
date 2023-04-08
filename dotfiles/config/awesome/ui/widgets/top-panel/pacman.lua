@@ -22,15 +22,15 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local pacman = wibox.widget.textbox()
-pacman.font = beautiful.widgetfont
+pacman.font = beautiful.font .. " Bold 10"
 
 -- ===================================================================
 -- Icon
 -- ===================================================================
 
 local icon = wibox.widget {
-    font   = beautiful.iconfont,
-    markup = "<span foreground='" .. beautiful.accent .. "'> </span>",
+    font   = beautiful.iconfont .. " 11",
+    markup = helpers.text_color(" ", beautiful.accent),
     valign = "center",
     align  = "center",
     widget = wibox.widget.textbox,
@@ -69,6 +69,7 @@ w = helpers.box_tp_widget(w, true, 5)
 
 local tooltip = awful.tooltip {
     objects = { w },
+    font = beautiful.font .. "9",
     mode = "outside",
     align = "right",
     preferred_positions = { "right", "left", "bottom" }

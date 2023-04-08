@@ -37,7 +37,7 @@ styles.focus    = {
 styles.header   = {
     fg_color = beautiful.fg_normal,
     bg_color = transparent,
-    markup   = function(t) return "<span font_desc='" .. beautiful.dashboardfont_normal .. "'>" .. t .. "</span>" end,
+    markup   = function(t) return "<span font_desc='" .. beautiful.font .. "Bold 20" .. "'>" .. t .. "</span>" end,
 }
 
 local function decorate_cell(widget, flag, _)
@@ -72,7 +72,7 @@ end
 
 local w = wibox.widget {
     date          = os.date("*t"),
-    font          = beautiful.widgetfont,
+    font          = beautiful.font .. "Bold 10",
     long_weekdays = false,
     spacing       = dpi(3),
     forced_width  = dpi(260),

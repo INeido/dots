@@ -35,7 +35,7 @@ w = helpers.box_tp_widget(w, true, 5)
 
 w:buttons(gears.table.join(
     awful.button({}, 1, function()
-        awesome.emit_signal("db::toggle", nil)
+        db_toggle()
     end)
 ))
 

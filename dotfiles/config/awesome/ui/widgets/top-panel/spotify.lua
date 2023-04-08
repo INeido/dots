@@ -71,7 +71,7 @@ local w = wibox.widget {
             {
                 id = "titlew",
                 text = "Nothing playing",
-                font = beautiful.widgetfont,
+                font = beautiful.font .. "Bold 10",
                 widget = wibox.widget.textbox
             },
             speed = 40,
@@ -83,14 +83,14 @@ local w = wibox.widget {
             -- Connector betwee Title and Artist
             id = "connectorw",
             text = " - ",
-            font = beautiful.widgetfont,
+            font = beautiful.font .. "Bold 10",
             widget = wibox.widget.textbox,
         },
         {
             -- Artist Text
             id = "artistw",
             text = "wub wub",
-            font = beautiful.widgetfont,
+            font = beautiful.font .. "Bold 10",
             widget = wibox.widget.textbox,
         },
         layout = wibox.layout.align.horizontal,

@@ -5,7 +5,6 @@
 --       ██║  ██║███████╗███████╗██║     ███████╗██║  ██║███████║
 --       ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝
 
--- Dashboard Version
 
 -- ===================================================================
 -- Initialization
@@ -20,7 +19,26 @@ local dpi = beautiful.xresources.apply_dpi
 ---@diagnostic disable: undefined-field
 local helpers = {}
 
-helpers.add_hover_cursor = function(w, hover_cursor)
+-- Colorize Text
+function helpers.text_color(text, color)
+    return "<span foreground='" .. color .. "'>" .. text .. "</span>"
+end
+
+function helpers.pad(width)
+    return wibox.widget {
+        forced_width = width,
+        layout = wibox.layout.fixed.horizontal
+    }
+end
+
+function helpers.vpad(height)
+    return wibox.widget {
+        forced_height = height,
+        layout = wibox.layout.fixed.vertical
+    }
+end
+
+function helpers.add_hover_cursor(w, hover_cursor)
     local original_cursor = "left_ptr"
 
     w:connect_signal("mouse::enter", function()
@@ -39,7 +57,7 @@ helpers.add_hover_cursor = function(w, hover_cursor)
 end
 
 -- For Dashboard Widgets
-helpers.box_db_widget = function(widget, width, height)
+function helpers.box_db_widget(widget, width, height, background)
     local w = wibox.widget {
         -- Add margins
         {
@@ -58,7 +76,7 @@ helpers.box_db_widget = function(widget, width, height)
                 expand = "none",
                 layout = wibox.layout.align.horizontal,
             },
-            bg = beautiful.panel_item_normal,
+            bg = background,
             forced_height = height,
             forced_width = width,
             shape = gears.shape.rect,
@@ -72,7 +90,7 @@ helpers.box_db_widget = function(widget, width, height)
 end
 
 -- For Top-Panel Widgets
-helpers.box_tp_widget = function(widget, effects, margin)
+function helpers.box_tp_widget(widget, effects, margin)
     local w = wibox.widget {
         -- Add margins outside
         {
@@ -118,7 +136,7 @@ helpers.box_tp_widget = function(widget, effects, margin)
 end
 
 -- For Powermenu Widgets
-helpers.box_pm_widget = function(widget, action, width, height)
+function helpers.box_pm_widget(widget, width, height)
     local w = wibox.widget {
         -- Add margins
         {
@@ -148,45 +166,38 @@ helpers.box_pm_widget = function(widget, action, width, height)
     }
 
     w:connect_signal("mouse::enter", function()
-        awesome.emit_signal("pm::focused")
-        widget:set_markup("<span foreground='" .. beautiful.fg_normal .. "'>" .. widget:get_text() .. "</span>")
+        pm_unfocus()
+        widget:set_markup(helpers.text_color(widget:get_text(), beautiful.fg_normal))
     end)
     w:connect_signal("mouse::leave", function()
-        widget:set_markup("<span foreground='" .. beautiful.fg_deselected .. "'>" .. widget:get_text() .. "</span>")
-    end)
-
-    w:connect_signal("button::press", function()
-        awful.spawn.with_shell(action)
+        widget:set_markup(helpers.text_color(widget:get_text(), beautiful.fg_deselected))
     end)
 
     return w
 end
 
-helpers.button_isfocused = function(widget)
+function helpers.button_isfocused(widget)
     local markup = widget:get_children()[1]:get_children()[1]:get_children()[1]:get_children()[1]:get_markup()
     local text = widget:get_children()[1]:get_children()[1]:get_children()[1]:get_children()[1]:get_text()
-    return markup == "<span foreground='" .. beautiful.fg_normal .. "'>" .. text .. "</span>"
+    return markup == helpers.text_color(text, beautiful.fg_normal)
 end
 
 -- Gets all the wallpapers
-helpers.get_wallpapers = function(blurred)
-    return function(callback)
-        local wallpapers = {}
-        local script = ""
-        if blurred then
-            script = "ls " .. beautiful.wallpaperpath .. "blurred/*.png"
-        else
-            script = "ls " .. beautiful.wallpaperpath .. "*.png"
-        end
-
-        awful.spawn.easy_async_with_shell(script, function(stdout)
-            for wallpaper in string.gmatch(stdout, '[^\n]+') do
-                table.insert(wallpapers, wallpaper)
-            end
-
-            callback(wallpapers)
-        end)
+function helpers.get_wallpapers(blurred)
+    local wallpapers = {}
+    local script = ""
+    if blurred then
+        script = "ls " .. beautiful.wallpaperpath .. "blurred/*.png"
+    else
+        script = "ls " .. beautiful.wallpaperpath .. "*.png"
     end
+
+    local f = io.popen(script)
+    for file in f:lines() do
+        table.insert(wallpapers, file)
+    end
+    f:close()
+    return wallpapers
 end
 
 return helpers

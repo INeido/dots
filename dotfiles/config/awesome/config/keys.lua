@@ -31,14 +31,14 @@ keys.clientbuttons = gears.table.join(
             c:emit_signal("request::activate", "mouse_click", { raise = true })
         end),
     awful.button(
-        { beautiful.modkey },
+        { settings.modkey },
         1,
         function(c)
             c:emit_signal("request::activate", "mouse_click", { raise = true })
             awful.mouse.client.move(c)
         end),
     awful.button(
-        { beautiful.modkey },
+        { settings.modkey },
         3,
         function(c)
             c:emit_signal("request::activate", "mouse_click", { raise = true })
@@ -82,7 +82,17 @@ keys.globalkeys = gears.table.join(
             group = "Multimedia"
         }),
     awful.key(
-        { beautiful.modkey },
+        { settings.modkey },
+        "l",
+        function()
+            ls_show()
+        end,
+        {
+            description = "Lock screen",
+            group = "launcher"
+        }),
+    awful.key(
+        { settings.modkey },
         "space",
         function()
             awful.spawn("rofi -show drun -theme ~/.config/rofi/launcher.rasi")
@@ -92,10 +102,11 @@ keys.globalkeys = gears.table.join(
             group = "launcher"
         }),
     awful.key(
-        { beautiful.modkey },
+        { settings.modkey },
         "r",
         function()
-            awful.spawn.easy_async_with_shell("file=$(mktemp -t screenshot_XXXXXX.png) && maim -suBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png")
+            awful.spawn.easy_async_with_shell(
+            "file=$(mktemp -t screenshot_XXXXXX.png) && maim -suBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png")
         end,
         {
             description = "Screenshot Selection",
@@ -103,20 +114,21 @@ keys.globalkeys = gears.table.join(
         }),
 
     awful.key(
-        { beautiful.modkey },
+        { settings.modkey },
         "t",
         function()
-            awful.spawn.easy_async_with_shell("file=$(mktemp -t screenshot_XXXXXX.png) && maim -uBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png")
+            awful.spawn.easy_async_with_shell(
+            "file=$(mktemp -t screenshot_XXXXXX.png) && maim -uBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png")
         end,
         {
             description = "Screenshot Screen",
             group = "launcher"
         }),
     awful.key(
-        { beautiful.modkey },
+        { settings.modkey },
         "p",
         function()
-            awesome.emit_signal("pm::toggle", nil)
+            pm_open()
         end,
         {
             description = "Toggle Powermenu",
@@ -124,27 +136,37 @@ keys.globalkeys = gears.table.join(
         }),
 
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "e",
         function()
-            awful.spawn.with_shell(beautiful.fileexplorer)
+            awful.spawn.with_shell(settings.fileexplorer)
         end,
         {
             description = "Start File Explorer",
             group = "launcher"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
+        "e",
+        function()
+            awful.spawn.with_shell(settings.fileexplorer)
+        end,
+        {
+            description = "Start File Explorer",
+            group = "launcher"
+        }),
+    awful.key(
+        { settings.modkey, },
         "d",
         function()
-            awesome.emit_signal("db::open", nil)
+            db_open()
         end,
         {
             description = "Toggle Dashboard",
             group = "launcher"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "Left",
         awful.tag.viewprev,
         {
@@ -152,7 +174,7 @@ keys.globalkeys = gears.table.join(
             group = "tag"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "Right",
         awful.tag.viewnext,
         {
@@ -160,7 +182,7 @@ keys.globalkeys = gears.table.join(
             group = "tag"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "Escape",
         awful.tag.history.restore,
         {
@@ -168,7 +190,7 @@ keys.globalkeys = gears.table.join(
             group = "tag"
         }),
     awful.key(
-        { beautiful.altkey, },
+        { settings.altkey, },
         "Tab",
         function()
             awful.client.focus.history.previous()
@@ -181,7 +203,7 @@ keys.globalkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "Tab",
         function()
             awful.client.focus.byidx(1)
@@ -191,7 +213,7 @@ keys.globalkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "s",
         function()
             awful.layout.inc(1)
@@ -201,17 +223,17 @@ keys.globalkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "Return",
         function()
-            awful.spawn(beautiful.terminal)
+            awful.spawn(settings.terminal)
         end,
         {
             description = "Open a Terminal",
             group = "launcher"
         }),
     awful.key(
-        { beautiful.modkey, "Control" },
+        { settings.modkey, "Control" },
         "r",
         awesome.restart,
         {
@@ -219,7 +241,7 @@ keys.globalkeys = gears.table.join(
             group = "awesome"
         }),
     awful.key(
-        { beautiful.modkey, "Shift" },
+        { settings.modkey, "Shift" },
         "q",
         awesome.quit,
         {
@@ -234,7 +256,7 @@ keys.globalkeys = gears.table.join(
 
 keys.clientkeys = gears.table.join(
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "f",
         function(c)
             c.fullscreen = not c.fullscreen
@@ -245,7 +267,7 @@ keys.clientkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "q",
         function(c)
             c:kill()
@@ -255,7 +277,7 @@ keys.clientkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, "Control" },
+        { settings.modkey, "Control" },
         "space",
         awful.client.floating.toggle,
         {
@@ -263,7 +285,7 @@ keys.clientkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "t",
         function(c)
             c.ontop = not c.ontop
@@ -273,7 +295,7 @@ keys.clientkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "n",
         function(c)
             c.minimized = true
@@ -283,7 +305,7 @@ keys.clientkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "m",
         function(c)
             c.maximized = not c.maximized
@@ -294,7 +316,7 @@ keys.clientkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "1",
         awful.mouse.client.move,
         {
@@ -302,7 +324,7 @@ keys.clientkeys = gears.table.join(
             group = "client"
         }),
     awful.key(
-        { beautiful.modkey, },
+        { settings.modkey, },
         "3",
         awful.mouse.client.resize,
         {
@@ -315,7 +337,7 @@ keys.clientkeys = gears.table.join(
 for i = 1, 9 do
     keys.globalkeys = gears.table.join(keys.globalkeys,
         -- View tag only.
-        awful.key({ beautiful.modkey }, "#" .. i + 9,
+        awful.key({ settings.modkey }, "#" .. i + 9,
             function()
                 local screen = awful.screen.focused()
                 local tag = screen.tags[i]
@@ -325,7 +347,7 @@ for i = 1, 9 do
             end,
             { description = "View tag #" .. i, group = "tag" }),
         -- Move client to tag.
-        awful.key({ beautiful.modkey, "Shift" }, "#" .. i + 9,
+        awful.key({ settings.modkey, "Shift" }, "#" .. i + 9,
             function()
                 if client.focus then
                     local tag = client.focus.screen.tags[i]

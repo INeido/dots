@@ -18,20 +18,28 @@ local helpers = require("helpers")
 local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
+-- Action
+-- ===================================================================
+
+local function action()
+    awful.spawn.with_shell("sudo shutdown now")
+end
+
+-- ===================================================================
 -- Widget
 -- ===================================================================
 
 local w = wibox.widget {
     id     = "button",
     text   = "",
-    markup = "<span foreground='" .. beautiful.fg_deselected .. "'></span>",
+    markup = helpers.text_color("", beautiful.fg_focus),
     valign = "center",
     align  = "center",
-    font   = beautiful.iconfont_massive,
+    font   = beautiful.iconfont .. " 35",
     widget = wibox.widget.textbox,
 }
 
 -- Box the widget
-w = helpers.box_pm_widget(w, "sudo shutdown now", dpi(200), dpi(150))
+w = helpers.box_pm_widget(w, dpi(100), dpi(100))
 
-return w
+return {w = w, a = action}

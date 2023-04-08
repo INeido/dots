@@ -1,4 +1,4 @@
---       ██████╗  ██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██████╗
+--        ██████╗  ██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██████╗
 --       ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗
 --       ██║  ███╗██║   ██║██║   ██║██║  ██║██████╔╝ ╚████╔╝ █████╗  ██████╔╝
 --       ██║   ██║██║   ██║██║   ██║██║  ██║██╔══██╗  ╚██╔╝  ██╔══╝  ██╔══██╗
@@ -22,7 +22,7 @@ local dpi = beautiful.xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local text = beautiful.goodbyer_text
+local text = settings.goodbyer_text
 
 -- ===================================================================
 -- Widget
@@ -37,8 +37,8 @@ local w = wibox.widget {
             -- Margins
             {
                 -- Text
-                markup = "<span foreground='" .. beautiful.fg_focus .. "'>" .. text .. "</span>",
-                font   = beautiful.dashboardfont_big,
+                markup = helpers.text_color(text, beautiful.fg_focus),
+                font   = beautiful.font .. "24",
                 valign = "center",
                 align  = "center",
                 widget = wibox.widget.textbox,
@@ -49,7 +49,7 @@ local w = wibox.widget {
             right = dpi(20),
             widget = wibox.container.margin,
         },
-        bg = beautiful.panel_item_normal .. "40",
+        bg = beautiful.panel_item_normal .. "AA",
         shape = gears.shape.rect,
         widget = wibox.container.background,
     },

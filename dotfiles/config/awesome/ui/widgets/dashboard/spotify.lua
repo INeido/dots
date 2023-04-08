@@ -50,7 +50,7 @@ local w = wibox.widget {
                     {
                         id = "titlew",
                         text = "Nothing playing",
-                        font = beautiful.dashboardfont_normal,
+                        font = beautiful.font .. "Bold 20",
                         align = "center",
                         widget = wibox.widget.textbox,
                     },
@@ -58,7 +58,7 @@ local w = wibox.widget {
                     {
                         id = "artistw",
                         text = "wub wub",
-                        font = beautiful.dashboardfont_thin,
+                        font = beautiful.font .. " 16",
                         align = "center",
                         widget = wibox.widget.textbox,
                     },
@@ -71,9 +71,9 @@ local w = wibox.widget {
                     -- Previous Button
                     {
                         id = "prevw",
-                        markup = "<span foreground='" .. beautiful.fg_deselected .. "'></span>",
+                        markup = helpers.text_color("", beautiful.fg_deselected),
                         text = "",
-                        font = beautiful.iconfont_big,
+                        font = beautiful.iconfont .. " 22",
                         align = "center",
                         valign = "center",
                         forced_height = dpi(30),
@@ -87,7 +87,7 @@ local w = wibox.widget {
                     -- Play/Pause Button
                     {
                         id = "ppw",
-                        font = beautiful.iconfont_big,
+                        font = beautiful.iconfont .. " 22",
                         align = "center",
                         valign = "center",
                         forced_height = dpi(30),
@@ -101,9 +101,9 @@ local w = wibox.widget {
                     -- Next Button
                     {
                         id = "nextw",
-                        markup = "<span foreground='" .. beautiful.fg_deselected .. "'></span>",
+                        markup = helpers.text_color("", beautiful.fg_deselected),
                         text = "",
-                        font = beautiful.iconfont_big,
+                        font = beautiful.iconfont .. " 22",
                         align = "center",
                         valign = "center",
                         forced_height = dpi(30),
@@ -142,8 +142,8 @@ local w = wibox.widget {
         {
             {
                 id = "iconw",
-                markup = "<span foreground='" .. beautiful.accent .. "'></span>",
-                font = beautiful.iconfont_huge,
+                markup = helpers.text_color("", beautiful.accent),
+                font = beautiful.iconfont .. " 30",
                 align = "center",
                 visible = false,
                 widget = wibox.widget.textbox,
@@ -161,16 +161,16 @@ local w = wibox.widget {
     widget = wibox.container.background,
 
     set_art = function(self, link)
-        awful.spawn.easy_async("curl -o " .. beautiful.spotify_temp .. "/spotify.png " .. link,
+        awful.spawn.easy_async("curl -o " .. settings.spotify_temp .. "/spotify.png " .. link,
             function(_, _, _, _)
                 awful.spawn.easy_async(
                     "convert " ..
-                    beautiful.spotify_temp ..
+                    settings.spotify_temp ..
                     "/spotify.png -alpha set -channel A -evaluate set 20% " ..
-                    beautiful.spotify_temp .. "/spotify_faded.png",
+                    settings.spotify_temp .. "/spotify_faded.png",
                     function(_, _, _, _)
                         self:get_children_by_id("artw")[1]:set_image(gears.surface.load_uncached(
-                            "" .. beautiful.spotify_temp .. "/spotify_faded.png"))
+                            "" .. settings.spotify_temp .. "/spotify_faded.png"))
                         self:get_children_by_id("artw")[1]:emit_signal("widget::redraw_needed")
                     end)
             end)
@@ -178,8 +178,9 @@ local w = wibox.widget {
 
     set_status = function(self, is_playing)
         self:get_children_by_id("ppw")[1]:set_markup(is_playing and
-            "<span foreground='" .. beautiful.accent .. "'></span>" or
-            "<span foreground='" .. beautiful.accent .. "'></span>")
+            helpers.text_color("", beautiful.accent)
+            or
+            helpers.text_color("", beautiful.accent))
         self:get_children_by_id("ppw")[1]:emit_signal("widget::redraw_needed")
     end,
 
@@ -298,12 +299,10 @@ w:connect_signal("mouse::leave", function()
 end)
 
 w:get_children_by_id("prevw")[1]:connect_signal("mouse::enter", function()
-    w:get_children_by_id("prevw")[1]:set_markup("<span foreground='" ..
-    beautiful.fg_normal .. "'>" .. w:get_children_by_id("prevw")[1]:get_text() .. "</span>")
+    w:get_children_by_id("prevw")[1]:set_markup(helpers.text_color(w:get_children_by_id("prevw")[1]:get_text(), beautiful.fg_normal))
 end)
 w:get_children_by_id("prevw")[1]:connect_signal("mouse::leave", function()
-    w:get_children_by_id("prevw")[1]:set_markup("<span foreground='" ..
-    beautiful.fg_deselected .. "'>" .. w:get_children_by_id("prevw")[1]:get_text() .. "</span>")
+    w:get_children_by_id("prevw")[1]:set_markup(helpers.text_color(w:get_children_by_id("prevw")[1]:get_text(), beautiful.fg_deselected))
 end)
 
 w:get_children_by_id("ppw")[1]:connect_signal("mouse::enter", function()
@@ -314,12 +313,10 @@ w:get_children_by_id("ppw")[1]:connect_signal("mouse::leave", function()
 end)
 
 w:get_children_by_id("nextw")[1]:connect_signal("mouse::enter", function()
-    w:get_children_by_id("nextw")[1]:set_markup("<span foreground='" ..
-    beautiful.fg_normal .. "'>" .. w:get_children_by_id("nextw")[1]:get_text() .. "</span>")
+    w:get_children_by_id("nextw")[1]:set_markup(helpers.text_color(w:get_children_by_id("nextw")[1]:get_text(), beautiful.fg_normal))
 end)
 w:get_children_by_id("nextw")[1]:connect_signal("mouse::leave", function()
-    w:get_children_by_id("nextw")[1]:set_markup("<span foreground='" ..
-    beautiful.fg_deselected .. "'>" .. w:get_children_by_id("nextw")[1]:get_text() .. "</span>")
+    w:get_children_by_id("nextw")[1]:set_markup(helpers.text_color(w:get_children_by_id("nextw")[1]:get_text(), beautiful.fg_deselected))
 end)
 
 awesome.connect_signal("evil::spotify", function(args)

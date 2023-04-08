@@ -17,15 +17,13 @@ local helpers = require("helpers")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
-local wp = {}
-
 -- ===================================================================
 -- Set Wallpaper
 -- ===================================================================
 
 local function set_wallpaper(id)
     awful.screen.connect_for_each_screen(function(s)
-        local wallpaper = wp[id]
+        local wallpaper = cache.wallpapers[id]
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
@@ -34,18 +32,7 @@ local function set_wallpaper(id)
 end
 
 -- ===================================================================
--- Load Wallpapers
--- ===================================================================
-
-helpers.get_wallpapers(false)(function(wallpapers)
-    for _, wallpaper in ipairs(wallpapers) do
-        table.insert(wp, gears.surface.load(wallpaper))
-    end
-    set_wallpaper(1)
-end)
-
--- ===================================================================
--- Change Wallpaper
+-- Update Wallpaper
 -- ===================================================================
 
 tag.connect_signal("property::selected", function(t)
@@ -53,12 +40,8 @@ tag.connect_signal("property::selected", function(t)
 
     if #selected_tags > 0 then
         set_wallpaper(selected_tags[1].index)
-        awesome.emit_signal("db::wallpaper", selected_tags[1].index)
-        awesome.emit_signal("pm::wallpaper", selected_tags[1].index)
     else
         set_wallpaper(0)
-        awesome.emit_signal("db::wallpaper", 1)
-        awesome.emit_signal("pm::wallpaper", 1)
     end
 end)
 

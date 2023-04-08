@@ -18,29 +18,33 @@ local helpers = require("helpers")
 local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
--- Action
+-- Widgets
 -- ===================================================================
 
-local function action()
-    ls_show()
-    awful.spawn.with_shell("systemctl suspend")
-end
-
--- ===================================================================
--- Widget
--- ===================================================================
-
-local w = wibox.widget {
-    id     = "button",
-    text   = "",
-    markup = helpers.text_color("", beautiful.fg_focus),
-    valign = "center",
-    align  = "center",
-    font   = beautiful.iconfont .. " 35",
-    widget = wibox.widget.textbox,
+local yes = wibox.widget {
+    id      = "button",
+    text    = "Yes",
+    markup  = helpers.text_color("Yes", beautiful.fg_focus),
+    valign  = "center",
+    align   = "center",
+    font    = beautiful.font .. " 24",
+    widget  = wibox.widget.textbox,
 }
 
--- Box the widget
-w = helpers.box_pm_widget(w, dpi(100), dpi(100))
+local no = wibox.widget {
+    id      = "button",
+    text    = "No",
+    markup  = helpers.text_color("No", beautiful.fg_focus),
+    valign  = "center",
+    align   = "center",
+    font    = beautiful.font .. " 24",
+    widget  = wibox.widget.textbox,
+}
 
-return {w = w, a = action}
+-- Box the widgets
+yes = helpers.box_pm_widget(yes, dpi(152), dpi(100))
+yes.visible = false
+no = helpers.box_pm_widget(no, dpi(152), dpi(100))
+no.visible = false
+
+return {yes = yes, no = no}

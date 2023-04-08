@@ -87,6 +87,10 @@ dotfiles:
   d_scripts:
     src: config/awesome/scripts
     dst: ~/.config/awesome/scripts
+  f_liblua_pam.so:
+    src: config/awesome/liblua_pam.so
+    dst: ~/.config/awesome/liblua_pam.so
+    chmod: '755'
 profiles:
   PC0:
     dotfiles:
@@ -116,3 +120,4 @@ profiles:
     - f_rc.conf
     - f_code.rasi
     - d_scripts
+    - f_liblua_pam.so

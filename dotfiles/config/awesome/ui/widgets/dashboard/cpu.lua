@@ -41,10 +41,10 @@ local create_widget = function(icon, min, max)
             },
             {
                 -- Icon in the center
-                markup = "<span foreground='" .. beautiful.accent .. "'>" .. icon .. "</span>",
+                markup = helpers.text_color(icon, beautiful.accent),
                 valign = "center",
                 align  = "center",
-                font   = beautiful.iconfont_medium,
+                font   = beautiful.iconfont .. " 18",
                 widget = wibox.widget.textbox,
             },
             layout = wibox.layout.stack,
@@ -53,7 +53,7 @@ local create_widget = function(icon, min, max)
             -- Text underneath
             id     = "text",
             align  = "center",
-            font   = beautiful.widgetfont,
+            font   = beautiful.font .. "Bold 10",
             widget = wibox.widget.textbox,
         },
         spacing = dpi(10),
@@ -75,7 +75,7 @@ local w = wibox.widget {
     {
         text   = "CPU",
         align  = "center",
-        font   = beautiful.dashboardfont_normal,
+        font   = beautiful.font .. "Bold 20",
         widget = wibox.widget.textbox,
     },
     util,

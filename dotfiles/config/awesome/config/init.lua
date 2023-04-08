@@ -1,4 +1,6 @@
 -- require("config.notifications")
+require("config.settings")
+require("config.cache")
 require("config.wallpaper")
 require("config.layout")
 require("config.rules")

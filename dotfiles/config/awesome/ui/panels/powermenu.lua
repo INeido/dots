@@ -10,33 +10,35 @@
 -- Initialization
 -- ===================================================================
 
-local awful     = require("awful")
-local gears     = require("gears")
-local wibox     = require("wibox")
-local helpers   = require("helpers")
-local beautiful = require("beautiful")
-local dpi       = beautiful.xresources.apply_dpi
+local awful        = require("awful")
+local gears        = require("gears")
+local wibox        = require("wibox")
+local helpers      = require("helpers")
+local beautiful    = require("beautiful")
+local dpi          = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Load Widgets
 -- ===================================================================
 
-local goodbyer  = require("ui.widgets.powermenu.goodbyer")
-local buttons   = {
+local goodbyer     = require("ui.widgets.powermenu.goodbyer")
+local buttons      = {
+    require("ui.widgets.powermenu.logout"),
     require("ui.widgets.powermenu.shutdown"),
     require("ui.widgets.powermenu.reboot"),
-    require("ui.widgets.powermenu.logout"),
 }
+local confirmation = require("ui.widgets.powermenu.confirmation")
 
 -- ===================================================================
 -- Powermenu
 -- ===================================================================
 
-local powermenu = wibox({
+local powermenu    = wibox({
     visible = false,
     ontop = true,
-    type = "dock",
+    type = "splash",
     screen = screen.primary,
+    bgimage = cache.wallpapers_blurred[1],
 })
 
 awful.placement.maximize(powermenu)
@@ -45,127 +47,205 @@ awful.placement.maximize(powermenu)
 -- Variables
 -- ===================================================================
 
-local wp = {}
 powermenu.grabber = nil
-
--- ===================================================================
--- Get Wallpapers
--- ===================================================================
-
-helpers.get_wallpapers(true)(function(wallpapers)
-    for _, wallpaper in ipairs(wallpapers) do
-        table.insert(wp, gears.surface.load(wallpaper))
-    end
-    -- Set Default wallpaper
-    powermenu.bgimage = wp[1]
-end)
+local selected_action = nil
+local last_focused = 1
 
 -- ===================================================================
 -- Functions
 -- ===================================================================
 
-local unfocus = function()
+local function confirmation_show(action)
+    -- Show confirmation
+    confirmation.yes.visible = true
+    confirmation.no.visible = true
+
+    -- Hide powermenu
+    goodbyer.text = helpers.text_color(settings.confirmation_text, beautiful.fg_focus)
+    goodbyer.visible = false
     for i, button in ipairs(buttons) do
-        button:emit_signal("mouse::leave")
+        button.w.visible = false
+    end
+
+    -- Default focus
+    confirmation.yes:emit_signal("mouse::enter")
+    confirmation.no:emit_signal("mouse::leave")
+
+    selected_action = action
+end
+
+local function confirmation_hide()
+    -- Hide confirmation
+    confirmation.yes.visible = false
+    confirmation.no.visible = false
+
+    -- Show powermenu
+    goodbyer.text = helpers.text_color(settings.goodbyer_text, beautiful.fg_focus)
+    goodbyer.visible = true
+    for i, button in ipairs(buttons) do
+        button.w.visible = true
+    end
+
+    selected_action = nil
+
+    buttons[last_focused].w:emit_signal("mouse::enter")
+end
+
+function pm_unfocus()
+    for i, button in ipairs(buttons) do
+        button.w:emit_signal("mouse::leave")
     end
 end
 
-powermenu.wallpaper = function(id)
-    powermenu.bgimage = wp[id]
-end
-
-powermenu.close = function()
+function pm_close()
     awful.keygrabber.stop(powermenu.grabber)
     powermenu.visible = false
+    confirmation_hide()
 end
 
-powermenu.open = function()
+-- This is a mess
+function pm_open()
     -- Unfocus all buttons. For some reason they are all focused sometimes
-    unfocus()
+    pm_unfocus()
     -- Set the first button as active by default
-    buttons[1]:emit_signal("mouse::enter")
-    -- Close the Dashboard, if open
-    awesome.emit_signal("db::close", nil)
+    buttons[1].w:emit_signal("mouse::enter")
+    -- Close the Dashboard
+    db_close()
     -- Open Powermenu
     powermenu.visible = true
     -- Start Keygrabber
     powermenu.grabber = awful.keygrabber.run(function(_, key, event)
         if event == "release" then return end
         if key == "Escape" or key == "q" or key == "F1" then
-            powermenu.close()
+            pm_close()
         elseif key == "Left" then
-            local focus = false
-            for i, button in ipairs(buttons) do
-                if helpers.button_isfocused(button) then
-                    -- Move focus to the previous button
-                    if i > 1 then
-                        button:emit_signal("mouse::leave")
-                        buttons[i - 1]:emit_signal("mouse::enter")
-                    elseif i == 1 then
-                        button:emit_signal("mouse::leave")
-                        buttons[#buttons]:emit_signal("mouse::enter")
-                    end
-                    focus = true
-                    break
+            if confirmation.text.visible == true then
+                if helpers.button_isfocused(confirmation.yes) then
+                    confirmation.yes:emit_signal("mouse::leave")
+                    confirmation.no:emit_signal("mouse::enter")
+                elseif helpers.button_isfocused(confirmation.no) then
+                    confirmation.yes:emit_signal("mouse::enter")
+                    confirmation.no:emit_signal("mouse::leave")
+                else
+                    confirmation.yes:emit_signal("mouse::enter")
+                    confirmation.no:emit_signal("mouse::leave")
                 end
-            end
-            if not focus then
-                buttons[#buttons]:emit_signal("mouse::enter")
+            else
+                local focus = false
+                for i, button in ipairs(buttons) do
+                    if helpers.button_isfocused(button.w) then
+                        -- Move focus to the previous button
+                        if i > 1 then
+                            button.w:emit_signal("mouse::leave")
+                            buttons[i - 1].w:emit_signal("mouse::enter")
+                        elseif i == 1 then
+                            button.w:emit_signal("mouse::leave")
+                            buttons[#buttons].w:emit_signal("mouse::enter")
+                        end
+                        focus = true
+                        break
+                    end
+                end
+                if not focus then
+                    buttons[#buttons].w:emit_signal("mouse::enter")
+                end
             end
         elseif key == "Right" then
-            local focus = false
-            for i, button in ipairs(buttons) do
-                if helpers.button_isfocused(button) then
-                    -- Move focus to the next button
-                    if i < #buttons then
-                        button:emit_signal("mouse::leave")
-                        buttons[i + 1]:emit_signal("mouse::enter")
-                    elseif i == #buttons then
-                        button:emit_signal("mouse::leave")
-                        buttons[1]:emit_signal("mouse::enter")
+            if confirmation.text.visible == true then
+                if helpers.button_isfocused(confirmation.yes) then
+                    confirmation.yes:emit_signal("mouse::leave")
+                    confirmation.no:emit_signal("mouse::enter")
+                elseif helpers.button_isfocused(confirmation.no) then
+                    confirmation.yes:emit_signal("mouse::enter")
+                    confirmation.no:emit_signal("mouse::leave")
+                else
+                    confirmation.yes:emit_signal("mouse::enter")
+                    confirmation.no:emit_signal("mouse::leave")
+                end
+            else
+                local focus = false
+                for i, button in ipairs(buttons) do
+                    if helpers.button_isfocused(button.w) then
+                        -- Move focus to the next button
+                        if i < #buttons then
+                            button.w:emit_signal("mouse::leave")
+                            buttons[i + 1].w:emit_signal("mouse::enter")
+                        elseif i == #buttons then
+                            button.w:emit_signal("mouse::leave")
+                            buttons[1].w:emit_signal("mouse::enter")
+                        end
+                        focus = true
+                        break
                     end
-                    focus = true
-                    break
+                end
+                if not focus then
+                    buttons[1].w:emit_signal("mouse::enter")
                 end
             end
-            if not focus then
-                buttons[1]:emit_signal("mouse::enter")
-            end
         elseif key == "Return" or key == "space" then
-            for _, button in ipairs(buttons) do
-                if helpers.button_isfocused(button) then
-                    button:emit_signal("button::press")
-                    break
+            if confirmation.text.visible == true then
+                if helpers.button_isfocused(confirmation.yes) then
+                    confirmation.yes:emit_signal("button::press", _, _, _, 1)
+                else
+                    confirmation_hide()
+                end
+            else
+                for _, button in ipairs(buttons) do
+                    if helpers.button_isfocused(button.w) then
+                        button.w:emit_signal("button::press", _, _, _, 1)
+                        break
+                    end
                 end
             end
         end
     end)
 end
 
-powermenu.toggle = function()
+function pm_toggle()
     if powermenu.visible then
-        powermenu.close()
+        pm_close()
     else
-        powermenu.open()
+        pm_open()
     end
 end
 
--- Setup signals
-awesome.connect_signal("pm::wallpaper", powermenu.wallpaper)
-awesome.connect_signal("pm::toggle", powermenu.toggle)
-awesome.connect_signal("pm::close", powermenu.close)
-awesome.connect_signal("pm::open", powermenu.open)
-awesome.connect_signal("pm::focused", unfocus)
-
 -- ===================================================================
--- Buttons
+-- Setup Widgets
 -- ===================================================================
 
-powermenu:buttons(gears.table.join(
-    awful.button({}, 3, function()
-        --powermenu.close() -- Interrupts other widgets
+confirmation.yes:connect_signal("button::press", function(_, _, _, button)
+    if button == 1 then
+        selected_action()
+    end
+end)
+
+confirmation.no:connect_signal("button::press", function(_, _, _, button)
+    if button == 1 then
+        confirmation_hide()
+    end
+end)
+
+for i, button in ipairs(buttons) do
+    button.w:connect_signal("button::press", function(_, _, _, btn)
+        last_focused = i
+        confirmation_show(button.a)
     end)
-))
+end
+
+-- ===================================================================
+-- Signals
+-- ===================================================================
+
+-- Update background
+tag.connect_signal("property::selected", function(t)
+    local selected_tags = awful.screen.focused().selected_tags
+
+    if #selected_tags > 0 then
+        powermenu.bgimage = cache.wallpapers_blurred[selected_tags[1].index]
+    else
+        powermenu.bgimage = cache.wallpapers_blurred[1]
+    end
+end)
 
 -- ===================================================================
 -- Setup
@@ -179,11 +259,17 @@ powermenu:setup {
         nil,
         {
             -- Column container
+            confirmation.text,
+            {
+                confirmation.yes,
+                confirmation.no,
+                layout = wibox.layout.fixed.horizontal,
+            },
             goodbyer,
             {
-                buttons[1],
-                buttons[2],
-                buttons[3],
+                buttons[1].w,
+                buttons[2].w,
+                buttons[3].w,
                 layout = wibox.layout.fixed.horizontal,
             },
             layout = wibox.layout.fixed.vertical,
