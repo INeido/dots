@@ -235,6 +235,7 @@ You can edit the autostart apps in the ../scipts/autostart.sh file.
 | Quit AwesomeWM | mod + shift + q |
 | Open Dashboard | mod + d |
 | Open Powermenu | mod + p |
+| Lock computer | mod + l |
 | Fullscreen screenshot | mod + t |
 | Selection screenshot | mod + r |
 

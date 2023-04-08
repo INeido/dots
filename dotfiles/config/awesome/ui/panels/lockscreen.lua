@@ -137,12 +137,6 @@ local function grab_password()
 					reset()
 					grab_password()
 				end },
-				{ { 'Control' }, 'x',
-				function()
-					awful.spawn.easy_async_with_shell(
-            "file=$(mktemp -t screenshot_XXXXXX.png) && maim -uBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png")
-        
-				end },
 		},
 		keypressed_callback = function(mod, key, cmd)
 			if #key == 1 then
