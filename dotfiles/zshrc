@@ -72,17 +72,10 @@ plugins=(git sudo zsh-syntax-highlighting zsh-autosuggestions colored-man-pages)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-export PATH=$PATH:/home/neido/.local/bin
-
-# Fix Blue Yeti Volume
-pactl set-source-volume 0 100%
+export PATH=$PATH:$HOME/.local/bin
 
 # Be kind to Linux
 alias pls='sudo'
-
-# I am lazy
-alias ai='cd /AI/stable-diffusion-webui/'
 
 # Keybinds
 bindkey '^[[1;5C' forward-word

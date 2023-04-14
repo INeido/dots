@@ -5,8 +5,8 @@ lutris
 virt-manager
 vlc
 steam
-signal
+signal-desktop
 spotify-launcher
-freeredp
-network-manager-applet 
+freerdp
+network-manager-applet
 networkmanager-openvpn

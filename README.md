@@ -81,7 +81,7 @@ Lockscreen
 
 # Setup
 
-NOTE: The following instructions reuire Arch and AwesomeWM to be installed!
+NOTE: The following instructions require Arch and AwesomeWM to be installed!
 
 1. Clone the package.
     ```bash
@@ -96,27 +96,44 @@ NOTE: The following instructions reuire Arch and AwesomeWM to be installed!
 
 3. Don't forget the python requirements.
     ```bash
-    pip install -e python_requirements.txt
+    # You may need to run...
+    python -m ensurepip
+    # before running...
+    python -m pip install -r python_requirements.txt
     ```
 
 4. Finally, the dots can be installed using dotdrop.
     ```bash
-    dotdrop install
+    dotdrop install --profile=PC0
     ```
 
-    Optional requirements.
-    ```bash
-    pacman -S --needed - < opt_requirements.txt
-    ```
 
 <details close>
     <summary><samp><b>More Setup</b></samp></summary>
 
 <br>
 
+Optional requirements. For these you have to enable the 'multilib' repository in pacman.
+
+    ```bash
+    # Uncomment multilib
+    sudo nano /etc/pacman.conf
+    
+    pacman -S --needed - < opt_requirements.txt
+    ```
+
 A few more things to watch out for.
 
-1. To have transparency in VS-Code you either need to force it with picom or install the [Glassit](https://open-vsx.org/vscode/item?itemName=s-nlf-fh.glassit) extension. I also recommend enabling the custom titlebar in the settings.
+1. Installing oh-my-zsh and plugins:
+    ```bash
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    ```
+
+2. To have transparency in VS-Code you either need to force it with picom or install the [Glassit](https://open-vsx.org/vscode/item?itemName=s-nlf-fh.glassit) extension. I also recommend enabling the custom titlebar in the settings.
 My settings look like this:
     ```json
     "glassit.alpha": 240,
@@ -124,12 +141,14 @@ My settings look like this:
     "workbench.statusBar.visible": false,
     ```
 
-2. Network Manager service has to be enabled:
+3. Network Manager service has to be enabled and started:
     ```bash
+    sudo systemctl enable NetworkManager.service
+
     sudo systemctl start NetworkManager.service
     ```
 
-3. Powermenu, the Network Manager Applet and the pacman update script has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
+4. Powermenu, the Network Manager Applet and the pacman update script has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
     ```bash
     # Changes to sudoers have to be done using visudo
     # Optional: Change your editor from vi
@@ -143,15 +162,42 @@ My settings look like this:
     <Username> ALL=NOPASSWD: /usr/bin/halt, /usr/bin/reboot, /usr/bin/shutdown, /usr/bin/nm-applet, /home/<Username>/.config/awesome/scripts/pacman.sh
     ```
 
-    Start the service
-    ```bash
-    sudo systemctl start NetworkManager.service
-    ```
-    
-4. The wallpapers are a bit finicky. You have to make sure that they have the exact aspect ration of your display. If that is given, you have to run a script every time you change a wallpaper:
+5. The wallpapers are a bit finicky. You have to make sure that they have the exact aspect ration of your display. If that is given, you have to run a script every time you change a wallpaper:
     ```bash
     # You are prompted to enter your screen res as <width>x<height>
     ~/.config/awesome/scripts/blur_backgrounds.sh
+    ```
+
+</details>
+
+<details close>
+    <summary><samp><b>Tips & Tricks</b></samp></summary>
+
+<br>
+
+1. Installing yay.
+    ```bash
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si
+    ```
+
+2. Enable auto-login using systemd
+    Create a new service by creatign the following file:
+    ```bash
+    sudo nano /etc/systemd/system/getty@tty1.service.d/autologin.conf
+    ```
+
+    Paste this text, with your Username, into the file
+    ```
+    [Service]
+    ExecStart=
+    ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin <Username> %I $TERM
+    ```
+
+    Retart the daemon
+    ```bash
+    sudo systemctl daemon-reload
     ```
 
 </details>
@@ -223,7 +269,7 @@ Using the [settings.lua](https://github.com/INeido/dots/blob/main/dotfiles/confi
 
 The options should be pretty self explanatory.
 
-You can edit the autostart apps in the ../scipts/autostart.sh file.
+You can edit the autostart apps in the ../scripts/autostart.sh file.
 
 
 # Keys

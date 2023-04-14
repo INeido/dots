@@ -2,8 +2,9 @@ zsh
 alacritty
 htop
 code
+rofi
 python
-dolphin
+thunar
 qutebrowser
 lolcat
 neofetch
