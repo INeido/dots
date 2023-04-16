@@ -40,6 +40,7 @@ theme.iconfont                     = "Font Awesome 6 Free Solid" .. " "
 theme.bar_height                   = dpi(55)
 
 theme.systray_icon_size            = dpi(25)
+theme.systray_icon_spacing         = dpi(5)
 
 theme.useless_gap                  = dpi(5)
 theme.border_width                 = dpi(3)

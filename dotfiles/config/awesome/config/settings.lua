@@ -39,7 +39,7 @@ settings.bar_location      = "top" -- 'top', 'bottom'
 -- Apps
 settings.terminal          = "alacritty"
 settings.browser           = "qutebrowser"
-settings.fileexplorer      = "thunar"
+settings.fileexplorer      = "nemo"
 settings.editor            = os.getenv("EDITOR") or "nano"
 
 -- Modkeys

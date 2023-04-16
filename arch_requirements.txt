@@ -4,7 +4,7 @@ htop
 code
 rofi
 python
-thunar
+nemo
 qutebrowser
 lolcat
 neofetch

@@ -38,6 +38,10 @@ function helpers.vpad(height)
     }
 end
 
+function helpers.capitalize(str)
+    return str:gsub("^%l", string.upper)
+end
+
 function helpers.add_hover_cursor(w, hover_cursor)
     local original_cursor = "left_ptr"
 

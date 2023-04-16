@@ -11,8 +11,12 @@
 -- ===================================================================
 
 local awful = require("awful")
-local beautiful = require("beautiful")
+local gears = require("gears")
+local wibox = require("wibox")
+local helpers = require("helpers")
 local keys = require("config.keys")
+local beautiful = require("beautiful")
+local dpi = beautiful.xresources.apply_dpi
 local screen = awful.screen.focused()
 
 -- ===================================================================
@@ -46,7 +50,14 @@ awful.rules.rules = {
 
   -- Application rules
   {
-    rule = { class = "Thunar" },
+    rule = { class = helpers.capitalize(settings.fileexplorer) },
+    properties = { floating = true },
+    callback = function(c)
+      awful.placement.centered(c, nil)
+    end
+  },
+  {
+    rule = { class = helpers.capitalize(settings.terminal) },
     properties = { floating = true },
     callback = function(c)
       awful.placement.centered(c, nil)

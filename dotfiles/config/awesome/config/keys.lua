@@ -170,16 +170,6 @@ keys.globalkeys = gears.table.join(
         }),
     awful.key(
         { settings.modkey, },
-        "e",
-        function()
-            awful.spawn.with_shell(settings.fileexplorer)
-        end,
-        {
-            description = "Start File Explorer",
-            group = "launcher"
-        }),
-    awful.key(
-        { settings.modkey, },
         "d",
         function()
             db_open()

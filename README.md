@@ -41,18 +41,23 @@ Please consider, that this rice is tailored for myself. I did try to make it as 
 
 <br>
 
-Dashboard
+VS Code in fullscreen
 ![](https://github.com/INeido/dots/blob/main/samples/sample2.png?raw=true)
 
 <br>
 
-Powermenu
+Dashboard
 ![](https://github.com/INeido/dots/blob/main/samples/sample3.png?raw=true)
 
 <br>
 
-Lockscreen
+Powermenu
 ![](https://github.com/INeido/dots/blob/main/samples/sample4.png?raw=true)
+
+<br>
+
+Lockscreen
+![](https://github.com/INeido/dots/blob/main/samples/sample5.png?raw=true)
 
 <br>
 
@@ -72,7 +77,7 @@ Lockscreen
 | **Terminal** | Alacritty | `alacritty` <sup>[Arch](https://archlinux.org/packages/community/x86_64/alacritty/)</sup> | [GitHub](https://github.com/alacritty/alacritty), [Docs](https://github.com/alacritty/alacritty/wiki)
 | **Monitor** | HTOP | `htop` <sup>[Arch](https://archlinux.org/packages/extra/x86_64/htop/)</sup> | [GitHub](https://github.com/htop-dev/htop), [Docs](https://man.archlinux.org/man/htop.1.en)
 | **Browser** | Qutebrowser | `qutebrowser` <sup>[Arch](https://archlinux.org/packages/community/x86_64/qutebrowser/)</sup> | [Docs](https://www.qutebrowser.org/doc/help/index.html)
-| **File Manager** | Thunar | `thunar` <sup>[Arch]( https://archlinux.org/packages/extra/x86_64/thunar/)</sup> | [GitHub](https://github.com/xfce-mirror/thunar), [Docs](https://docs.xfce.org/xfce/thunar/start)
+| **File Manager** | Nemo | `nemo` <sup>[Arch](https://archlinux.org/packages/community/x86_64/nemo/)</sup> | [GitHub](https://github.com/linuxmint/nemo), [Docs](https://wiki.archlinux.org/title/Nemo)
 | **Application Launcher** | Rofi | `rofi` <sup>[Arch](https://archlinux.org/packages/community/x86_64/rofi/)</sup> | [GitHub](https://github.com/davatorium/rofi), [Docs](https://github.com/davatorium/rofi/wiki)
 | **System Font** | Inter | `inter-font`<sup>[Arch](https://archlinux.org/packages/community/any/inter-font/)</sup> | [GitHub](https://github.com/rsms/inter)
 | **VS Code Font** | Fira Code | `ttf-fira-code`<sup>[Arch](https://archlinux.org/packages/community/any/ttf-fira-code/)</sup> | [GitHub](https://github.com/tonsky/FiraCode), [Docs](https://github.com/tonsky/FiraCode/wiki)
@@ -133,22 +138,14 @@ A few more things to watch out for.
     git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     ```
 
-2. To have transparency in VS-Code you either need to force it with picom or install the [Glassit](https://open-vsx.org/vscode/item?itemName=s-nlf-fh.glassit) extension. I also recommend enabling the custom titlebar in the settings.
-My settings look like this:
-    ```json
-    "glassit.alpha": 240,
-    "window.titleBarStyle": "custom",
-    "workbench.statusBar.visible": false,
-    ```
-
-3. Network Manager service has to be enabled and started:
+2. Network Manager service has to be enabled and started:
     ```bash
     sudo systemctl enable NetworkManager.service
 
     sudo systemctl start NetworkManager.service
     ```
 
-4. Powermenu, the Network Manager Applet and the pacman update script has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
+3. Powermenu, the Network Manager Applet and the pacman update script has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
     ```bash
     # Changes to sudoers have to be done using visudo
     # Optional: Change your editor from vi
@@ -162,7 +159,7 @@ My settings look like this:
     <Username> ALL=NOPASSWD: /usr/bin/halt, /usr/bin/reboot, /usr/bin/shutdown, /usr/bin/nm-applet, /home/<Username>/.config/awesome/scripts/pacman.sh
     ```
 
-5. The wallpapers are a bit finicky. You have to make sure that they have the exact aspect ration of your display. If that is given, you have to run a script every time you change a wallpaper:
+4. The wallpapers are a bit finicky. You have to make sure that they have the exact aspect ration of your display. If that is given, you have to run a script every time you change a wallpaper:
     ```bash
     # You are prompted to enter your screen res as <width>x<height>
     ~/.config/awesome/scripts/blur_backgrounds.sh
@@ -199,6 +196,15 @@ My settings look like this:
     ```bash
     sudo systemctl daemon-reload
     ```
+
+3. Set your screen DPI
+    First, go to [dpi.lv](https://dpi.lv/) and figure out your DPI.
+    You can then enter this DPI in the following file to set it system-wide:
+    ```bash
+    nano .Xresources
+    ```
+
+    Enter ```Xft.dpi: <your DPI>``` and save.
 
 </details>
 
