@@ -6,30 +6,64 @@
 
 config_version: 2
 settings:
+  auto_save.session:
+    global: true
   bindings.commands:
     global:
       normal:
         <Backspace>: back
+        <Ctrl+f>: search
         <Ctrl+n>: open -t https://start.duckduckgo.com/
         <Ctrl+q>: tab-close
         <Shift+Backspace>: forward
+        Ctrl+f: search
+  colors.tabs.bar.bg:
+    global: '#2D2D2D'
+  colors.tabs.even.bg:
+    global: '#2D2D2D'
+  colors.tabs.odd.bg:
+    global: '#2D2D2D'
+  colors.tabs.selected.even.bg:
+    global: '#1E1E1E'
+  colors.tabs.selected.even.fg:
+    global: '#FFFFFF'
+  colors.tabs.selected.odd.bg:
+    global: '#1E1E1E'
+  colors.tabs.selected.odd.fg:
+    global: '#FFFFFF'
+  colors.webpage.bg:
+    global: '#ffffff80'
   colors.webpage.darkmode.algorithm:
     global: lightness-hsl
   colors.webpage.darkmode.enabled:
-    global: false
+    global: true
+  colors.webpage.preferred_color_scheme:
+    global: dark
   completion.show:
     global: always
+  content.cookies.accept:
+    global: all
   fonts.default_family:
     global: Inter
+  input.insert_mode.auto_load:
+    global: true
+  input.insert_mode.plugins:
+    global: true
   statusbar.show:
     global: never
+  tabs.favicons.show:
+    global: always
   tabs.padding:
     global:
-      bottom: 10
-      left: 0
-      right: 0
-      top: 10
+      bottom: 15
+      left: 10
+      right: 10
+      top: 15
   tabs.show:
     global: multiple
+  tabs.title.format:
+    global: '{current_title}'
+  tabs.title.format_pinned:
+    global: '{current_title}'
   window.transparent:
     global: true

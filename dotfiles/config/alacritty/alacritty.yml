@@ -17,8 +17,8 @@ env:
 window:
   # Window dimensions (changes require restart)
   dimensions:
-    columns: 84
-    lines: 25
+    columns: 100
+    lines: 30
 
   # Window position (changes require restart)
   #
@@ -51,7 +51,7 @@ window:
   #decorations: full
 
   # Background opacity
-  opacity: 0.90
+  opacity: 1
 
   # Startup Mode (changes require restart)
   startup_mode: Windowed
@@ -162,7 +162,7 @@ scrolling:
 # Colors (Tomorrow Night)
 colors:
   # Default colors
-  #primary:
+  primary:
     background: '#1E1E1E'
     #foreground: '#e040fb'
 
@@ -256,8 +256,8 @@ colors:
   #  background: CellForeground
 
   # Normal colors
-  #normal:
-  #  black:   '#1d1f21'
+  normal:
+    black:   '#1E1E1E'
   #  red:     '#cc6666'
   #  green:   '#b5bd68'
   #  yellow:  '#f0c674'
