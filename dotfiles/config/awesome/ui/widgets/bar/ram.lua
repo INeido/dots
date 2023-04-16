@@ -1,9 +1,9 @@
---        ██████╗██████╗ ██╗   ██╗
---       ██╔════╝██╔══██╗██║   ██║
---       ██║     ██████╔╝██║   ██║
---       ██║     ██╔═══╝ ██║   ██║
---       ╚██████╗██║     ╚██████╔╝
---        ╚═════╝╚═╝      ╚═════╝
+--      ██████╗  █████╗ ███╗   ███╗
+--      ██╔══██╗██╔══██╗████╗ ████║
+--      ██████╔╝███████║██╔████╔██║
+--      ██╔══██╗██╔══██║██║╚██╔╝██║
+--      ██║  ██║██║  ██║██║ ╚═╝ ██║
+--      ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝
 
 
 -- ===================================================================
@@ -18,19 +18,19 @@ local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
--- Texbox
+-- Textbox
 -- ===================================================================
 
-local cpu = wibox.widget.textbox()
-cpu.font = beautiful.font .. " Bold 10"
+local ram = wibox.widget.textbox()
+ram.font = beautiful.font .. "11"
 
 -- ===================================================================
 -- Icon
 -- ===================================================================
 
 local icon = wibox.widget {
-    font   = beautiful.iconfont .. " 11",
-    markup = helpers.text_color(" ", beautiful.accent),
+    font   = beautiful.iconfont .. "11",
+    markup = helpers.text_color(" ", beautiful.accent),
     valign = "center",
     align  = "center",
     widget = wibox.widget.textbox,
@@ -42,14 +42,14 @@ local icon = wibox.widget {
 
 -- Create the widget
 local w = wibox.widget {
-    -- Margins outside
+    -- Add margins outside
     {
         icon,
-        -- Icon
+        -- Add Icon
         {
-            -- Widget
-            cpu,
-            fg = beautiful.text_bright,
+            -- Add Widget
+            ram,
+            fg = beautiful.fg_focus,
             widget = wibox.container.background
         },
         spacing = dpi(2),
@@ -78,18 +78,9 @@ local tooltip = awful.tooltip {
 -- Signal
 -- ===================================================================
 
-awesome.connect_signal("evil::cpu", function(args)
-    cpu.text = args.util .. "%"
-
-    local text = ""
-
-    for i = 1, #args.cores do
-        text = text .. "Core" .. i - 1 .. ": " .. args.cores[i] .. "%\n"
-    end
-
-    text = string.sub(text, 1, -2)
-
-    tooltip.text = text
+awesome.connect_signal("evil::ram", function(args)
+    ram.text = string.format("%.1f", args.used / 1024) .. "GB"
+    tooltip.text = "Total: " .. args.total .. "MB\n" .. "Used: " .. args.used .. "MB\n" .. "Free: " .. args.free .. "MB"
 end)
 
 return w

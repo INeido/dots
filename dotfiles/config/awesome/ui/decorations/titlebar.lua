@@ -22,22 +22,22 @@ local dpi = beautiful.xresources.apply_dpi
 
 local function create_button(command, c)
     local w = wibox.widget {
+        {
             {
                 {
-                    {
-                        widget = wibox.widget.textbox,
-                    },
-                    forced_height = dpi(15),
-                    forced_width = dpi(15),
-                    shape = gears.shape.circle,
-                    bg = beautiful.titlebar_button_normal,
-                    widget = wibox.container.background,
+                    widget = wibox.widget.textbox,
                 },
-                margins = 5,
-                widget = wibox.container.margin,
+                forced_height = dpi(15),
+                forced_width = dpi(15),
+                shape = gears.shape.circle,
+                bg = beautiful.titlebar_button_normal,
+                widget = wibox.container.background,
             },
-            widget = wibox.container.background,
-        }
+            margins = 5,
+            widget = wibox.container.margin,
+        },
+        widget = wibox.container.background,
+    }
 
     -- Hover effect
     w:connect_signal("mouse::enter", function()
@@ -84,15 +84,15 @@ end
 
 return function(c)
     local buttons = gears.table.join(
-            awful.button({}, 1, function()
-                leftclick(c)
-            end),
-            awful.button({}, 3, function()
-                client.focus = c
-                c:raise()
-                awful.mouse.client.resize(c)
-            end)
-        )
+        awful.button({}, 1, function()
+            leftclick(c)
+        end),
+        awful.button({}, 3, function()
+            client.focus = c
+            c:raise()
+            awful.mouse.client.resize(c)
+        end)
+    )
 
     local left = {
         buttons = buttons,
@@ -109,16 +109,13 @@ return function(c)
             create_button(function()
                 c.minimized = true
             end, c),
-
             create_button(function()
                 c.maximized = not c.maximized
                 c:raise()
             end, c),
-
             create_button(function()
                 c:kill()
             end, c),
-
             layout = wibox.layout.fixed.horizontal,
         },
         widget = wibox.container.margin

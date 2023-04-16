@@ -31,8 +31,8 @@ end
 
 local w = wibox.widget {
     id     = "button",
-    text   = "",
-    markup = helpers.text_color("", beautiful.fg_focus),
+    text   = "",
+    markup = helpers.text_color("", beautiful.fg_focus),
     valign = "center",
     align  = "center",
     font   = beautiful.iconfont .. " 35",
@@ -42,4 +42,4 @@ local w = wibox.widget {
 -- Box the widget
 w = helpers.box_pm_widget(w, dpi(100), dpi(100))
 
-return {w = w, a = action}
+return { w = w, a = action }

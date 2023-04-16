@@ -34,57 +34,60 @@ local buttons = gears.table.join(
 
 -- Create the widget
 local w = awful.widget.taglist {
-    screen          = "primary",
+    screen          = screen.primary,
     filter          = awful.widget.taglist.filter.all,
     buttons         = buttons,
     widget_template = {
-        -- Selected Indicator
+        -- Container Background
         {
-            -- Margin for Indicator
+            -- Margin for Icon
             {
-                -- Container Background
-                {
-                    -- Margin for Icon
-                    {
-                        -- Icon
-                        id     = "icon_role",
-                        widget = wibox.widget.imagebox,
-                    },
-                    margins = dpi(6),
-                    widget  = wibox.container.margin,
-                },
-                id     = "background_role",
-                widget = wibox.container.background,
+                -- Icon
+                id     = "icon_role",
+                widget = wibox.widget.imagebox,
             },
-            bottom = dpi(4),
+            left   = dpi(5),
+            right  = dpi(5),
             widget = wibox.container.margin,
         },
-        id = "indicator_role",
-        shape = gears.shape.rect,
-        widget = wibox.container.background,
-
+        bg              = "transparent",
+        widget          = wibox.container.background,
         create_callback = function(self, t, index, tags) --luacheck: no unused args
-            local toggle_indicator = function(o)
-                if o.selected then
-                    self.bg = beautiful.accent
+            if t.selected then
+                self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon, beautiful.fg_focus))
+            else
+                self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon, beautiful.fg_faded))
+            end
+
+            local toggle_indicator = function()
+                if t.selected then
+                    self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon,
+                        beautiful.fg_focus))
                 else
-                    self.bg = beautiful.panel_item_normal
+                    self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon,
+                        beautiful.fg_faded))
                 end
             end
 
-            t:connect_signal("property::selected", function() toggle_indicator(t) end)
+            t:connect_signal("property::selected", function() toggle_indicator() end)
 
             self:connect_signal("mouse::enter", function()
-                self:get_children_by_id("background_role")[1]:set_bg(beautiful.panel_item_hover)
+                if not t.selected then
+                    self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon,
+                        beautiful.fg_normal))
+                end
             end)
             self:connect_signal("mouse::leave", function()
-                self:get_children_by_id("background_role")[1]:set_bg(beautiful.panel_item_normal)
+                if not t.selected then
+                    self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon,
+                        beautiful.fg_faded))
+                end
             end)
         end
     }
 }
 
 -- Box the widget
-w = helpers.box_tp_widget(w, false, 0)
+w = helpers.box_tp_widget(w, false, 5)
 
 return w

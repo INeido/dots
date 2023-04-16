@@ -50,7 +50,7 @@ local w = wibox.widget {
                     {
                         id = "titlew",
                         text = "Nothing playing",
-                        font = beautiful.font .. "Bold 20",
+                        font = beautiful.font .. "Bold 22",
                         align = "center",
                         widget = wibox.widget.textbox,
                     },
@@ -58,7 +58,7 @@ local w = wibox.widget {
                     {
                         id = "artistw",
                         text = "wub wub",
-                        font = beautiful.font .. " 16",
+                        font = beautiful.font .. "18",
                         align = "center",
                         widget = wibox.widget.textbox,
                     },
@@ -71,9 +71,9 @@ local w = wibox.widget {
                     -- Previous Button
                     {
                         id = "prevw",
-                        markup = helpers.text_color("", beautiful.fg_deselected),
+                        markup = helpers.text_color("", beautiful.fg_faded),
                         text = "",
-                        font = beautiful.iconfont .. " 22",
+                        font = beautiful.iconfont .. "24",
                         align = "center",
                         valign = "center",
                         forced_height = dpi(30),
@@ -87,7 +87,7 @@ local w = wibox.widget {
                     -- Play/Pause Button
                     {
                         id = "ppw",
-                        font = beautiful.iconfont .. " 22",
+                        font = beautiful.iconfont .. "24",
                         align = "center",
                         valign = "center",
                         forced_height = dpi(30),
@@ -101,9 +101,9 @@ local w = wibox.widget {
                     -- Next Button
                     {
                         id = "nextw",
-                        markup = helpers.text_color("", beautiful.fg_deselected),
+                        markup = helpers.text_color("", beautiful.fg_faded),
                         text = "",
-                        font = beautiful.iconfont .. " 22",
+                        font = beautiful.iconfont .. "24",
                         align = "center",
                         valign = "center",
                         forced_height = dpi(30),
@@ -143,7 +143,7 @@ local w = wibox.widget {
             {
                 id = "iconw",
                 markup = helpers.text_color("", beautiful.accent),
-                font = beautiful.iconfont .. " 30",
+                font = beautiful.iconfont .. "30",
                 align = "center",
                 visible = false,
                 widget = wibox.widget.textbox,
@@ -155,8 +155,8 @@ local w = wibox.widget {
         },
         layout = wibox.layout.stack,
     },
-    forced_height = dpi(320),
-    forced_width = dpi(320),
+    forced_height = dpi(400),
+    forced_width = dpi(400),
     bg = beautiful.bg_normal,
     widget = wibox.container.background,
 
@@ -206,7 +206,7 @@ local update = function(args, _, _, _)
 
     -- Update running
     if args.status ~= "Playing" and args.status ~= "Paused" then
-        w:get_children_by_id("artw")[1]:set_image(beautiful.icon_spotify)
+        w:get_children_by_id("artw")[1]:set_image(cache.icon_spotify)
         w:set_text("Click to open", "Spotify not running")
         return
     end
@@ -299,24 +299,28 @@ w:connect_signal("mouse::leave", function()
 end)
 
 w:get_children_by_id("prevw")[1]:connect_signal("mouse::enter", function()
-    w:get_children_by_id("prevw")[1]:set_markup(helpers.text_color(w:get_children_by_id("prevw")[1]:get_text(), beautiful.fg_normal))
+    w:get_children_by_id("prevw")[1]:set_markup(helpers.text_color(w:get_children_by_id("prevw")[1]:get_text(),
+    beautiful.fg_normal))
 end)
 w:get_children_by_id("prevw")[1]:connect_signal("mouse::leave", function()
-    w:get_children_by_id("prevw")[1]:set_markup(helpers.text_color(w:get_children_by_id("prevw")[1]:get_text(), beautiful.fg_deselected))
+    w:get_children_by_id("prevw")[1]:set_markup(helpers.text_color(w:get_children_by_id("prevw")[1]:get_text(),
+    beautiful.fg_faded))
 end)
 
 w:get_children_by_id("ppw")[1]:connect_signal("mouse::enter", function()
-    w:get_children_by_id("ppw")[1]:set_font(beautiful.iconfont_bigger)
+    w:get_children_by_id("ppw")[1]:set_font(beautiful.iconfont .. "28")
 end)
 w:get_children_by_id("ppw")[1]:connect_signal("mouse::leave", function()
-    w:get_children_by_id("ppw")[1]:set_font(beautiful.iconfont_big)
+    w:get_children_by_id("ppw")[1]:set_font(beautiful.iconfont .. "24")
 end)
 
 w:get_children_by_id("nextw")[1]:connect_signal("mouse::enter", function()
-    w:get_children_by_id("nextw")[1]:set_markup(helpers.text_color(w:get_children_by_id("nextw")[1]:get_text(), beautiful.fg_normal))
+    w:get_children_by_id("nextw")[1]:set_markup(helpers.text_color(w:get_children_by_id("nextw")[1]:get_text(),
+    beautiful.fg_normal))
 end)
 w:get_children_by_id("nextw")[1]:connect_signal("mouse::leave", function()
-    w:get_children_by_id("nextw")[1]:set_markup(helpers.text_color(w:get_children_by_id("nextw")[1]:get_text(), beautiful.fg_deselected))
+    w:get_children_by_id("nextw")[1]:set_markup(helpers.text_color(w:get_children_by_id("nextw")[1]:get_text(),
+    beautiful.fg_faded))
 end)
 
 awesome.connect_signal("evil::spotify", function(args)

@@ -22,14 +22,14 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local clock = wibox.widget.textclock("%H : %M")
-clock.font = beautiful.font .. " Bold 10"
+clock.font = beautiful.font .. "10"
 
 -- ===================================================================
 -- Icon
 -- ===================================================================
 
 local icon = wibox.widget {
-    font   = beautiful.iconfont .. " 11",
+    font   = beautiful.iconfont .. "11",
     markup = helpers.text_color(" ", beautiful.accent),
     valign = "center",
     align  = "center",
@@ -49,7 +49,7 @@ local w = wibox.widget {
         {
             -- Add Widget
             clock,
-            fg = beautiful.text_bright,
+            fg = beautiful.fg_focus,
             widget = wibox.container.background
         },
         spacing = dpi(2),

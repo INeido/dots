@@ -43,6 +43,8 @@ local powermenu    = wibox({
 
 awful.placement.maximize(powermenu)
 
+local powermenu_extenders = helpers.extend_to_screens(powermenu)
+
 -- ===================================================================
 -- Variables
 -- ===================================================================
@@ -100,6 +102,9 @@ end
 function pm_close()
     awful.keygrabber.stop(powermenu.grabber)
     powermenu.visible = false
+    for i, panel in ipairs(powermenu_extenders) do
+		panel.visible = false
+	end
     confirmation_hide()
 end
 
@@ -113,6 +118,9 @@ function pm_open()
     db_close()
     -- Open Powermenu
     powermenu.visible = true
+    for i, panel in ipairs(powermenu_extenders) do
+		panel.visible = true
+	end
     -- Start Keygrabber
     powermenu.grabber = awful.keygrabber.run(function(_, key, event)
         if event == "release" then return end
@@ -243,6 +251,10 @@ tag.connect_signal("property::selected", function(t)
     else
         powermenu.bgimage = cache.wallpapers_blurred[1]
     end
+
+    for i, panel in ipairs(powermenu_extenders) do
+		panel.bgimage = powermenu.bgimage
+	end
 end)
 
 -- ===================================================================

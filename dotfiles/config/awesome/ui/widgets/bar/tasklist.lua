@@ -38,7 +38,7 @@ local buttons = gears.table.join(
         awful.client.focus.byidx(1)
     end),
     awful.button({}, 5, function()
-        awful.client.focus.byidx( -1)
+        awful.client.focus.byidx(-1)
     end))
 
 -- ===================================================================
@@ -47,7 +47,7 @@ local buttons = gears.table.join(
 
 -- Create the Widget
 local w = awful.widget.tasklist {
-    screen          = "primary",
+    screen          = screen.primary,
     filter          = awful.widget.tasklist.filter.currenttags,
     buttons         = buttons,
     widget_template = {
@@ -75,7 +75,6 @@ local w = awful.widget.tasklist {
         id = "indicator_role",
         shape = gears.shape.rect,
         widget = wibox.container.background,
-
         create_callback = function(self, c, index, clients) --luacheck: no unused args
             self:get_children_by_id("clienticon")[1].client = c
 
@@ -83,9 +82,9 @@ local w = awful.widget.tasklist {
                 if not o.minimized then
                     self.bg = beautiful.accent
                 elseif o.urgent then
-                    self.bg = beautiful.panel_item_urgent
+                    self.bg = beautiful.widget_urgent
                 else
-                    self.bg = beautiful.panel_item_normal
+                    self.bg = beautiful.widget_normal
                 end
             end
 
@@ -94,10 +93,10 @@ local w = awful.widget.tasklist {
             c:connect_signal("property::minimized", function() toggle_indicator(c) end)
 
             self:connect_signal("mouse::enter", function()
-                self:get_children_by_id("background_role")[1]:set_bg(beautiful.panel_item_hover)
+                self:get_children_by_id("background_role")[1]:set_bg(beautiful.widget_hover)
             end)
             self:connect_signal("mouse::leave", function()
-                self:get_children_by_id("background_role")[1]:set_bg(beautiful.panel_item_normal)
+                self:get_children_by_id("background_role")[1]:set_bg(beautiful.widget_normal)
             end)
         end
     }

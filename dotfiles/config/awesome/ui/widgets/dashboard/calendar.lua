@@ -23,10 +23,10 @@ local dpi       = beautiful.xresources.apply_dpi
 
 local styles    = {}
 styles.month    = {
-    padding      = 20,
+    padding      = dpi(10),
     fg_color     = beautiful.fg_normal,
     bg_color     = transparent,
-    border_width = 0,
+    border_width = dpi(0),
 }
 styles.normal   = {}
 styles.focus    = {
@@ -72,7 +72,7 @@ end
 
 local w = wibox.widget {
     date          = os.date("*t"),
-    font          = beautiful.font .. "Bold 10",
+    font          = beautiful.font .. "Bold 12",
     long_weekdays = false,
     spacing       = dpi(3),
     forced_width  = dpi(260),

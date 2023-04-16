@@ -22,14 +22,14 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local pacman = wibox.widget.textbox()
-pacman.font = beautiful.font .. " Bold 10"
+pacman.font = beautiful.font .. "11"
 
 -- ===================================================================
 -- Icon
 -- ===================================================================
 
 local icon = wibox.widget {
-    font   = beautiful.iconfont .. " 11",
+    font   = beautiful.iconfont .. "11",
     markup = helpers.text_color(" ", beautiful.accent),
     valign = "center",
     align  = "center",
@@ -49,7 +49,7 @@ local w = wibox.widget {
         {
             -- Add Widget
             pacman,
-            fg = beautiful.text_bright,
+            fg = beautiful.fg_focus,
             widget = wibox.container.background
         },
         spacing = dpi(2),
@@ -103,10 +103,10 @@ w:connect_signal("button::press", function(_, _, _, button)
         tooltip.text = "Updating..."
         -- After the update
         awful.spawn.easy_async("sudo " .. beautiful.config_path .. "scripts/pacman.sh",
-        function(_, _, _, _)
-            tooltip.text = "You are up to date!"
-            pacman.text = 0
-        end)
+            function(_, _, _, _)
+                tooltip.text = "You are up to date!"
+                pacman.text = 0
+            end)
     end
 end)
 

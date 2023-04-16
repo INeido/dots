@@ -36,7 +36,7 @@ minutes.format = helpers.text_color("%M", beautiful.accent)
 local w = wibox.widget {
     hours,
     minutes,
-    spacing = 8,
+    spacing = dpi(8),
     layout = wibox.layout.fixed.horizontal,
 }
 

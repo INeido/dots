@@ -37,7 +37,7 @@ local w = wibox.widget {
             -- Margins
             {
                 -- Text
-                id = "textbox",
+                id     = "textbox",
                 markup = helpers.text_color(text, beautiful.fg_focus),
                 font   = beautiful.font .. "24",
                 valign = "center",
@@ -50,7 +50,7 @@ local w = wibox.widget {
             right = dpi(20),
             widget = wibox.container.margin,
         },
-        bg = beautiful.panel_item_normal .. "AA",
+        bg = beautiful.widget_normal .. "AA",
         shape = gears.shape.rect,
         widget = wibox.container.background,
     },

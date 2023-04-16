@@ -21,7 +21,8 @@ local screen = awful.screen.focused()
 
 awful.rules.rules = {
   -- All clients will match this rule.
-  { rule = {},
+  {
+    rule = {},
     properties = {
       border_width = beautiful.border_width,
       border_color = beautiful.border_normal,
@@ -36,20 +37,23 @@ awful.rules.rules = {
   },
 
   -- Add titlebars to normal clients and dialogs
-  { rule_any = { type = { "normal", "dialog" } },
+  {
+    rule_any = { type = { "normal", "dialog" } },
     properties = {
       titlebars_enabled = true,
     }
   },
 
   -- Application rules
-  { rule = { class = "Thunar" },
+  {
+    rule = { class = "Thunar" },
     properties = { floating = true },
     callback = function(c)
       awful.placement.centered(c, nil)
     end
   },
-  { rule = { class = "Spotify" },
+  {
+    rule = { class = "Spotify" },
     properties = {
       floating = true,
       sticky = true,
@@ -59,7 +63,8 @@ awful.rules.rules = {
       skip_taskbar = true,
     },
   },
-  { rule = { class = "Steam" },
+  {
+    rule = { class = "Steam" },
     properties = {
       tag = screen.tags[1], -- Doesnt work
       titlebars_enabled = false,

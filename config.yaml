@@ -50,9 +50,6 @@ dotfiles:
   f_setup.lua:
     src: config/awesome/setup.lua
     dst: ~/.config/awesome/setup.lua
-  f_picom.conf:
-    src: config/picom/picom.conf
-    dst: ~/.config/picom/picom.conf
   f_config.rasi:
     src: config/rofi/config.rasi
     dst: ~/.config/rofi/config.rasi
@@ -108,7 +105,6 @@ profiles:
     - d_icons
     - f_theme.lua
     - f_setup.lua
-    - f_picom.conf
     - f_config.rasi
     - f_launcher.rasi
     - f_onedark.rasi

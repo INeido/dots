@@ -22,7 +22,7 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local function format_size(kilobytes)
-    local units = {"KB", "MB", "GB", "TB", "PB"}
+    local units = { "KB", "MB", "GB", "TB", "PB" }
     local unit_index = 1
     local size = tonumber(kilobytes)
     while size >= 1024 and unit_index < #units do
@@ -47,7 +47,7 @@ local create_widget = function(name)
         {
             text   = name,
             align  = "center",
-            font   = beautiful.font .. "Bold 14",
+            font   = beautiful.font .. "Bold 20",
             widget = wibox.widget.textbox,
         },
         {
@@ -56,9 +56,9 @@ local create_widget = function(name)
                 id = "chart",
                 max_value = 100,
                 value = 100,
-                forced_height = 80,
-                forced_width = 80,
-                thickness = 10,
+                forced_height = dpi(80),
+                forced_width = dpi(80),
+                thickness = dpi(10),
                 start_angle = math.pi * 1.5,
                 rounded_edge = true,
                 bg = beautiful.bg_minimize,
@@ -69,7 +69,7 @@ local create_widget = function(name)
                 -- Text in the center
                 id     = "val",
                 align  = "center",
-                font   = beautiful.font .. "Bold 10",
+                font   = beautiful.font .. "Bold 14",
                 widget = wibox.widget.textbox,
             },
             layout = wibox.layout.stack,
@@ -78,7 +78,7 @@ local create_widget = function(name)
             -- Text underneath
             id     = "text",
             align  = "center",
-            font   = beautiful.font .. "Bold 10",
+            font   = beautiful.font .. "Bold 14",
             widget = wibox.widget.textbox,
         },
         spacing = dpi(10),

@@ -71,7 +71,7 @@ local w = wibox.widget {
             {
                 id = "titlew",
                 text = "Nothing playing",
-                font = beautiful.font .. "Bold 10",
+                font = beautiful.font .. "11",
                 widget = wibox.widget.textbox
             },
             speed = 40,
@@ -83,14 +83,14 @@ local w = wibox.widget {
             -- Connector betwee Title and Artist
             id = "connectorw",
             text = " - ",
-            font = beautiful.font .. "Bold 10",
+            font = beautiful.font .. "11",
             widget = wibox.widget.textbox,
         },
         {
             -- Artist Text
             id = "artistw",
             text = "wub wub",
-            font = beautiful.font .. "Bold 10",
+            font = beautiful.font .. "11",
             widget = wibox.widget.textbox,
         },
         layout = wibox.layout.align.horizontal,
@@ -168,7 +168,7 @@ awesome.connect_signal("evil::spotify", function(args)
 end)
 
 -- Box the Widget
-local spotify = helpers.box_tp_widget(w, true, 5)
+local spotify = helpers.box_tp_widget(w, true, 2)
 
 --- Adds mouse controls to the widget:
 --  - left click - minimize/unminimize spotify

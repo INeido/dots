@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pictures_folder="../wallpapers"
+pictures_folder="$HOME/.config/awesome/wallpapers"
 blurred_folder="$pictures_folder/blurred"
 mkdir -p "${blurred_folder}"
 

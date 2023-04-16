@@ -16,7 +16,7 @@ require("config.errorhandling")
 -- Theme
 -- ===================================================================
 
-require("beautiful").init(require("awful").util.getdir("config") .. "theme.lua" )
+require("beautiful").init(require("awful").util.getdir("config") .. "theme.lua")
 
 -- ===================================================================
 -- Configs
@@ -52,4 +52,4 @@ require("awful").spawn.with_shell("~/.config/awesome/scripts/autorun.sh")
 -- Lockscreen
 -- ===================================================================
 
-ls_show()
+--ls_show()

@@ -47,40 +47,16 @@ local lockscreen = wibox({
 
 awful.placement.maximize(lockscreen)
 
--- Create the lock screen wibox (extra)
-local function create_extender(s)
-	local lockscreen_ext
-	wibox({
-		visible = false,
-		ontop = true,
-		type = "splash",
-		screen = s
-	})
-	awful.placement.maximize(lockscreen_ext)
-
-	return lockscreen_ext
-end
-
--- Add lockscreen to each screen
-awful.screen.connect_for_each_screen(function(s)
-	if s.index == 2 then
-		s.mylockscreenext = create_extender(2)
-		s.mylockscreen = lockscreen
-	else
-		s.mylockscreen = lockscreen
-	end
-end)
+local lockscreen_extenders = helpers.extend_to_screens(lockscreen)
 
 -- ===================================================================
 -- Functions
 -- ===================================================================
 
 local function set_visibility(v)
-	for s in screen do
-		s.mylockscreen.visible = v
-		if s.mylockscreenext then
-			s.mylockscreenext.visible = v
-		end
+	lockscreen.visible = v
+	for i, panel in ipairs(lockscreen_extenders) do
+		panel.visible = v
 	end
 end
 
@@ -185,6 +161,10 @@ tag.connect_signal("property::selected", function(t)
 		lockscreen.bgimage = cache.wallpapers_blurred[selected_tags[1].index]
 	else
 		lockscreen.bgimage = cache.wallpapers_blurred[1]
+	end
+
+	for i, panel in ipairs(lockscreen_extenders) do
+		panel.bgimage = lockscreen.bgimage
 	end
 end)
 

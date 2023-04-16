@@ -18,21 +18,37 @@ local dpi                  = beautiful.xresources.apply_dpi
 settings                   = {}
 
 -- ===================================================================
--- Variables
+-- Important
 -- ===================================================================
 
 -- Password
 settings.password          = "root"
 
+-- ===================================================================
+-- Look & Feel
+-- ===================================================================
+
+-- Switches
+settings.enable_titlebar   = false
+settings.bar_location      = "top" -- 'top', 'bottom'
+
+-- ===================================================================
+-- General
+-- ===================================================================
+
 -- Apps
 settings.terminal          = "alacritty"
-settings.browser           = "firefox"
+settings.browser           = "qutebrowser"
 settings.fileexplorer      = "thunar"
 settings.editor            = os.getenv("EDITOR") or "nano"
 
 -- Modkeys
 settings.modkey            = "Mod4"
 settings.altkey            = "Mod1"
+
+-- ===================================================================
+-- Widgets
+-- ===================================================================
 
 -- Greeter text
 settings.greeter_text      = "Welcome back"
@@ -42,9 +58,6 @@ settings.goodbyer_text     = "See ya later"
 
 -- Confirmation text
 settings.confirmation_text = "Are you sure?"
-
--- Switches
-settings.enable_titlebar   = false
 
 -- Network Interface for the widget
 settings.network_interface = "enp42s0"

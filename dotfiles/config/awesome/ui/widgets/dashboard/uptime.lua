@@ -26,7 +26,7 @@ local w = wibox.widget {
         -- Text
         id     = "text",
         align  = "center",
-        font   = beautiful.font .. "Bold 16",
+        font   = beautiful.font .. "Bold 18",
         widget = wibox.widget.textbox,
     },
     spacing = dpi(15),
@@ -45,8 +45,8 @@ awesome.connect_signal("evil::uptime", function(args)
     local text = ""
 
     if days > 0 then
-        text = string.format(helpers.text_color("", beautiful.accent) .. " %d days, %d h, %d m", days, hours % 24, minutes % 60)
-
+        text = string.format(helpers.text_color("", beautiful.accent) .. " %d days, %d h, %d m", days, hours % 24,
+        minutes % 60)
     elseif hours > 0 then
         text = string.format(helpers.text_color("", beautiful.accent) .. " %d hours, %d minutes", hours, minutes % 60)
     else

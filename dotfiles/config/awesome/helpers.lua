@@ -58,6 +58,8 @@ end
 
 -- For Dashboard Widgets
 function helpers.box_db_widget(widget, width, height, background)
+    background = background or beautiful.widget_normal
+
     local w = wibox.widget {
         -- Add margins
         {
@@ -89,8 +91,10 @@ function helpers.box_db_widget(widget, width, height, background)
     return w
 end
 
--- For Top-Panel Widgets
-function helpers.box_tp_widget(widget, effects, margin)
+-- For Bar Widgets
+function helpers.box_tp_widget(widget, effects, margin, background)
+    background = background or beautiful.widget_background
+
     local w = wibox.widget {
         -- Add margins outside
         {
@@ -115,20 +119,20 @@ function helpers.box_tp_widget(widget, effects, margin)
                 widget = wibox.container.margin,
             },
             id = "bg",
-            bg = beautiful.panel_item_normal,
+            bg = background,
             shape = gears.shape.rect,
             widget = wibox.container.background,
         },
-        right = dpi(5),
+        right = dpi(10),
         widget = wibox.container.margin,
     }
 
     if effects then
         w:connect_signal("mouse::enter", function()
-            w:get_children_by_id("bg")[1]:set_bg(beautiful.panel_item_hover)
+            w:get_children_by_id("bg")[1]:set_bg(beautiful.widget_hover)
         end)
         w:connect_signal("mouse::leave", function()
-            w:get_children_by_id("bg")[1]:set_bg(beautiful.panel_item_normal)
+            w:get_children_by_id("bg")[1]:set_bg(beautiful.widget_background)
         end)
     end
 
@@ -155,7 +159,7 @@ function helpers.box_pm_widget(widget, width, height)
                 expand = "none",
                 layout = wibox.layout.align.horizontal,
             },
-            bg = beautiful.panel_item_normal,
+            bg = beautiful.widget_normal,
             forced_height = height,
             forced_width = width,
             shape = gears.shape.rect,
@@ -170,7 +174,7 @@ function helpers.box_pm_widget(widget, width, height)
         widget:set_markup(helpers.text_color(widget:get_text(), beautiful.fg_normal))
     end)
     w:connect_signal("mouse::leave", function()
-        widget:set_markup(helpers.text_color(widget:get_text(), beautiful.fg_deselected))
+        widget:set_markup(helpers.text_color(widget:get_text(), beautiful.fg_faded))
     end)
 
     return w
@@ -187,17 +191,58 @@ function helpers.get_wallpapers(blurred)
     local wallpapers = {}
     local script = ""
     if blurred then
-        script = "ls " .. beautiful.wallpaperpath .. "blurred/*.png"
+        script = "ls " .. beautiful.config_path .. "wallpapers/blurred/*.png"
     else
-        script = "ls " .. beautiful.wallpaperpath .. "*.png"
+        script = "ls " .. beautiful.config_path .. "wallpapers/*.png"
     end
 
     local f = io.popen(script)
     for file in f:lines() do
-        table.insert(wallpapers, file)
+        table.insert(wallpapers, gears.surface.load(file))
     end
     f:close()
     return wallpapers
+end
+
+-- Gets all the tag icons
+function helpers.get_tag_icons()
+    local icons = {}
+    local script = "ls " .. beautiful.config_path .. "icons/tags/*.svg"
+
+    local f = io.popen(script)
+    for file in f:lines() do
+        table.insert(icons, gears.surface.load(file))
+    end
+    f:close()
+    return icons
+end
+
+-- Extends a panel to all screens
+function helpers.extend_to_screens(panel)
+    local function create_extender(s)
+        local lockscreen_ext
+        wibox({
+            visible = false,
+            ontop = true,
+            type = "splash",
+            screen = s
+        })
+
+        awful.placement.maximize(lockscreen_ext)
+
+        return lockscreen_ext
+    end
+
+    local externders = {}
+
+    -- Add panel to each screen
+    awful.screen.connect_for_each_screen(function(s)
+        if not s.primary then
+            table.insert(externders, create_extender(s))
+        end
+    end)
+
+    return externders
 end
 
 return helpers

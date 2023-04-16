@@ -93,6 +93,16 @@ keys.globalkeys = gears.table.join(
         }),
     awful.key(
         { settings.modkey },
+        "g",
+        function()
+            require("naughty").notify({ title = "test", text = "test: " .. client.focus.name })
+        end,
+        {
+            description = "Lock screen",
+            group = "launcher"
+        }),
+    awful.key(
+        { settings.modkey },
         "space",
         function()
             awful.spawn("rofi -show drun -theme ~/.config/rofi/launcher.rasi")
@@ -106,19 +116,32 @@ keys.globalkeys = gears.table.join(
         "r",
         function()
             awful.spawn.easy_async_with_shell(
-            "file=$(mktemp -t screenshot_XXXXXX.png) && maim -suBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png")
+                "file=$(mktemp -t screenshot_XXXXXX.png) && maim -suBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png",
+                function(_, _, _, _)
+                    require("naughty").notify({
+                        title = "Screenshot taken!",
+                        text = "Screenshot saved and copied to clipboard.",
+                    })
+                end
+            )
         end,
         {
             description = "Screenshot Selection",
             group = "launcher"
         }),
-
     awful.key(
         { settings.modkey },
         "t",
         function()
             awful.spawn.easy_async_with_shell(
-            "file=$(mktemp -t screenshot_XXXXXX.png) && maim -uBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png")
+                "file=$(mktemp -t screenshot_XXXXXX.png) && maim -uBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png",
+                function(_, _, _, _)
+                    require("naughty").notify({
+                        title = "Screenshot taken!",
+                        text = "Screenshot saved and copied to clipboard.",
+                    })
+                end
+            )
         end,
         {
             description = "Screenshot Screen",

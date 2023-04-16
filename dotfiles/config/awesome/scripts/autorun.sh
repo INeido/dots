@@ -7,7 +7,7 @@ function run {
   fi
 }
 
-run picom
+
 run spotify-launcher
 run discord
 run steam

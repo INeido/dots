@@ -23,9 +23,9 @@ local dpi = beautiful.xresources.apply_dpi
 
 local buttons = gears.table.join(
     awful.button({}, 1, function() awful.layout.inc(1) end),
-    awful.button({}, 3, function() awful.layout.inc( -1) end),
+    awful.button({}, 3, function() awful.layout.inc(-1) end),
     awful.button({}, 4, function() awful.layout.inc(1) end),
-    awful.button({}, 5, function() awful.layout.inc( -1) end)
+    awful.button({}, 5, function() awful.layout.inc(-1) end)
 )
 
 -- ===================================================================
@@ -39,10 +39,10 @@ local layoutbox = function(s)
     w:buttons(buttons)
 
     w:connect_signal("mouse::enter", function()
-        w.bg = beautiful.panel_item_hover
+        w.bg = beautiful.widget_hover
     end)
     w:connect_signal("mouse::leave", function()
-        w.bg = beautiful.panel_item_normal
+        w.bg = beautiful.widget_normal
     end)
 
     -- Box the widget

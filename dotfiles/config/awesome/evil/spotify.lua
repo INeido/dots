@@ -47,7 +47,7 @@ awful.widget.watch(script_status, interval, function(_, stat)
                     local key, value = line:match("^%s*spotify%s+(%S+)%s+(.+)$")
                     key = key:gsub("^.-%:", "")
                     if key and value then
-                        if value == " " then metadata[key:lower()] = nil  else metadata[key:lower()] = value end
+                        if value == " " then metadata[key:lower()] = nil else metadata[key:lower()] = value end
                     end
                 end
 
