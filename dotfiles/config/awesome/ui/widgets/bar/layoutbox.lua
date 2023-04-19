@@ -32,7 +32,7 @@ local buttons = gears.table.join(
 -- Layoutbox
 -- ===================================================================
 
-local layoutbox = function(s)
+local function layoutbox(s)
     -- Create the widget
     local w = awful.widget.layoutbox(s)
 

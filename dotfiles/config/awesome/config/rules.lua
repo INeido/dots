@@ -44,7 +44,7 @@ awful.rules.rules = {
   {
     rule_any = { type = { "normal", "dialog" } },
     properties = {
-      titlebars_enabled = true,
+      titlebars_enabled = settings.enable_titlebar,
     }
   },
 

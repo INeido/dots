@@ -42,12 +42,12 @@ local lockscreen = wibox({
 	ontop = true,
 	type = "splash",
 	screen = screen.primary,
-	bgimage = cache.wallpapers_blurred[1],
+	bgimage = cache.wallpapers.blurred[1],
 })
 
 awful.placement.maximize(lockscreen)
 
-local lockscreen_extenders = helpers.extend_to_screens(lockscreen)
+local lockscreen_extenders = helpers.extend_to_screens()
 
 -- ===================================================================
 -- Functions
@@ -155,16 +155,22 @@ end
 
 -- Update background
 tag.connect_signal("property::selected", function(t)
-	local selected_tags = awful.screen.focused().selected_tags
+	local selected_tags = lockscreen.screen.selected_tags
 
 	if #selected_tags > 0 then
-		lockscreen.bgimage = cache.wallpapers_blurred[selected_tags[1].index]
+		lockscreen.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], lockscreen.screen)
 	else
-		lockscreen.bgimage = cache.wallpapers_blurred[1]
+		lockscreen.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], lockscreen.screen)
 	end
 
 	for i, panel in ipairs(lockscreen_extenders) do
-		panel.bgimage = lockscreen.bgimage
+		selected_tags = panel.screen.selected_tags
+
+		if #selected_tags > 0 then
+			panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], panel.screen)
+		else
+			panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], panel.screen)
+		end
 	end
 end)
 

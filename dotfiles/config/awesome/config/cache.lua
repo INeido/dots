@@ -24,11 +24,10 @@ cache                    = {}
 -- ===================================================================
 
 -- Wallpapers
-cache.wallpapers         = helpers.get_wallpapers(false)
-cache.wallpapers_blurred = helpers.get_wallpapers(true)
+cache.wallpapers         = helpers.load_wallpapers()
 
 -- Tag Icons
-cache.tag_icons          = helpers.get_tag_icons()
+cache.tag_icons          = helpers.load_tag_icons()
 
 -- Powermenu
 cache.logout_icon        = gears.surface.load(beautiful.config_path .. "icons/logout.svg")

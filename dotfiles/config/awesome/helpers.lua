@@ -13,6 +13,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
+local cairo = require("lgi").cairo
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 
@@ -38,8 +39,41 @@ function helpers.vpad(height)
     }
 end
 
+-- Capitalize the first letter of the string
 function helpers.capitalize(str)
     return str:gsub("^%l", string.upper)
+end
+
+-- Maximize the surface/image based on the screen size
+function helpers.surf_maximize(surf, s)
+    local w, h = gears.surface.get_size(surf)
+    local geom = s.geometry
+    local aspect_w, aspect_h = geom.width / w, geom.height / h
+
+    local scaled_surf = cairo.ImageSurface.create(cairo.Format.ARGB32, geom.width, geom.height)
+    local cr = cairo.Context(scaled_surf)
+
+    cr:scale(aspect_w, aspect_h)
+    cr:set_source_surface(surf, 0, 0)
+    cr:paint()
+    scaled_surf:flush()
+
+    return scaled_surf
+end
+
+-- Blur a given image
+function helpers.blur_image(image, save_path, radius)
+    -- Apply a Gaussian blur to the image using ImageMagick
+    os.execute(string.format("convert %s -blur 0x%s %s", image, radius, save_path))
+end
+
+-- Calculates the hash of a folder
+function helpers.get_folder_hash(folder)
+    local cmd = "cd " .. folder .. " && find . -type f -print0 | sort -z | xargs -0 md5sum | md5sum"
+    local f = assert(io.popen(cmd, 'r'))
+    local hash = f:read('*a')
+    f:close()
+    return hash:sub(1, -2)
 end
 
 function helpers.add_hover_cursor(w, hover_cursor)
@@ -190,26 +224,31 @@ function helpers.button_isfocused(widget)
     return markup == helpers.text_color(text, beautiful.fg_normal)
 end
 
--- Gets all the wallpapers
-function helpers.get_wallpapers(blurred)
-    local wallpapers = {}
-    local script = ""
-    if blurred then
-        script = "ls " .. beautiful.config_path .. "wallpapers/blurred/*.png"
-    else
-        script = "ls " .. beautiful.config_path .. "wallpapers/*.png"
-    end
+-- Loads all the wallpapers
+function helpers.load_wallpapers()
+    local wallpapers = { normal = {}, blurred = {}, filenames = {}}
+    local script_normal = "ls " .. beautiful.config_path .. "wallpapers/*.*"
+    local script_blurred = "ls " .. beautiful.config_path .. "wallpapers/blurred/*.*"
 
-    local f = io.popen(script)
+    local f = io.popen(script_normal)
     for file in f:lines() do
-        table.insert(wallpapers, gears.surface.load(file))
+        table.insert(wallpapers.normal, gears.surface.load(file))
+        local filename = file:match(".+/([^/]+)$") -- extract the filename portion of the path
+        table.insert(wallpapers.filenames, filename)
     end
     f:close()
+
+    f = io.popen(script_blurred)
+    for file in f:lines() do
+        table.insert(wallpapers.blurred, gears.surface.load(file))
+    end
+    f:close()
+
     return wallpapers
 end
 
--- Gets all the tag icons
-function helpers.get_tag_icons()
+-- Loads all the tag icons
+function helpers.load_tag_icons()
     local icons = {}
     local script = "ls " .. beautiful.config_path .. "icons/tags/*.svg"
 
@@ -222,31 +261,31 @@ function helpers.get_tag_icons()
 end
 
 -- Extends a panel to all screens
-function helpers.extend_to_screens(panel)
+function helpers.extend_to_screens()
     local function create_extender(s)
-        local lockscreen_ext
-        wibox({
+        local extender = wibox({
             visible = false,
             ontop = true,
             type = "splash",
-            screen = s
+            screen = s,
+            bgimage = cache.wallpapers.blurred[1],
         })
 
-        awful.placement.maximize(lockscreen_ext)
+        awful.placement.maximize(extender)
 
-        return lockscreen_ext
+        return extender
     end
 
-    local externders = {}
+    local extenders = {}
 
     -- Add panel to each screen
     awful.screen.connect_for_each_screen(function(s)
-        if not s.primary then
-            table.insert(externders, create_extender(s))
+        if s ~= screen.primary then
+            table.insert(extenders, create_extender(s))
         end
     end)
 
-    return externders
+    return extenders
 end
 
 return helpers

@@ -39,12 +39,12 @@ local dashboard = wibox({
     ontop = true,
     type = "splash",
     screen = screen.primary,
-    bgimage = cache.wallpapers_blurred[1],
+    bgimage = cache.wallpapers.blurred[1],
 })
 
 awful.placement.maximize(dashboard)
 
-local dashboard_extenders = helpers.extend_to_screens(dashboard)
+local dashboard_extenders = helpers.extend_to_screens()
 
 -- ===================================================================
 -- Variables
@@ -102,16 +102,22 @@ end
 
 -- Update background
 tag.connect_signal("property::selected", function(t)
-    local selected_tags = awful.screen.focused().selected_tags
+    local selected_tags = dashboard.screen.selected_tags
 
     if #selected_tags > 0 then
-        dashboard.bgimage = cache.wallpapers_blurred[selected_tags[1].index]
+        dashboard.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], dashboard.screen)
     else
-        dashboard.bgimage = cache.wallpapers_blurred[1]
+        dashboard.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], dashboard.screen)
     end
 
     for i, panel in ipairs(dashboard_extenders) do
-        panel.bgimage = dashboard.bgimage
+        selected_tags = panel.screen.selected_tags
+
+        if #selected_tags > 0 then
+            panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], panel.screen)
+        else
+            panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], panel.screen)
+        end
     end
 end)
 

@@ -75,8 +75,8 @@ theme.widget_urgent                = "#B30000"
 theme.taglist_bg_urgent            = theme.widget_urgent
 
 -- Border Colors
-theme.border_normal                = theme.widget_normal
-theme.border_focus                 = theme.widget_hover
+theme.border_normal                = theme.widget_hover
+theme.border_focus                 = theme.widget_press
 theme.border_marked                = "#91231c"
 
 -- Miscelanious Colors

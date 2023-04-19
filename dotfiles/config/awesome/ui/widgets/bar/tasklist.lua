@@ -45,61 +45,65 @@ local buttons = gears.table.join(
 -- Taglist
 -- ===================================================================
 
--- Create the Widget
-local w = awful.widget.tasklist {
-    screen          = screen.primary,
-    filter          = awful.widget.tasklist.filter.currenttags,
-    buttons         = buttons,
-    widget_template = {
-        -- Selected Indicator
-        {
-            -- Margin for Indicator
+local function tasklist(s)
+    -- Create the Widget
+    local w = awful.widget.tasklist {
+        screen          = s,
+        filter          = awful.widget.tasklist.filter.currenttags,
+        buttons         = buttons,
+        widget_template = {
+            -- Selected Indicator
             {
-                -- Container Background
+                -- Margin for Indicator
                 {
-                    -- Margin for Icon
+                    -- Container Background
                     {
-                        -- Icon
-                        id     = "clienticon",
-                        widget = awful.widget.clienticon,
+                        -- Margin for Icon
+                        {
+                            -- Icon
+                            id     = "clienticon",
+                            widget = awful.widget.clienticon,
+                        },
+                        margins = dpi(6),
+                        widget  = wibox.container.margin,
                     },
-                    margins = dpi(6),
-                    widget  = wibox.container.margin,
+                    id     = "background_role",
+                    widget = wibox.container.background,
                 },
-                id     = "background_role",
-                widget = wibox.container.background,
+                bottom = dpi(4),
+                widget = wibox.container.margin,
             },
-            bottom = dpi(4),
-            widget = wibox.container.margin,
-        },
-        id = "indicator_role",
-        shape = gears.shape.rect,
-        widget = wibox.container.background,
-        create_callback = function(self, c, index, clients) --luacheck: no unused args
-            self:get_children_by_id("clienticon")[1].client = c
+            id = "indicator_role",
+            shape = gears.shape.rect,
+            widget = wibox.container.background,
+            create_callback = function(self, c, index, clients) --luacheck: no unused args
+                self:get_children_by_id("clienticon")[1].client = c
 
-            local toggle_indicator = function(o)
-                if not o.minimized then
-                    self.bg = beautiful.accent
-                elseif o.urgent then
-                    self.bg = beautiful.widget_urgent
-                else
-                    self.bg = beautiful.widget_normal
+                local toggle_indicator = function(o)
+                    if not o.minimized then
+                        self.bg = beautiful.accent
+                    elseif o.urgent then
+                        self.bg = beautiful.widget_urgent
+                    else
+                        self.bg = beautiful.widget_normal
+                    end
                 end
+
+                toggle_indicator(c)
+
+                c:connect_signal("property::minimized", function() toggle_indicator(c) end)
+
+                self:connect_signal("mouse::enter", function()
+                    self:get_children_by_id("background_role")[1]:set_bg(beautiful.widget_hover)
+                end)
+                self:connect_signal("mouse::leave", function()
+                    self:get_children_by_id("background_role")[1]:set_bg(beautiful.widget_normal)
+                end)
             end
-
-            toggle_indicator(c)
-
-            c:connect_signal("property::minimized", function() toggle_indicator(c) end)
-
-            self:connect_signal("mouse::enter", function()
-                self:get_children_by_id("background_role")[1]:set_bg(beautiful.widget_hover)
-            end)
-            self:connect_signal("mouse::leave", function()
-                self:get_children_by_id("background_role")[1]:set_bg(beautiful.widget_normal)
-            end)
-        end
+        }
     }
-}
 
-return w
+    return w
+end
+
+return tasklist

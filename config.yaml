@@ -88,6 +88,9 @@ dotfiles:
     src: config/awesome/liblua_pam.so
     dst: ~/.config/awesome/liblua_pam.so
     chmod: '755'
+  f_wp_hash.txt:
+    src: config/awesome/wp_hash.txt
+    dst: ~/.config/awesome/wp_hash.txt
 profiles:
   PC0:
     dotfiles:
@@ -117,3 +120,4 @@ profiles:
     - f_code.rasi
     - d_scripts
     - f_liblua_pam.so
+    - f_wp_hash.txt

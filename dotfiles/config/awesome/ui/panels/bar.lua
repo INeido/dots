@@ -36,77 +36,85 @@ local clock = require("ui.widgets.bar.clock")
 -- Left
 -- ===================================================================
 
-local left = {
-    {
-        starticon,
-        taglist,
-        layoutbox(screen.primary),
-        systray,
-        layout = wibox.layout.fixed.horizontal,
-    },
-    left = beautiful.useless_gap * 2,
-    right = beautiful.useless_gap * 2,
-    top = beautiful.useless_gap * 2,
-    bottom = beautiful.useless_gap * 2,
-    widget = wibox.container.margin,
-}
+local function left(s)
+    return {
+        {
+            starticon,
+            taglist(s),
+            layoutbox(s),
+            systray,
+            layout = wibox.layout.fixed.horizontal,
+        },
+        left = beautiful.useless_gap * 2,
+        right = beautiful.useless_gap * 2,
+        top = beautiful.useless_gap * 2,
+        bottom = beautiful.useless_gap * 2,
+        widget = wibox.container.margin,
+    }
+end
 
 -- ===================================================================
 -- Middle
 -- ===================================================================
 
-local middle = {
-    {
-        tasklist,
-        layout = wibox.layout.fixed.horizontal,
-    },
-    left = beautiful.useless_gap,
-    right = beautiful.useless_gap,
-    top = beautiful.useless_gap,
-    bottom = beautiful.useless_gap,
-    widget = wibox.container.margin,
-}
+local function middle(s)
+    return {
+        {
+            tasklist(s),
+            layout = wibox.layout.fixed.horizontal,
+        },
+        left = beautiful.useless_gap,
+        right = beautiful.useless_gap,
+        top = beautiful.useless_gap,
+        bottom = beautiful.useless_gap,
+        widget = wibox.container.margin,
+    }
+end
 
 -- ===================================================================
 -- Right
 -- ===================================================================
 
-local right = {
-    {
-        spotify,
-        pacman,
-        date,
-        clock,
-        powericon,
-        layout = wibox.layout.fixed.horizontal,
-    },
-    left = beautiful.useless_gap * 2,
-    right = beautiful.useless_gap * 2,
-    top = beautiful.useless_gap * 2,
-    bottom = beautiful.useless_gap * 2,
-    widget = wibox.container.margin,
-}
+local function right(s)
+    return {
+        {
+            spotify,
+            pacman,
+            date,
+            clock,
+            powericon,
+            layout = wibox.layout.fixed.horizontal,
+        },
+        left = beautiful.useless_gap * 2,
+        right = beautiful.useless_gap * 2,
+        top = beautiful.useless_gap * 2,
+        bottom = beautiful.useless_gap * 2,
+        widget = wibox.container.margin,
+    }
+end
 
 -- ===================================================================
 -- Wibox
 -- ===================================================================
 
--- Create the wibox
-local bar = awful.wibar({
-    screen = screen.primary,
-    bg = beautiful.bg_normal,
-    position = settings.bar_location,
-    height = beautiful.bar_height,
-})
+awful.screen.connect_for_each_screen(function(s)
+    -- Create the wibox
+    local bar = awful.wibar({
+        screen = s,
+        bg = beautiful.bg_normal,
+        position = settings.bar_location,
+        height = beautiful.bar_height,
+    })
 
--- Add widgets to the wibox
-bar:setup {
-    left,
+    -- Add widgets to the wibox
+    bar:setup {
+        left(s),
 
-    middle,
+        middle(s),
 
-    right,
+        right(s),
 
-    expand = "none",
-    layout = wibox.layout.align.horizontal,
-}
+        expand = "none",
+        layout = wibox.layout.align.horizontal,
+    }
+end)

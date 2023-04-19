@@ -19,7 +19,5 @@ local wibox = require("wibox")
 -- ===================================================================
 
 return function(c, args)
-    if settings.enable_titlebar then
-        awful.titlebar(c):setup(require("ui.decorations.titlebar")(c))
-    end
+    awful.titlebar(c):setup(require("ui.decorations.titlebar")(c))
 end

@@ -38,12 +38,12 @@ local powermenu    = wibox({
     ontop = true,
     type = "splash",
     screen = screen.primary,
-    bgimage = cache.wallpapers_blurred[1],
+    bgimage = cache.wallpapers.blurred[1],
 })
 
 awful.placement.maximize(powermenu)
 
-local powermenu_extenders = helpers.extend_to_screens(powermenu)
+local powermenu_extenders = helpers.extend_to_screens()
 
 -- ===================================================================
 -- Variables
@@ -103,8 +103,8 @@ function pm_close()
     awful.keygrabber.stop(powermenu.grabber)
     powermenu.visible = false
     for i, panel in ipairs(powermenu_extenders) do
-		panel.visible = false
-	end
+        panel.visible = false
+    end
     confirmation_hide()
 end
 
@@ -119,8 +119,8 @@ function pm_open()
     -- Open Powermenu
     powermenu.visible = true
     for i, panel in ipairs(powermenu_extenders) do
-		panel.visible = true
-	end
+        panel.visible = true
+    end
     -- Start Keygrabber
     powermenu.grabber = awful.keygrabber.run(function(_, key, event)
         if event == "release" then return end
@@ -244,17 +244,23 @@ end
 
 -- Update background
 tag.connect_signal("property::selected", function(t)
-    local selected_tags = awful.screen.focused().selected_tags
+    local selected_tags = powermenu.screen.selected_tags
 
     if #selected_tags > 0 then
-        powermenu.bgimage = cache.wallpapers_blurred[selected_tags[1].index]
+        powermenu.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], powermenu.screen)
     else
-        powermenu.bgimage = cache.wallpapers_blurred[1]
+        powermenu.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], powermenu.screen)
     end
 
     for i, panel in ipairs(powermenu_extenders) do
-		panel.bgimage = powermenu.bgimage
-	end
+        selected_tags = panel.screen.selected_tags
+
+        if #selected_tags > 0 then
+            panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], panel.screen)
+        else
+            panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], panel.screen)
+        end
+    end
 end)
 
 -- ===================================================================

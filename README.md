@@ -159,12 +159,6 @@ A few more things to watch out for.
     <Username> ALL=NOPASSWD: /usr/bin/halt, /usr/bin/reboot, /usr/bin/shutdown, /usr/bin/nm-applet, /home/<Username>/.config/awesome/scripts/pacman.sh
     ```
 
-4. The wallpapers are a bit finicky. You have to make sure that they have the exact aspect ration of your display. If that is given, you have to run a script every time you change a wallpaper:
-    ```bash
-    # You are prompted to enter your screen res as <width>x<height>
-    ~/.config/awesome/scripts/blur_backgrounds.sh
-    ```
-
 </details>
 
 <details close>
@@ -179,7 +173,7 @@ A few more things to watch out for.
     makepkg -si
     ```
 
-2. Enable auto-login using systemd
+2. Enable auto-login using systemd.
     Create a new service by creatign the following file:
     ```bash
     sudo nano /etc/systemd/system/getty@tty1.service.d/autologin.conf
@@ -197,7 +191,7 @@ A few more things to watch out for.
     sudo systemctl daemon-reload
     ```
 
-3. Set your screen DPI
+3. Set your screen DPI.
     First, go to [dpi.lv](https://dpi.lv/) and figure out your DPI.
     You can then enter this DPI in the following file to set it system-wide:
     ```bash
@@ -205,6 +199,21 @@ A few more things to watch out for.
     ```
 
     Enter ```Xft.dpi: <your DPI>``` and save.
+
+4. Change display settings.
+    List all connected displays.
+    ```bash
+    xrandr -q
+    ```
+
+    Change display settings.
+    In this example 1440p, no offset, 240hz, no rotation
+    ```bash
+    xrandr --output DP-0 --mode 2560x1440 --pos 0x0 --rotate normal --rate 239.97
+    ```
+
+    Make it permanent.
+    For that you have to write the above command into the ~/.xprofile file.
 
 </details>
 
@@ -309,6 +318,8 @@ You can edit the autostart apps in the ../scripts/autostart.sh file.
 | Keep minimize | mod + n |
 | Move | mod + mouse1 |
 | Resie | mod + mouse3 |
+| Move to next screen | mod + v |
+| Move to tag | mod + shift + \<tag number> |
 
 ### Tag & Layout
 | Task | Bind |

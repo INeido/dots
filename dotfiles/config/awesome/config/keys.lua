@@ -343,6 +343,20 @@ keys.clientkeys = gears.table.join(
         {
             description = "Resize",
             group = "client"
+        }),
+    awful.key(
+        { settings.modkey, },
+        "v",
+        function(c)
+            local current_screen = c.screen
+            local next_screen = current_screen:get_next_in_direction("right")
+            c:move_to_screen(next_screen)
+            client.focus = c
+            c:raise()
+        end,
+        {
+            description = "Move to next screen",
+            group = "client"
         })
 )
 

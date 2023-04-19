@@ -52,4 +52,4 @@ require("awful").spawn.with_shell("~/.config/awesome/scripts/autorun.sh")
 -- Lockscreen
 -- ===================================================================
 
---ls_show()
+ls_show()
