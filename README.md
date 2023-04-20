@@ -341,12 +341,13 @@ You can edit the autostart apps in the ../scripts/autostart.sh file.
 - [x] Add powermenu
 - [x] Improve spotify widget
 - [x] Add lock screen
+- [x] Multimonitor support
 - [ ] Improve client switcher (alt+tab)
 - [ ] Improve window decorations
+- [ ] Improve tasklist
 - [ ] Improve notifications
 - [ ] Add screen saver
 - [ ] Add settings menu
 - [ ] Laptop support
-- [ ] Multimonitor support
 - [ ] Add animations [(rubato)](https://open-vsx.org/vscode/item?itemName=s-nlf-fh.glassit)
 - [ ] Add more bugs
