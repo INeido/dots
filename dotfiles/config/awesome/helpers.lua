@@ -67,6 +67,15 @@ function helpers.blur_image(image, save_path, radius)
     os.execute(string.format("convert %s -blur 0x%s %s", image, radius, save_path))
 end
 
+-- Convert a given image to JPG
+function helpers.convert_to_jpg(image, save)
+    local ext = string.sub(image, -4)
+    if ext == ".png" then
+        os.execute(string.format("convert %s -quality 80 %s", image, image:gsub("%.png", ".jpg")))
+        os.execute("mv " .. image .. " " .. save)
+    end
+end
+
 -- Calculates the hash of a folder
 function helpers.get_folder_hash(folder)
     local cmd = "cd " .. folder .. " && find . -type f -print0 | sort -z | xargs -0 md5sum | md5sum"
@@ -226,7 +235,7 @@ end
 
 -- Loads all the wallpapers
 function helpers.load_wallpapers()
-    local wallpapers = { normal = {}, blurred = {}, filenames = {}}
+    local wallpapers = { normal = {}, blurred = {}, filenames = {} }
     local script_normal = "ls " .. beautiful.config_path .. "wallpapers/*.*"
     local script_blurred = "ls " .. beautiful.config_path .. "wallpapers/blurred/*.*"
 

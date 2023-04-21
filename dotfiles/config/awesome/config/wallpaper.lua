@@ -49,7 +49,7 @@ tag.connect_signal("property::selected", function(t)
 end)
 
 -- ===================================================================
--- Render Blurred
+-- Setup Wallpapers
 -- ===================================================================
 
 -- Calculate the current hash value
@@ -62,18 +62,24 @@ file:close()
 
 -- Compare the saved hash with the current hash to check if the folder contents have changed
 if hash ~= saved_hash then
+    -- Convert wallpapers to jpg (reduce file size in RAM)
+    for i, wp in ipairs(cache.wallpapers.filenames) do
+        helpers.convert_to_jpg(beautiful.config_path .. "wallpapers/" .. wp, settings.wallpaper_save)
+    end
+
+    -- Update cache
+    cache.wallpapers = helpers.load_wallpapers()
+
     -- Render the blurred version of every wallpaper
     for i, wp in ipairs(cache.wallpapers.filenames) do
-        helpers.blur_image(beautiful.config_path .. "wallpapers/" .. wp, beautiful.config_path .. "wallpapers/blurred/" .. wp, "08")
+        helpers.blur_image(beautiful.config_path .. "wallpapers/" .. wp,
+        beautiful.config_path .. "wallpapers/blurred/" .. wp, "08")
     end
 
     -- Save the new hash value
     file = io.open(beautiful.config_path .. "wp_hash.txt", "w")
     file:write(helpers.get_folder_hash(beautiful.config_path .. "wallpapers/"))
     file:close()
-
-    -- Update every wallpaper
-    
 end
 
 -- ===================================================================

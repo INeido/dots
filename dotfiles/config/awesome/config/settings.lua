@@ -24,13 +24,19 @@ settings                   = {}
 -- Password
 settings.password          = "root"
 
+-- Display config
+settings.display           = "xrandr --output DP-0 --primary --mode 2560x1440 --pos 0x0 --rotate normal --rate 239.97"
+
 -- ===================================================================
 -- Look & Feel
 -- ===================================================================
 
+-- Layout
+settings.bar_location      = "top" -- 'top', 'bottom'
+
 -- Switches
 settings.enable_titlebar   = false
-settings.bar_location      = "top" -- 'top', 'bottom'
+settings.sloppy_focus      = false
 
 -- ===================================================================
 -- General
@@ -45,6 +51,9 @@ settings.editor            = os.getenv("EDITOR") or "nano"
 -- Modkeys
 settings.modkey            = "Mod4"
 settings.altkey            = "Mod1"
+
+-- Paths
+settings.wallpaper_save    = beautiful.config_path .. "wallpapers/save/"
 
 -- ===================================================================
 -- Widgets
