@@ -44,6 +44,18 @@ function helpers.capitalize(str)
     return str:gsub("^%l", string.upper)
 end
 
+-- Start an array of apps
+function helpers.run_apps(apps)
+    for _, app in ipairs(apps) do
+        local client = app
+        -- Some clients have a different 'CLI Name' as their class name
+        if app == "spotify" then
+            client = "spotify-launcher"
+        end
+        awful.spawn.easy_async_with_shell(string.format("pgrep -f %s || %s &", client, client))
+    end
+end
+
 -- Maximize the surface/image based on the screen size
 function helpers.surf_maximize(surf, s)
     local w, h = gears.surface.get_size(surf)

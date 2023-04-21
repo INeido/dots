@@ -56,6 +56,9 @@ settings.altkey            = "Mod1"
 -- Paths
 settings.wallpaper_save    = beautiful.config_path .. "wallpapers/save/"
 
+-- Autorun
+settings.autorun = {settings.musicplayer, "steam", "discord"}
+
 -- ===================================================================
 -- Widgets
 -- ===================================================================

@@ -200,21 +200,6 @@ A few more things to watch out for.
 
     Enter ```Xft.dpi: <your DPI>``` and save.
 
-4. Change display settings.
-    List all connected displays.
-    ```bash
-    xrandr -q
-    ```
-
-    Change display settings.
-    In this example 1440p, no offset, 240hz, no rotation
-    ```bash
-    xrandr --output DP-0 --mode 2560x1440 --pos 0x0 --rotate normal --rate 239.97
-    ```
-
-    Make it permanent.
-    For that you have to write the above command into the ~/.xprofile file.
-
 </details>
 
 
