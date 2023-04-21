@@ -220,7 +220,7 @@ A few more things to watch out for.
 
 # Features
 
-### Spotify widget
+### Music widget
 
 This widget is visible in the dashboard with the cover art and media buttons.
 
@@ -241,8 +241,8 @@ Using the scrollwheel you can adjust the volume. When doing so the progress bar 
 
 ![](https://github.com/INeido/dots/blob/main/samples/feature0_1.png?raw=true)
 
-You can interact with the minimal spotify widget in the top panel using:
-- Left click: Toggle Spotify Visibility
+You can interact with the minimal music widget in the top panel using:
+- Left click: Toggle Player Visibility
 - Right click: Toggle play/pause
 - Scroll up: Increase volume
 - Scroll down: Decrease volume
@@ -339,7 +339,7 @@ You can edit the autostart apps in the ../scripts/autostart.sh file.
 - [x] Add autostart support
 - [x] Add dashboard
 - [x] Add powermenu
-- [x] Improve spotify widget
+- [x] Improve ~~spotify~~ music widget
 - [x] Add lock screen
 - [x] Multimonitor support
 - [ ] Improve client switcher (alt+tab)
