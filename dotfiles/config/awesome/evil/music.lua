@@ -1,9 +1,9 @@
---      ███████╗██████╗  ██████╗ ████████╗██╗███████╗██╗   ██╗
---      ██╔════╝██╔══██╗██╔═══██╗╚══██╔══╝██║██╔════╝╚██╗ ██╔╝
---      ███████╗██████╔╝██║   ██║   ██║   ██║█████╗   ╚████╔╝
---      ╚════██║██╔═══╝ ██║   ██║   ██║   ██║██╔══╝    ╚██╔╝
---      ███████║██║     ╚██████╔╝   ██║   ██║██║        ██║
---      ╚══════╝╚═╝      ╚═════╝    ╚═╝   ╚═╝╚═╝        ╚═╝
+--      ███╗   ███╗██╗   ██╗███████╗██╗ ██████╗
+--      ████╗ ████║██║   ██║██╔════╝██║██╔════╝
+--      ██╔████╔██║██║   ██║███████╗██║██║     
+--      ██║╚██╔╝██║██║   ██║╚════██║██║██║     
+--      ██║ ╚═╝ ██║╚██████╔╝███████║██║╚██████╗
+--      ╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝ ╚═════╝
 
 
 -- ===================================================================
@@ -11,8 +11,8 @@
 -- ===================================================================
 
 local awful = require("awful")
+local helpers = require("helpers")
 local beautiful = require("beautiful")
-local naughty = require("naughty")
 local watch = require("awful.widget.watch")
 local dpi = require("beautiful").xresources.apply_dpi
 
@@ -20,10 +20,10 @@ local dpi = require("beautiful").xresources.apply_dpi
 -- Variables
 -- ===================================================================
 
-local script_metadata = "playerctl -p spotify metadata"
-local script_status = "playerctl -p spotify status"
-local script_position = "playerctl -p spotify position"
-local script_volume = "playerctl -p spotify volume"
+local script_metadata = "playerctl -p " .. settings.musicplayer .. " metadata"
+local script_status = "playerctl -p " .. settings.musicplayer .. " status"
+local script_position = "playerctl -p " .. settings.musicplayer .. " position"
+local script_volume = "playerctl -p " .. settings.musicplayer .. " volume"
 
 local interval = 0.1
 
@@ -44,14 +44,14 @@ awful.widget.watch(script_status, interval, function(_, stat)
                 local metadata = {}
 
                 for line in data:gmatch("[^\r\n]+") do
-                    local key, value = line:match("^%s*spotify%s+(%S+)%s+(.+)$")
+                    local key, value = line:match("^%s*" .. settings.musicplayer .. "%s+(%S+)%s+(.+)$")
                     key = key:gsub("^.-%:", "")
                     if key and value then
                         if value == " " then metadata[key:lower()] = nil else metadata[key:lower()] = value end
                     end
                 end
 
-                awesome.emit_signal("evil::spotify", {
+                awesome.emit_signal("evil::music", {
                     status = status or nil,
                     position = position or nil,
                     volume = volume or nil,

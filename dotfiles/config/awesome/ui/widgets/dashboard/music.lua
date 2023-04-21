@@ -1,9 +1,9 @@
---      ███████╗██████╗  ██████╗ ████████╗██╗███████╗██╗   ██╗
---      ██╔════╝██╔══██╗██╔═══██╗╚══██╔══╝██║██╔════╝╚██╗ ██╔╝
---      ███████╗██████╔╝██║   ██║   ██║   ██║█████╗   ╚████╔╝
---      ╚════██║██╔═══╝ ██║   ██║   ██║   ██║██╔══╝    ╚██╔╝
---      ███████║██║     ╚██████╔╝   ██║   ██║██║        ██║
---      ╚══════╝╚═╝      ╚═════╝    ╚═╝   ╚═╝╚═╝        ╚═╝
+--      ███╗   ███╗██╗   ██╗███████╗██╗ ██████╗
+--      ████╗ ████║██║   ██║██╔════╝██║██╔════╝
+--      ██╔████╔██║██║   ██║███████╗██║██║     
+--      ██║╚██╔╝██║██║   ██║╚════██║██║██║     
+--      ██║ ╚═╝ ██║╚██████╔╝███████║██║╚██████╗
+--      ╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝ ╚═════╝
 
 
 -- ===================================================================
@@ -29,7 +29,7 @@ local vol_timer = nil
 local prog_timer = nil
 
 -- ===================================================================
--- Spotify
+-- Player
 -- ===================================================================
 
 local w = wibox.widget {
@@ -161,16 +161,16 @@ local w = wibox.widget {
     widget = wibox.container.background,
 
     set_art = function(self, link)
-        awful.spawn.easy_async("curl -o " .. settings.spotify_temp .. "/spotify.png " .. link,
+        awful.spawn.easy_async("curl -o " .. settings.musicplayer_temp .. "/cover.png " .. link,
             function(_, _, _, _)
                 awful.spawn.easy_async(
                     "convert " ..
-                    settings.spotify_temp ..
-                    "/spotify.png -alpha set -channel A -evaluate set 20% " ..
-                    settings.spotify_temp .. "/spotify_faded.png",
+                    settings.musicplayer_temp ..
+                    "/cover.png -alpha set -channel A -evaluate set 20% " ..
+                    settings.musicplayer_temp .. "/cover_faded.png",
                     function(_, _, _, _)
                         self:get_children_by_id("artw")[1]:set_image(gears.surface.load_uncached(
-                            "" .. settings.spotify_temp .. "/spotify_faded.png"))
+                            "" .. settings.musicplayer_temp .. "/cover_faded.png"))
                         self:get_children_by_id("artw")[1]:emit_signal("widget::redraw_needed")
                     end)
             end)
@@ -206,8 +206,7 @@ local update = function(args, _, _, _)
 
     -- Update running
     if args.status ~= "Playing" and args.status ~= "Paused" then
-        w:get_children_by_id("artw")[1]:set_image(cache.icon_spotify)
-        w:set_text("Click to open", "Spotify not running")
+        w:set_text("Click to open", helpers.capitalize(settings.musicplayer) .. " not running")
         return
     end
 
@@ -251,7 +250,7 @@ local update = function(args, _, _, _)
 end
 
 local change_volume = function(value)
-    awful.spawn.with_shell("playerctl -p spotify volume " .. value)
+    awful.spawn.with_shell("playerctl -p " .. settings.musicplayer .. " volume " .. value)
 
     w:get_children_by_id("iconw")[1]:set_visible(true)
 
@@ -323,18 +322,18 @@ w:get_children_by_id("nextw")[1]:connect_signal("mouse::leave", function()
     beautiful.fg_faded))
 end)
 
-awesome.connect_signal("evil::spotify", function(args)
+awesome.connect_signal("evil::music", function(args)
     update(args)
 end)
 
 --- Adds mouse controls to the widget:
---  - left click - minimize/unminimize spotify
+--  - left click - minimize/unminimize player
 --  - right click - play/pause
 --  - scroll up - volume up
 --  - scroll down - volume down
 w:connect_signal("button::press", function(_, _, _, button)
     if (button == 3) then
-        awful.spawn("playerctl -p spotify play-pause", false) -- right click
+        awful.spawn("playerctl -p " .. settings.musicplayer .. " play-pause", false) -- right click
     elseif (button == 4) then
         change_volume("0.01+")                                -- scroll up
     elseif (button == 5) then

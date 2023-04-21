@@ -27,7 +27,7 @@ local layoutbox = require("ui.widgets.bar.layoutbox")
 local systray = require("ui.widgets.bar.systray")
 local taglist = require("ui.widgets.bar.taglist")
 local tasklist = require("ui.widgets.bar.tasklist")
-local spotify = require("ui.widgets.bar.spotify")
+local music = require("ui.widgets.bar.music")
 local pacman = require("ui.widgets.bar.pacman")
 local date = require("ui.widgets.bar.date")
 local clock = require("ui.widgets.bar.clock")
@@ -78,7 +78,7 @@ end
 local function right(s)
     return {
         {
-            spotify,
+            music,
             pacman,
             date,
             clock,

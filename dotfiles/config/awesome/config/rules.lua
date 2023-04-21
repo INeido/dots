@@ -51,20 +51,24 @@ awful.rules.rules = {
   -- Application rules
   {
     rule = { class = helpers.capitalize(settings.fileexplorer) },
-    properties = { floating = true },
+    properties = {
+      floating = true
+    },
     callback = function(c)
       awful.placement.centered(c, nil)
     end
   },
   {
     rule = { class = helpers.capitalize(settings.terminal) },
-    properties = { floating = true },
+    properties = {
+      floating = true
+    },
     callback = function(c)
       awful.placement.centered(c, nil)
     end
   },
   {
-    rule = { class = "Spotify" },
+    rule = { class = helpers.capitalize(settings.musicplayer) },
     properties = {
       floating = true,
       sticky = true,

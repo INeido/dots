@@ -1,15 +1,10 @@
---      ███████╗██████╗  ██████╗ ████████╗██╗███████╗██╗   ██╗
---      ██╔════╝██╔══██╗██╔═══██╗╚══██╔══╝██║██╔════╝╚██╗ ██╔╝
---      ███████╗██████╔╝██║   ██║   ██║   ██║█████╗   ╚████╔╝
---      ╚════██║██╔═══╝ ██║   ██║   ██║   ██║██╔══╝    ╚██╔╝
---      ███████║██║     ╚██████╔╝   ██║   ██║██║        ██║
---      ╚══════╝╚═╝      ╚═════╝    ╚═╝   ╚═╝╚═╝        ╚═╝
+--      ███╗   ███╗██╗   ██╗███████╗██╗ ██████╗
+--      ████╗ ████║██║   ██║██╔════╝██║██╔════╝
+--      ██╔████╔██║██║   ██║███████╗██║██║     
+--      ██║╚██╔╝██║██║   ██║╚════██║██║██║     
+--      ██║ ╚═╝ ██║╚██████╔╝███████║██║╚██████╗
+--      ╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝ ╚═════╝
 
-
--------------------------------------------------
--- Original
--- https://github.com/streetturtle/awesome-wm-widgets/tree/master/spotify-widget
--------------------------------------------------
 
 -- ===================================================================
 -- Initialization
@@ -26,23 +21,21 @@ local dpi = beautiful.xresources.apply_dpi
 -- Helper
 -- ===================================================================
 
-local function open_spotify()
+local function show_player()
     local clients = client.get()
     for _, c in pairs(clients) do
-        if c.name == "Spotify" or c.name == "Spotify Premium" then
+        if c.class == settings.musicplayer or c.class == helpers.capitalize(settings.musicplayer) then
             c.minimized = not c.minimized
-            c:raise()
             return
         end
     end
 end
 
-local function min_spotify()
+local function hide_player()
     local clients = client.get()
     for _, c in pairs(clients) do
-        if c.name == "Spotify" or c.name == "Spotify Premium" then
+        if c.class == settings.musicplayer or c.class == helpers.capitalize(settings.musicplayer) then
             c.minimized = true
-            c:raise()
             return
         end
     end
@@ -60,7 +53,7 @@ local cur_album = nil
 local running = false
 
 -- ===================================================================
--- Spotify
+-- Player
 -- ===================================================================
 
 local w = wibox.widget {
@@ -132,7 +125,7 @@ local update = function(widget, args, _, _, _)
     -- Update running
     if args.status ~= "Playing" and args.status ~= "Paused" then
         running = false
-        widget:set_text("Click to open", "Spotify not running")
+        widget:set_text("Click to open", helpers.capitalize(settings.musicplayer) .. " not running")
         return
     end
     running = true
@@ -163,39 +156,39 @@ end
 -- Signal
 -- ===================================================================
 
-awesome.connect_signal("evil::spotify", function(args)
+awesome.connect_signal("evil::music", function(args)
     update(w, args)
 end)
 
 -- Box the Widget
-local spotify = helpers.box_tp_widget(w, true, 2)
+local music = helpers.box_tp_widget(w, true, 2)
 
 --- Adds mouse controls to the widget:
---  - left click - minimize/unminimize spotify
+--  - left click - minimize/unminimize player
 --  - right click - play/pause
 --  - scroll up - volume up
 --  - scroll down - volume down
-spotify:connect_signal("button::press", function(_, _, _, button)
+music:connect_signal("button::press", function(_, _, _, button)
     if (button == 1) then -- left click
         if not running then
             running = true
-            awful.spawn("spotify-launcher")
+            awful.spawn(settings.musicplayer)
         end
-        open_spotify()
+        show_player()
     elseif (button == 3) then
-        awful.spawn("playerctl -p spotify play-pause", false) -- right click
+        awful.spawn("playerctl -p " .. settings.musicplayer .. " play-pause", false) -- right click
     elseif (button == 4) then
         awful.spawn.with_shell(
-            "playerctl -p spotify volume 0.03+") -- scroll up
+            "playerctl -p " .. settings.musicplayer .. " volume 0.03+") -- scroll up
     elseif (button == 5) then
         awful.spawn.with_shell(
-            "playerctl -p spotify volume 0.03-") -- scroll down
+            "playerctl -p " .. settings.musicplayer .. " volume 0.03-") -- scroll down
     end
 end)
 
--- Hide Spotify when changing tags
+-- Hide Player when changing tags
 tag.connect_signal("property::selected", function(t)
-    min_spotify()
+    hide_player()
 end)
 
 -- ===================================================================
@@ -203,15 +196,15 @@ end)
 -- ===================================================================
 
 if false then
-    local spotify_tooltip = awful.tooltip {
+    local tooltip = awful.tooltip {
         mode = "outside",
         preferred_positions = { "bottom" },
     }
 
-    spotify_tooltip:add_to_object(spotify)
+    tooltip:add_to_object(music)
 
-    spotify:connect_signal("mouse::enter", function()
-        spotify_tooltip.text = "Album: " .. cur_album
+    music:connect_signal("mouse::enter", function()
+        tooltip.text = "Album: " .. cur_album
             .. "\nArtist: " .. cur_artist
             .. "\nSong: " .. cur_title
     end)
@@ -221,4 +214,4 @@ end
 -- Widget
 -- ===================================================================
 
-return spotify
+return music

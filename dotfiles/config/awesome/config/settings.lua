@@ -45,6 +45,7 @@ settings.sloppy_focus      = false
 -- Apps
 settings.terminal          = "alacritty"
 settings.browser           = "qutebrowser"
+settings.musicplayer       = "spotify"
 settings.fileexplorer      = "nemo"
 settings.editor            = os.getenv("EDITOR") or "nano"
 
@@ -74,5 +75,5 @@ settings.network_interface = "enp42s0"
 -- Enter the drives you want to get data from for the widget
 settings.drive_names       = { "/", "/Games" }
 
--- Spotify art temp folder
-settings.spotify_temp      = "/tmp"
+-- Musicplayer art temp folder
+settings.musicplayer_temp      = "/tmp"

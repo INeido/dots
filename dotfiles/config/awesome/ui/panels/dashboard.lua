@@ -21,7 +21,7 @@ local dpi = beautiful.xresources.apply_dpi
 -- Load Widgets
 -- ===================================================================
 
-local spotify = require("ui.widgets.dashboard.spotify")
+local music = require("ui.widgets.dashboard.music")
 local clock = require("ui.widgets.dashboard.clock")
 local calendar = require("ui.widgets.dashboard.calendar")
 local network = require("ui.widgets.dashboard.network")
@@ -135,7 +135,7 @@ dashboard:setup {
             -- Column container
             {
                 -- Column 1
-                helpers.box_db_widget(spotify, dpi(400), dpi(400)),
+                helpers.box_db_widget(music, dpi(400), dpi(400)),
                 {
                     helpers.box_db_widget(storage, dpi(400), dpi(190)),
                     layout = wibox.layout.fixed.horizontal
