@@ -11,12 +11,10 @@
 -- ===================================================================
 
 local awful = require("awful")
-local gears = require("gears")
-local wibox = require("wibox")
 local helpers = require("helpers")
-local keys = require("config.keys")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+
+local keys = require("config.keys")
 local screen = awful.screen.focused()
 
 -- ===================================================================
@@ -81,7 +79,6 @@ awful.rules.rules = {
   {
     rule = { class = "Steam" },
     properties = {
-      tag = screen.tags[1], -- Doesnt work
       titlebars_enabled = false,
     },
     callback = function(c)

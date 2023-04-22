@@ -10,8 +10,6 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
 local wibox = require("wibox")
 local helpers = require("helpers")
 local beautiful = require("beautiful")
@@ -46,7 +44,7 @@ awesome.connect_signal("evil::uptime", function(args)
 
     if days > 0 then
         text = string.format(helpers.text_color("", beautiful.accent) .. " %d days, %d h, %d m", days, hours % 24,
-        minutes % 60)
+            minutes % 60)
     elseif hours > 0 then
         text = string.format(helpers.text_color("", beautiful.accent) .. " %d hours, %d minutes", hours, minutes % 60)
     else

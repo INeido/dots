@@ -75,7 +75,6 @@ local function taglist(s)
                     end
                 end)
             end,
-
             -- TO-DO: When changing tags, the widget updates on both monitors... Can't figure out why. Help.
             update_callback = function(self, t, index, tags) --luacheck: no unused args
                 if t.selected then

@@ -11,10 +11,6 @@
 -- ===================================================================
 
 local awful = require("awful")
-local beautiful = require("beautiful")
-local naughty = require("naughty")
-local watch = require("awful.widget.watch")
-local dpi = require("beautiful").xresources.apply_dpi
 
 -- ===================================================================
 -- Variables

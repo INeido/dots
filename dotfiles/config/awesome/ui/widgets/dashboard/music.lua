@@ -1,7 +1,7 @@
 --      ███╗   ███╗██╗   ██╗███████╗██╗ ██████╗
 --      ████╗ ████║██║   ██║██╔════╝██║██╔════╝
---      ██╔████╔██║██║   ██║███████╗██║██║     
---      ██║╚██╔╝██║██║   ██║╚════██║██║██║     
+--      ██╔████╔██║██║   ██║███████╗██║██║
+--      ██║╚██╔╝██║██║   ██║╚════██║██║██║
 --      ██║ ╚═╝ ██║╚██████╔╝███████║██║╚██████╗
 --      ╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝ ╚═════╝
 
@@ -299,11 +299,11 @@ end)
 
 w:get_children_by_id("prevw")[1]:connect_signal("mouse::enter", function()
     w:get_children_by_id("prevw")[1]:set_markup(helpers.text_color(w:get_children_by_id("prevw")[1]:get_text(),
-    beautiful.fg_normal))
+        beautiful.fg_normal))
 end)
 w:get_children_by_id("prevw")[1]:connect_signal("mouse::leave", function()
     w:get_children_by_id("prevw")[1]:set_markup(helpers.text_color(w:get_children_by_id("prevw")[1]:get_text(),
-    beautiful.fg_faded))
+        beautiful.fg_faded))
 end)
 
 w:get_children_by_id("ppw")[1]:connect_signal("mouse::enter", function()
@@ -315,11 +315,11 @@ end)
 
 w:get_children_by_id("nextw")[1]:connect_signal("mouse::enter", function()
     w:get_children_by_id("nextw")[1]:set_markup(helpers.text_color(w:get_children_by_id("nextw")[1]:get_text(),
-    beautiful.fg_normal))
+        beautiful.fg_normal))
 end)
 w:get_children_by_id("nextw")[1]:connect_signal("mouse::leave", function()
     w:get_children_by_id("nextw")[1]:set_markup(helpers.text_color(w:get_children_by_id("nextw")[1]:get_text(),
-    beautiful.fg_faded))
+        beautiful.fg_faded))
 end)
 
 awesome.connect_signal("evil::music", function(args)
@@ -335,9 +335,9 @@ w:connect_signal("button::press", function(_, _, _, button)
     if (button == 3) then
         awful.spawn("playerctl -p " .. settings.musicplayer .. " play-pause", false) -- right click
     elseif (button == 4) then
-        change_volume("0.01+")                                -- scroll up
+        change_volume("0.01+")                                                       -- scroll up
     elseif (button == 5) then
-        change_volume("0.01-")                                -- scroll down
+        change_volume("0.01-")                                                       -- scroll down
     end
 end)
 

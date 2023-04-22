@@ -12,10 +12,8 @@
 
 local awful = require("awful")
 local gears = require("gears")
-local wibox = require("wibox")
 local helpers = require("helpers")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Set Wallpaper
@@ -73,7 +71,7 @@ if hash ~= saved_hash then
     -- Render the blurred version of every wallpaper
     for i, wp in ipairs(cache.wallpapers.filenames) do
         helpers.blur_image(beautiful.config_path .. "wallpapers/" .. wp,
-        beautiful.config_path .. "wallpapers/blurred/" .. wp, "08")
+            beautiful.config_path .. "wallpapers/blurred/" .. wp, "08")
     end
 
     -- Save the new hash value

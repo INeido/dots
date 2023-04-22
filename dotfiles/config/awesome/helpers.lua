@@ -13,9 +13,10 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
-local cairo = require("lgi").cairo
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
+
+local cairo = require("lgi").cairo
 
 ---@diagnostic disable: undefined-field
 local helpers = {}
@@ -92,11 +93,11 @@ end
 function helpers.update_background(panel, tag)
     local selected_tags = panel.screen.selected_tags
 
-	if #selected_tags > 0 then
-		panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], panel.screen)
-	else
-		panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], panel.screen)
-	end
+    if #selected_tags > 0 then
+        panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], panel.screen)
+    else
+        panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], panel.screen)
+    end
 end
 
 -- Calculates the hash of a folder
