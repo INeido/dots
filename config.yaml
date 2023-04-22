@@ -11,9 +11,6 @@ dotfiles:
   f_zshrc:
     src: zshrc
     dst: ~/.zshrc
-  f_gitconfig:
-    src: gitconfig
-    dst: ~/.gitconfig
   f_alacritty.yml:
     src: config/alacritty/alacritty.yml
     dst: ~/.config/alacritty/alacritty.yml
@@ -95,7 +92,6 @@ profiles:
   PC0:
     dotfiles:
     - f_zshrc
-    - f_gitconfig
     - f_alacritty.yml
     - d_config
     - d_evil
