@@ -47,17 +47,12 @@ local lockscreen = wibox({
 
 awful.placement.maximize(lockscreen)
 
-local lockscreen_extenders = helpers.extend_to_screens()
-
 -- ===================================================================
 -- Functions
 -- ===================================================================
 
 local function set_visibility(v)
 	lockscreen.visible = v
-	for i, panel in ipairs(lockscreen_extenders) do
-		panel.visible = v
-	end
 end
 
 local function reset()
@@ -155,23 +150,7 @@ end
 
 -- Update background
 tag.connect_signal("property::selected", function(t)
-	local selected_tags = lockscreen.screen.selected_tags
-
-	if #selected_tags > 0 then
-		lockscreen.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], lockscreen.screen)
-	else
-		lockscreen.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], lockscreen.screen)
-	end
-
-	for i, panel in ipairs(lockscreen_extenders) do
-		selected_tags = panel.screen.selected_tags
-
-		if #selected_tags > 0 then
-			panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], panel.screen)
-		else
-			panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], panel.screen)
-		end
-	end
+	helpers.update_background(lockscreen, t)
 end)
 
 -- ===================================================================

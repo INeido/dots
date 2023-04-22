@@ -24,7 +24,6 @@ local dpi = beautiful.xresources.apply_dpi
 -- Fix, for when your monitor turns off and loses its settings
 screen.connect_signal("added", function()
     awful.spawn.with_shell(settings.display)
-    require("naughty").notify({ title = "scrreeen", text = "added", timeout = 99999 })
 end)
 
 -- Client decorations

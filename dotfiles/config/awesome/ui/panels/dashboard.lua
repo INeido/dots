@@ -44,8 +44,6 @@ local dashboard = wibox({
 
 awful.placement.maximize(dashboard)
 
-local dashboard_extenders = helpers.extend_to_screens()
-
 -- ===================================================================
 -- Variables
 -- ===================================================================
@@ -59,18 +57,12 @@ dashboard.grabber = nil
 function db_close()
     awful.keygrabber.stop(dashboard.grabber)
     dashboard.visible = false
-    for i, panel in ipairs(dashboard_extenders) do
-        panel.visible = false
-    end
 end
 
 function db_open()
     -- Reset Calendar
     if dashboard.visible then
         calendar.date = os.date("*t")
-    end
-    for i, panel in ipairs(dashboard_extenders) do
-        panel.visible = true
     end
     -- Close the Powermenu
     pm_close()
@@ -102,23 +94,7 @@ end
 
 -- Update background
 tag.connect_signal("property::selected", function(t)
-    local selected_tags = dashboard.screen.selected_tags
-
-    if #selected_tags > 0 then
-        dashboard.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], dashboard.screen)
-    else
-        dashboard.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], dashboard.screen)
-    end
-
-    for i, panel in ipairs(dashboard_extenders) do
-        selected_tags = panel.screen.selected_tags
-
-        if #selected_tags > 0 then
-            panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], panel.screen)
-        else
-            panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], panel.screen)
-        end
-    end
+    helpers.update_background(dashboard, t)
 end)
 
 -- ===================================================================

@@ -88,6 +88,17 @@ function helpers.convert_to_jpg(image, save)
     end
 end
 
+-- Updates the background of a given panel
+function helpers.update_background(panel, tag)
+    local selected_tags = panel.screen.selected_tags
+
+	if #selected_tags > 0 then
+		panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], panel.screen)
+	else
+		panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], panel.screen)
+	end
+end
+
 -- Calculates the hash of a folder
 function helpers.get_folder_hash(folder)
     local cmd = "cd " .. folder .. " && find . -type f -print0 | sort -z | xargs -0 md5sum | md5sum"
@@ -279,34 +290,6 @@ function helpers.load_tag_icons()
     end
     f:close()
     return icons
-end
-
--- Extends a panel to all screens
-function helpers.extend_to_screens()
-    local function create_extender(s)
-        local extender = wibox({
-            visible = false,
-            ontop = true,
-            type = "splash",
-            screen = s,
-            bgimage = cache.wallpapers.blurred[1],
-        })
-
-        awful.placement.maximize(extender)
-
-        return extender
-    end
-
-    local extenders = {}
-
-    -- Add panel to each screen
-    awful.screen.connect_for_each_screen(function(s)
-        if s ~= screen.primary then
-            table.insert(extenders, create_extender(s))
-        end
-    end)
-
-    return extenders
 end
 
 return helpers
