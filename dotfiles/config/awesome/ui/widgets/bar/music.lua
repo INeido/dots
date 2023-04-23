@@ -171,7 +171,7 @@ music:connect_signal("button::press", function(_, _, _, button)
     if (button == 1) then -- left click
         if not running then
             running = true
-            awful.spawn(settings.musicplayer)
+            helpers.run_apps({settings.musicplayer})
         end
         show_player()
     elseif (button == 3) then

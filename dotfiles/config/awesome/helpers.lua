@@ -53,7 +53,14 @@ function helpers.run_apps(apps)
         if app == "spotify" then
             client = "spotify-launcher"
         end
-        awful.spawn.easy_async_with_shell(string.format("pgrep -f %s || %s &", client, client))
+        awful.spawn.easy_async_with_shell(
+            string.format("ps aux | grep '%s' | grep -v grep | awk '{print $2}'", client),
+            function(stdout)
+                if stdout == "" then
+                    awful.spawn(client)
+                end
+            end
+        )
     end
 end
 
