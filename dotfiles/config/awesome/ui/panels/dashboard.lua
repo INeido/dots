@@ -38,7 +38,7 @@ local dashboard = wibox({
     ontop = true,
     type = "splash",
     screen = screen.primary,
-    bgimage = cache.wallpapers.blurred[1],
+    bgimage = cache.wallpapers[screen.primary.index][1].blurred,
 })
 
 awful.placement.maximize(dashboard)

@@ -63,40 +63,39 @@ function helpers.surf_maximize(surf, s)
     local geom = s.geometry
     local aspect_w, aspect_h = geom.width / w, geom.height / h
 
-    local scaled_surf = cairo.ImageSurface.create(cairo.Format.ARGB32, geom.width, geom.height)
+    local scaled_surf = cairo.Surface.create_similar(surf, cairo.Content.COLOR_ALPHA, geom.width, geom.height)
     local cr = cairo.Context(scaled_surf)
 
     cr:scale(aspect_w, aspect_h)
     cr:set_source_surface(surf, 0, 0)
     cr:paint()
-    scaled_surf:flush()
+
+    surf:finish()
 
     return scaled_surf
 end
 
 -- Blur a given image
 function helpers.blur_image(image, save_path, radius)
-    -- Apply a Gaussian blur to the image using ImageMagick
     os.execute(string.format("convert %s -blur 0x%s %s", image, radius, save_path))
 end
 
 -- Convert a given image to JPG
-function helpers.convert_to_jpg(image, save)
-    local ext = string.sub(image, -4)
-    if ext == ".png" then
-        os.execute(string.format("convert %s -quality 80 %s", image, image:gsub("%.png", ".jpg")))
-        os.execute("mv " .. image .. " " .. save)
-    end
+function helpers.convert_to_jpg(image, save_path)
+    os.execute(string.format("convert %s -quality " .. settings.wp_quality .. " %s", image,
+    save_path:gsub("%.png", ".jpg")))
 end
 
 -- Updates the background of a given panel
 function helpers.update_background(panel, tag)
-    local selected_tags = panel.screen.selected_tags
+    if tag.selected == true then
+        local selected_tags = panel.screen.selected_tags
 
-    if #selected_tags > 0 then
-        panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[selected_tags[1].index], panel.screen)
-    else
-        panel.bgimage = helpers.surf_maximize(cache.wallpapers.blurred[1], panel.screen)
+        if #selected_tags > 0 then
+            panel.bgimage = cache.wallpapers[panel.screen.index][selected_tags[1].index].blurred
+        else
+            panel.bgimage = cache.wallpapers[panel.screen.index][1].blurred
+        end
     end
 end
 
@@ -259,23 +258,45 @@ end
 
 -- Loads all the wallpapers
 function helpers.load_wallpapers()
-    local wallpapers = { normal = {}, blurred = {}, filenames = {} }
-    local script_normal = "ls " .. beautiful.config_path .. "wallpapers/*.*"
+    local wallpapers = { filenames = {} }
+    local temp = { normal = {}, blurred = {} }
+
+    local script_normal
+    if settings.wp_fullres then
+        script_normal = "ls " .. beautiful.config_path .. "wallpapers/*.*"
+    else
+        script_normal = "ls " .. beautiful.config_path .. "wallpapers/compressed/*.*"
+    end
     local script_blurred = "ls " .. beautiful.config_path .. "wallpapers/blurred/*.*"
 
+    -- Load normal wallpapers
     local f = io.popen(script_normal)
     for file in f:lines() do
-        table.insert(wallpapers.normal, gears.surface.load(file))
-        local filename = file:match(".+/([^/]+)$") -- extract the filename portion of the path
+        table.insert(temp.normal, gears.surface.load(file))
+        -- Save the filenames
+        local filename = file:match(".+/([^/]+)$") -- Extract the filename portion of the path
         table.insert(wallpapers.filenames, filename)
     end
     f:close()
 
+    -- Load blurred wallpapers
     f = io.popen(script_blurred)
     for file in f:lines() do
-        table.insert(wallpapers.blurred, gears.surface.load(file))
+        table.insert(temp.blurred, gears.surface.load(file))
     end
     f:close()
+
+    -- Scales the wallpapers for every different screen
+    awful.screen.connect_for_each_screen(function(s)
+        wallpapers[s.index] = {}
+
+        for i, tag in ipairs(settings.tags) do
+            wallpapers[s.index][i] = { normal = nil, blurred = nil }
+
+            wallpapers[s.index][i].normal = helpers.surf_maximize(temp.normal[i], s)
+            wallpapers[s.index][i].blurred = helpers.surf_maximize(temp.blurred[i], s)
+        end
+    end)
 
     return wallpapers
 end

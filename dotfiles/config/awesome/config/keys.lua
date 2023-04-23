@@ -89,16 +89,6 @@ keys.globalkeys = gears.table.join(
         }),
     awful.key(
         { settings.modkey },
-        "g",
-        function()
-            require("naughty").notify({ title = "test", text = "test: " .. client.focus.name })
-        end,
-        {
-            description = "Lock screen",
-            group = "launcher"
-        }),
-    awful.key(
-        { settings.modkey },
         "space",
         function()
             awful.spawn("rofi -show drun -theme ~/.config/rofi/launcher.rasi")

@@ -34,7 +34,7 @@ awful.screen.connect_for_each_screen(function(s)
 			ontop = true,
 			type = "splash",
 			screen = s,
-			bgimage = cache.wallpapers.blurred[s.index],
+			bgimage = cache.wallpapers[screen.primary.index][1].blurred,
 		})
 
 		awful.placement.maximize(extender)

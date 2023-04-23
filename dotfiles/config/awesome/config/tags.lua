@@ -13,37 +13,13 @@
 local awful = require("awful")
 
 -- ===================================================================
--- Setup Tags
--- ===================================================================
-
-local tags = {
-  {
-    icon = cache.tag_icons[1],
-    layout = awful.layout.suit.tile,
-    selected = true,
-  },
-  {
-    icon = cache.tag_icons[2],
-    layout = awful.layout.suit.max,
-  },
-  {
-    icon = cache.tag_icons[3],
-    layout = awful.layout.suit.max,
-  },
-  {
-    icon = cache.tag_icons[4],
-    layout = awful.layout.suit.floating,
-  },
-}
-
--- ===================================================================
 -- Create Tags
 -- ===================================================================
 
 awful.screen.connect_for_each_screen(function(s)
-  for i, tag in pairs(tags) do
+  for i, tag in pairs(settings.tags) do
     awful.tag.add(i, {
-      icon = tag.icon,
+      icon = cache.tag_icons[i],
       icon_only = true,
       layout = tag.layout,
       screen = s,
