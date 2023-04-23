@@ -10,6 +10,7 @@
 -- Initialization
 -- ===================================================================
 
+local awful = require("awful")
 local helpers = require("helpers")
 
 -- ===================================================================
@@ -19,5 +20,5 @@ local helpers = require("helpers")
 -- Start autorun applications
 helpers.run_apps(settings.autorun)
 
--- Show lockscreen
-ls_show()
+-- Set display settings
+awful.spawn.with_shell(settings.display)

@@ -18,7 +18,7 @@ local beautiful = require("beautiful")
 -- ===================================================================
 
 -- Fix, for when your monitor turns off and loses its settings
-screen.connect_signal("added", function()
+screen.connect_signal("list", function()
     awful.spawn.with_shell(settings.display)
 end)
 

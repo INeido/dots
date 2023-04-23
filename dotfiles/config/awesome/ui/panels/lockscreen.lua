@@ -178,3 +178,6 @@ lockscreen:setup {
 	},
 	layout = wibox.layout.stack,
 }
+
+-- Show lockscreen after creation
+ls_show()
