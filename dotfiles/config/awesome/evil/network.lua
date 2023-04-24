@@ -34,4 +34,6 @@ awful.widget.watch(script, interval, function(_, stdout)
         up = up or 0,
         down = down or 0,
     })
+
+    collectgarbage("collect")
 end)

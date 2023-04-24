@@ -30,4 +30,6 @@ awful.widget.watch(script, interval, function(_, stdout)
     awesome.emit_signal("evil::pacman", {
         count = count,
     })
+
+    collectgarbage("collect")
 end)

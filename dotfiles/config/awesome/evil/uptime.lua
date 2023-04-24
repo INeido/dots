@@ -29,4 +29,6 @@ awful.widget.watch(script, interval, function(_, stdout)
     awesome.emit_signal("evil::uptime", {
         time = time or 0,
     })
+
+    collectgarbage("collect")
 end)

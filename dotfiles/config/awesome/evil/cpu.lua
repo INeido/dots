@@ -17,7 +17,7 @@ local awful = require("awful")
 -- ===================================================================
 
 local script = [[awk '$1~/cpu[0-9]/{usage=($2+$4)*100/($2+$4+$5); printf "%.2f\n", usage}' /proc/stat]]
-local interval = 1
+local interval = 2
 
 -- ===================================================================
 -- Daemon
@@ -40,4 +40,6 @@ awful.widget.watch(script, interval, function(_, stdout)
         cores = cores or { 0 },
         util = util or 0,
     })
+
+    collectgarbage("collect")
 end)

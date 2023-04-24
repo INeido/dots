@@ -21,7 +21,7 @@ local script_status = "playerctl -p " .. settings.musicplayer .. " status"
 local script_position = "playerctl -p " .. settings.musicplayer .. " position"
 local script_volume = "playerctl -p " .. settings.musicplayer .. " volume"
 
-local interval = 0.1
+local interval = 1
 
 -- ===================================================================
 -- Daemon
@@ -60,4 +60,6 @@ awful.widget.watch(script_status, interval, function(_, stat)
             end)
         end)
     end)
+
+    collectgarbage("collect")
 end)

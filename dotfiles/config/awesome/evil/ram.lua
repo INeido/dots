@@ -17,7 +17,7 @@ local awful = require("awful")
 -- ===================================================================
 
 local script = [[bash -c "free -m | awk '/^Mem/ {printf \"%d\", \$2}'; printf \"\n\" && free -m | awk '/^Mem/ {printf \"%d\", \$3}'; printf \"\n\" && free -m | awk '/^Mem/ {printf \"%d\", \$4}'"]]
-local interval = 1
+local interval = 2
 
 -- ===================================================================
 -- Daemon
@@ -37,4 +37,6 @@ awful.widget.watch(script, interval, function(_, stdout)
         free = free or 0,
         usage = usage or 0,
     })
+
+    collectgarbage("collect")
 end)

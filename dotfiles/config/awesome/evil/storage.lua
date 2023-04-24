@@ -44,4 +44,6 @@ awful.widget.watch(script, interval, function(_, stdout)
     awesome.emit_signal("evil::storage", {
         drives = drives or {},
     })
+
+    collectgarbage("collect")
 end)

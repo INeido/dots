@@ -35,4 +35,6 @@ awful.widget.watch(script, interval, function(_, stdout)
         ram_used = ram_used or 0,
         ram_usage = ram_usage or 0,
     })
+
+    collectgarbage("collect")
 end)
