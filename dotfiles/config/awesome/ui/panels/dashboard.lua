@@ -60,9 +60,7 @@ end
 
 function db_open()
     -- Reset Calendar
-    if dashboard.visible then
-        calendar.date = os.date("*t")
-    end
+    calendar.date = os.date("*t")
     -- Close the Powermenu
     pm_close()
     -- Open Dashboard
