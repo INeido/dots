@@ -47,21 +47,9 @@ dotfiles:
   f_setup.lua:
     src: config/awesome/setup.lua
     dst: ~/.config/awesome/setup.lua
-  f_config.rasi:
-    src: config/rofi/config.rasi
-    dst: ~/.config/rofi/config.rasi
   f_launcher.rasi:
     src: config/rofi/launcher.rasi
     dst: ~/.config/rofi/launcher.rasi
-  f_onedark.rasi:
-    src: config/rofi/onedark.rasi
-    dst: ~/.config/rofi/onedark.rasi
-  f_powermenu.rasi:
-    src: config/rofi/powermenu.rasi
-    dst: ~/.config/rofi/powermenu.rasi
-  f_powermenu.sh:
-    src: config/rofi/powermenu.sh
-    dst: ~/.config/rofi/powermenu.sh
     chmod: '755'
   f_autoconfig.yml:
     src: config/qutebrowser/autoconfig.yml
@@ -104,11 +92,7 @@ profiles:
     - d_icons
     - f_theme.lua
     - f_setup.lua
-    - f_config.rasi
     - f_launcher.rasi
-    - f_onedark.rasi
-    - f_powermenu.rasi
-    - f_powermenu.sh
     - f_autoconfig.yml
     - f_config.py
     - d_plugins
