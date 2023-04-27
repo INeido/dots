@@ -32,9 +32,6 @@ dotfiles:
   f_config.conf:
     src: config/neofetch/config.conf
     dst: ~/.config/neofetch/config.conf
-  f_oh-my-zsh.sh:
-    src: config/oh-my-zsh/oh-my-zsh.sh
-    dst: ~/.config/oh-my-zsh/oh-my-zsh.sh
   f_helpers.lua:
     src: config/awesome/helpers.lua
     dst: ~/.config/awesome/helpers.lua
@@ -87,7 +84,6 @@ profiles:
     - d_ui
     - d_wallpapers
     - f_config.conf
-    - f_oh-my-zsh.sh
     - f_helpers.lua
     - d_icons
     - f_theme.lua
