@@ -95,6 +95,9 @@ settings.network_interface = "enp42s0"
 
 -- Bar
 
+-- Taglist mode
+settings.taglist_mode      = "icon" -- 'icon', 'dot', 'number', 'roman', 'alphabet'
+
 -- RAM format
 settings.ram_format        = "<used> GB" -- <used>, <free>, <available>, <usage>, <total>
 settings.ram_factor        = 1024        -- The default values are in MB. So a factor of '1024' makes GB.

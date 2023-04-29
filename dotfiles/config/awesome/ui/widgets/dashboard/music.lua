@@ -187,7 +187,7 @@ local w = wibox.widget {
     set_text = function(self, title, artist)
         local title_to_display = title
         if self:get_children_by_id("titlew")[1]:get_text() ~= title_to_display then
-            self:get_children_by_id("titlew")[1]:set_markup(title_to_display)
+            self:get_children_by_id("titlew")[1]:set_text(title_to_display)
         end
         local artist_to_display = artist
         if self:get_children_by_id("artistw")[1]:get_text() ~= artist_to_display then
