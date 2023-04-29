@@ -19,12 +19,21 @@ local beautiful    = require("beautiful")
 -- Load Widgets
 -- ===================================================================
 
+local buttons = {}
+
+-- To prevent a nil value from entering
+local function add_button(module)
+    local button = require(module)
+    if button ~= nil then
+        table.insert(buttons, button)
+    end
+end
+
+add_button("ui.widgets.powermenu.logout")
+add_button("ui.widgets.powermenu.shutdown")
+add_button("ui.widgets.powermenu.reboot")
+
 local goodbyer     = require("ui.widgets.powermenu.goodbyer")
-local buttons      = {
-    require("ui.widgets.powermenu.logout"),
-    require("ui.widgets.powermenu.shutdown"),
-    require("ui.widgets.powermenu.reboot"),
-}
 local confirmation = require("ui.widgets.powermenu.confirmation")
 
 -- ===================================================================

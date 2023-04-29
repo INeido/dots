@@ -29,6 +29,6 @@ local w = wibox.widget {
 }
 
 -- Box the widget
-w = helpers.box_tp_widget(w, false, 5, beautiful.bg_normal)
+w = helpers.box_ba_widget(w, false, 5, beautiful.bg_normal)
 
 return w

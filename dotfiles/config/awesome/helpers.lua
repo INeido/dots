@@ -169,7 +169,7 @@ function helpers.box_db_widget(widget, width, height, background)
 end
 
 -- For Bar Widgets
-function helpers.box_tp_widget(widget, effects, margin, background)
+function helpers.box_ba_widget(widget, effects, margin, background)
     background = background or beautiful.widget_background
 
     local w = wibox.widget {
@@ -320,5 +320,19 @@ function helpers.load_tag_icons()
     f:close()
     return icons
 end
+
+
+function helpers.format_traffic(val)
+    local bytes = val / 1024
+    if bytes > 1024 ^ 3 then
+      return string.format("%.2f GB/s", bytes / 1024 ^ 3)
+    elseif bytes > 1024 ^ 2 then
+      return string.format("%.2f MB/s", bytes / 1024 ^ 2)
+    elseif bytes > 1024 then
+      return string.format("%.2f KB/s", bytes / 1024)
+    else
+      return string.format("%.0f B/s", bytes)
+    end
+  end
 
 return helpers

@@ -1,9 +1,9 @@
---      ██████╗  █████╗ ███╗   ███╗
---      ██╔══██╗██╔══██╗████╗ ████║
---      ██████╔╝███████║██╔████╔██║
---      ██╔══██╗██╔══██║██║╚██╔╝██║
---      ██║  ██║██║  ██║██║ ╚═╝ ██║
---      ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝
+--       ███████╗████████╗ ██████╗ ██████╗  █████╗  ██████╗ ███████╗
+--       ██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗██╔══██╗██╔════╝ ██╔════╝
+--       ███████╗   ██║   ██║   ██║██████╔╝███████║██║  ███╗█████╗
+--       ╚════██║   ██║   ██║   ██║██╔══██╗██╔══██║██║   ██║██╔══╝
+--       ███████║   ██║   ╚██████╔╝██║  ██║██║  ██║╚██████╔╝███████╗
+--       ╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 
 
 -- ===================================================================
@@ -21,14 +21,13 @@ local dpi = beautiful.xresources.apply_dpi
 -- ===================================================================
 
 local function applyformat(args)
-    local str = settings.ram_format
-    local factor = settings.ram_factor
+    local str = settings.storage_format
+    local factor = settings.storage_factor
 
+    str = str:gsub("<size>", string.format("%.1f", args.size / factor) or "0")
     str = str:gsub("<used>", string.format("%.1f", args.used / factor) or "0")
     str = str:gsub("<free>", string.format("%.1f", args.free / factor) or "0")
-    str = str:gsub("<available>", string.format("%.1f", args.available / factor) or "0")
     str = str:gsub("<usage>", args.usage or "0")
-    str = str:gsub("<total>", string.format("%.1f", args.total / factor) or "0")
     return str
 end
 
@@ -36,8 +35,8 @@ end
 -- Textbox
 -- ===================================================================
 
-local ram = wibox.widget.textbox()
-ram.font = beautiful.font .. "11"
+local storage = wibox.widget.textbox()
+storage.font = beautiful.font .. "11"
 
 -- ===================================================================
 -- Icon
@@ -45,7 +44,7 @@ ram.font = beautiful.font .. "11"
 
 local icon = wibox.widget {
     font   = beautiful.iconfont .. "11",
-    markup = helpers.text_color(" ", beautiful.accent),
+    markup = helpers.text_color(" ", beautiful.accent),
     valign = "center",
     align  = "center",
     widget = wibox.widget.textbox,
@@ -63,7 +62,7 @@ local w = wibox.widget {
         -- Add Icon
         {
             -- Add Widget
-            ram,
+            storage,
             fg = beautiful.fg_focus,
             widget = wibox.container.background,
         },
@@ -94,9 +93,11 @@ local tooltip = awful.tooltip {
 -- Signal
 -- ===================================================================
 
-awesome.connect_signal("evil::ram", function(args)
-    ram.text = applyformat(args)
-    tooltip.text = "Total: " .. args.total .. "MB\n" .. "Used: " .. args.used .. "MB\n" .. "Free: " .. args.free .. "MB"
+awesome.connect_signal("evil::storage", function(args)
+    storage.text = applyformat(args.drives[1])
+    tooltip.text = "Total: " .. string.format("%.1f", args.drives[1].size / settings.storage_factor)
+        .. " GB\n" .. "Used: " .. string.format("%.1f", args.drives[1].used / settings.storage_factor)
+        .. " GB\n" .. "Free: " .. string.format("%.1f", args.drives[1].free / settings.storage_factor) .. " GB"
 end)
 
 return w

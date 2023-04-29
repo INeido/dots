@@ -59,33 +59,45 @@ local w = wibox.widget {
     -- Margins
     {
         {
-            -- Title Text
+            -- Icon
+            font   = beautiful.iconfont .. "11",
+            markup = helpers.text_color(" ", beautiful.accent),
+            valign = "center",
+            align  = "center",
+            widget = wibox.widget.textbox,
+        },
+        {
             {
-                id = "titlew",
-                text = "Nothing playing",
-                font = beautiful.font .. "11",
-                widget = wibox.widget.textbox
+                -- Title Text
+                {
+                    id = "titlew",
+                    text = "Nothing playing",
+                    font = beautiful.font .. "11",
+                    widget = wibox.widget.textbox
+                },
+                speed = 40,
+                max_size = dpi(160),
+                step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
+                layout = wibox.container.scroll.horizontal,
             },
-            speed = 40,
-            max_size = dpi(160),
-            step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
-            layout = wibox.container.scroll.horizontal,
+            {
+                -- Connector betwee Title and Artist
+                id = "connectorw",
+                text = " - ",
+                font = beautiful.font .. "11",
+                widget = wibox.widget.textbox,
+            },
+            {
+                -- Artist Text
+                id = "artistw",
+                text = "wub wub",
+                font = beautiful.font .. "11",
+                widget = wibox.widget.textbox,
+            },
+            layout = wibox.layout.align.horizontal,
         },
-        {
-            -- Connector betwee Title and Artist
-            id = "connectorw",
-            text = " - ",
-            font = beautiful.font .. "11",
-            widget = wibox.widget.textbox,
-        },
-        {
-            -- Artist Text
-            id = "artistw",
-            text = "wub wub",
-            font = beautiful.font .. "11",
-            widget = wibox.widget.textbox,
-        },
-        layout = wibox.layout.align.horizontal,
+        spacing = dpi(2),
+        layout = wibox.layout.fixed.horizontal,
     },
     left = dpi(5),
     right = dpi(5),
@@ -113,6 +125,21 @@ local w = wibox.widget {
     end
 }
 
+-- Box the Widget
+local music = helpers.box_ba_widget(w, true, 2)
+
+-- ===================================================================
+-- Tooltip
+-- ===================================================================
+
+local tooltip = awful.tooltip {
+    objects = { music },
+    font = beautiful.font .. "11",
+    mode = "outside",
+    align = "right",
+    preferred_positions = { "right", "left", "bottom" }
+}
+
 -- ===================================================================
 -- Actions
 -- ===================================================================
@@ -128,7 +155,6 @@ local update = function(widget, args, _, _, _)
         return
     end
     running = true
-
 
     -- Catch podcast
     if args.artist == nil and args.album ~= nil and args.title ~= nil then
@@ -147,9 +173,12 @@ local update = function(widget, args, _, _, _)
 
         widget:set_text(cur_title, cur_artist)
         widget:set_visible(true)
+
+        tooltip.text = "Artist: " .. cur_artist
+            .. "\nSong: " .. cur_title
+            .. "\nAlbum: " .. cur_album
     end
 end
-
 
 -- ===================================================================
 -- Signal
@@ -158,9 +187,6 @@ end
 awesome.connect_signal("evil::music", function(args)
     update(w, args)
 end)
-
--- Box the Widget
-local music = helpers.box_tp_widget(w, true, 2)
 
 --- Adds mouse controls to the widget:
 --  - left click - minimize/unminimize player
@@ -171,7 +197,7 @@ music:connect_signal("button::press", function(_, _, _, button)
     if (button == 1) then -- left click
         if not running then
             running = true
-            helpers.run_apps({settings.musicplayer})
+            helpers.run_apps({ settings.musicplayer })
         end
         show_player()
     elseif (button == 3) then
@@ -189,25 +215,6 @@ end)
 tag.connect_signal("property::selected", function(t)
     hide_player()
 end)
-
--- ===================================================================
--- Tooltip
--- ===================================================================
-
-if false then
-    local tooltip = awful.tooltip {
-        mode = "outside",
-        preferred_positions = { "bottom" },
-    }
-
-    tooltip:add_to_object(music)
-
-    music:connect_signal("mouse::enter", function()
-        tooltip.text = "Album: " .. cur_album
-            .. "\nArtist: " .. cur_artist
-            .. "\nSong: " .. cur_title
-    end)
-end
 
 -- ===================================================================
 -- Widget

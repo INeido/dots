@@ -19,7 +19,7 @@ local dpi = beautiful.xresources.apply_dpi
 -- Textclock
 -- ===================================================================
 
-local date = wibox.widget.textclock("%a, %B %d")
+local date = wibox.widget.textclock(settings.date_format)
 date.font = beautiful.font .. "11"
 
 -- ===================================================================
@@ -59,6 +59,6 @@ local w = wibox.widget {
 }
 
 -- Box the widget
-w = helpers.box_tp_widget(w, false, 5)
+w = helpers.box_ba_widget(w, false, 5)
 
 return w

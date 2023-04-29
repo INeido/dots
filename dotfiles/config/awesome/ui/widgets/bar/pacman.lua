@@ -60,7 +60,7 @@ local w = wibox.widget {
 }
 
 -- Box the widget
-w = helpers.box_tp_widget(w, true, 5)
+w = helpers.box_ba_widget(w, true, 5)
 
 -- ===================================================================
 -- Tooltip
@@ -68,7 +68,7 @@ w = helpers.box_tp_widget(w, true, 5)
 
 local tooltip = awful.tooltip {
     objects = { w },
-    font = beautiful.font .. "9",
+    font = beautiful.font .. "11",
     mode = "outside",
     align = "right",
     preferred_positions = { "right", "left", "bottom" }

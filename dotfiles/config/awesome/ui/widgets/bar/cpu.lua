@@ -60,7 +60,7 @@ local w = wibox.widget {
 }
 
 -- Box the widget
-w = helpers.box_tp_widget(w)
+w = helpers.box_ba_widget(w, false, 5)
 
 -- ===================================================================
 -- Tooltip

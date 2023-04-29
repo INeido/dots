@@ -44,7 +44,7 @@ local function layoutbox(s)
     end)
 
     -- Box the widget
-    w = helpers.box_tp_widget(w, true, 5)
+    w = helpers.box_ba_widget(w, true, 5)
 
     return w
 end

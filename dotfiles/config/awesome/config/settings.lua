@@ -88,8 +88,28 @@ settings.goodbyer_text     = "See ya later"
 -- Confirmation text
 settings.confirmation_text = "Are you sure?"
 
+-- General
+
 -- Network Interface for the widget
 settings.network_interface = "enp42s0"
+
+-- Bar
+
+-- RAM format
+settings.ram_format        = "<used> GB" -- <used>, <free>, <available>, <usage>, <total>
+settings.ram_factor        = 1024        -- The default values are in MB. So a factor of '1024' makes GB.
+
+-- Storage format
+settings.storage_format    = "<usage> %" -- <used>, <free>, <usage>, <size>
+settings.storage_factor    = 1024 * 1024 -- The default values are in KB. So a factor of '1024' makes GB.
+
+-- Clock format
+settings.clock_format      = "%H : %M"
+
+-- Date format
+settings.date_format       = "%a, %B %d"
+
+-- Dashboard
 
 -- Enter the drives you want to get data from for the widget
 settings.drive_names       = { "/", "/Games" }

@@ -55,11 +55,9 @@ local function taglist(s)
             widget          = wibox.container.background,
             create_callback = function(self, t, index, tags) --luacheck: no unused args
                 if t.selected then
-                    self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon,
-                        beautiful.fg_focus))
+                    t.icon = gears.color.recolor_image(t.icon, beautiful.fg_focus)
                 else
-                    self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon,
-                        beautiful.fg_faded))
+                    t.icon = gears.color.recolor_image(t.icon, beautiful.fg_faded)
                 end
 
                 self:connect_signal("mouse::enter", function()
@@ -78,18 +76,16 @@ local function taglist(s)
             -- TO-DO: When changing tags, the widget updates on both monitors... Can't figure out why. Help.
             update_callback = function(self, t, index, tags) --luacheck: no unused args
                 if t.selected then
-                    self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon,
-                        beautiful.fg_focus))
+                    t.icon = gears.color.recolor_image(t.icon, beautiful.fg_focus)
                 else
-                    self:get_children_by_id("icon_role")[1]:set_image(gears.color.recolor_image(t.icon,
-                        beautiful.fg_faded))
+                    t.icon = gears.color.recolor_image(t.icon, beautiful.fg_faded)
                 end
             end
         }
     }
 
     -- Box the widget
-    w = helpers.box_tp_widget(w, false, 5)
+    w = helpers.box_ba_widget(w, false, 5)
 
     return w
 end

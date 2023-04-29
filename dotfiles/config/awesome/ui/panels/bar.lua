@@ -28,6 +28,12 @@ local music = require("ui.widgets.bar.music")
 local pacman = require("ui.widgets.bar.pacman")
 local date = require("ui.widgets.bar.date")
 local clock = require("ui.widgets.bar.clock")
+local cpu = require("ui.widgets.bar.cpu")
+local ram = require("ui.widgets.bar.ram")
+local temp = require("ui.widgets.bar.temp")
+local network = require("ui.widgets.bar.network")
+local storage = require("ui.widgets.bar.storage")
+local battery = require("ui.widgets.bar.battery")
 
 -- ===================================================================
 -- Left
@@ -75,6 +81,12 @@ end
 local function right(s)
     return {
         {
+            --battery,
+            --network,
+            --temp,
+            --ram,
+            --storage,
+            --cpu,
             music,
             pacman,
             date,
