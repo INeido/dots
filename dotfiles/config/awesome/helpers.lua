@@ -10,16 +10,16 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
-local wibox = require("wibox")
+local awful     = require("awful")
+local gears     = require("gears")
+local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
-local cairo = require("lgi").cairo
+local cairo     = require("lgi").cairo
 
 ---@diagnostic disable: undefined-field
-local helpers = {}
+local helpers   = {}
 
 -- Colorize Text
 function helpers.text_color(text, color)
@@ -90,7 +90,7 @@ end
 -- Convert a given image to JPG
 function helpers.convert_to_jpg(image, save_path)
     os.execute(string.format("convert %s -quality " .. settings.wp_quality .. " %s", image,
-    save_path:gsub("%.png", ".jpg")))
+        save_path:gsub("%.png", ".jpg")))
 end
 
 -- Updates the background of a given panel
@@ -321,18 +321,17 @@ function helpers.load_tag_icons()
     return icons
 end
 
-
 function helpers.format_traffic(val)
     local bytes = val / 1024
     if bytes > 1024 ^ 3 then
-      return string.format("%.2f GB/s", bytes / 1024 ^ 3)
+        return string.format("%.2f GB/s", bytes / 1024 ^ 3)
     elseif bytes > 1024 ^ 2 then
-      return string.format("%.2f MB/s", bytes / 1024 ^ 2)
+        return string.format("%.2f MB/s", bytes / 1024 ^ 2)
     elseif bytes > 1024 then
-      return string.format("%.2f KB/s", bytes / 1024)
+        return string.format("%.2f KB/s", bytes / 1024)
     else
-      return string.format("%.0f B/s", bytes)
+        return string.format("%.0f B/s", bytes)
     end
-  end
+end
 
 return helpers

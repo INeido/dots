@@ -10,13 +10,13 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
-local wibox = require("wibox")
-local helpers = require("helpers")
-local naughty = require("naughty")
+local awful     = require("awful")
+local gears     = require("gears")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
+local naughty   = require("naughty")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Create Button
@@ -30,13 +30,13 @@ local function create_button(command, c)
                     widget = wibox.widget.textbox,
                 },
                 forced_height = dpi(15),
-                forced_width = dpi(15),
-                shape = gears.shape.circle,
-                bg = beautiful.titlebar_button_normal,
-                widget = wibox.container.background,
+                forced_width  = dpi(15),
+                shape         = gears.shape.circle,
+                bg            = beautiful.titlebar_button_normal,
+                widget        = wibox.container.background,
             },
             margins = 5,
-            widget = wibox.container.margin,
+            widget  = wibox.container.margin,
         },
         widget = wibox.container.background,
     }
@@ -98,7 +98,7 @@ return function(c)
 
     local left = {
         buttons = buttons,
-        layout = wibox.layout.fixed.horizontal,
+        layout  = wibox.layout.fixed.horizontal,
     }
 
     local middle = {

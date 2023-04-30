@@ -10,7 +10,7 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
+local awful  = require("awful")
 
 -- ===================================================================
 -- Variables
@@ -32,9 +32,9 @@ awful.widget.watch(script, interval, function(_, stdout)
         local _, size, used, free, usage, mount = line:match("(%S+)%s+(%S+)%s+(%S+)%s+(%S+)%s+(%S+)%s+(%S+)")
         if _ ~= "Filesystem" and size and used and free and usage and mount then
             table.insert(drives, {
-                size = size:sub(1, -2),
-                used = used:sub(1, -2),
-                free = free:sub(1, -2),
+                size  = size:sub(1, -2),
+                used  = used:sub(1, -2),
+                free  = free:sub(1, -2),
                 usage = usage:sub(1, -2),
                 mount = mount,
             })

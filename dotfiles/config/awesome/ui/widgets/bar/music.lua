@@ -10,11 +10,11 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local wibox = require("wibox")
-local helpers = require("helpers")
+local awful     = require("awful")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Helper
@@ -46,16 +46,16 @@ end
 
 local dim_opacity = 0.75
 
-local cur_artist = nil
-local cur_title = nil
-local cur_album = nil
-local running = false
+local cur_artist  = nil
+local cur_title   = nil
+local cur_album   = nil
+local running     = false
 
 -- ===================================================================
 -- Player
 -- ===================================================================
 
-local w = wibox.widget {
+local w           = wibox.widget {
     -- Margins
     {
         {
@@ -70,38 +70,38 @@ local w = wibox.widget {
             {
                 -- Title Text
                 {
-                    id = "titlew",
-                    text = "Nothing playing",
-                    font = beautiful.font .. "11",
+                    id     = "titlew",
+                    text   = "Nothing playing",
+                    font   = beautiful.font .. "11",
                     widget = wibox.widget.textbox
                 },
-                speed = 40,
-                max_size = dpi(160),
+                speed         = 40,
+                max_size      = dpi(160),
                 step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
-                layout = wibox.container.scroll.horizontal,
+                layout        = wibox.container.scroll.horizontal,
             },
             {
                 -- Connector betwee Title and Artist
-                id = "connectorw",
-                text = " - ",
-                font = beautiful.font .. "11",
+                id     = "connectorw",
+                text   = " - ",
+                font   = beautiful.font .. "11",
                 widget = wibox.widget.textbox,
             },
             {
                 -- Artist Text
-                id = "artistw",
-                text = "wub wub",
-                font = beautiful.font .. "11",
+                id     = "artistw",
+                text   = "wub wub",
+                font   = beautiful.font .. "11",
                 widget = wibox.widget.textbox,
             },
             layout = wibox.layout.align.horizontal,
         },
         spacing = dpi(2),
-        layout = wibox.layout.fixed.horizontal,
+        layout  = wibox.layout.fixed.horizontal,
     },
-    left = dpi(5),
-    right = dpi(5),
-    widget = wibox.container.margin,
+    left       = dpi(5),
+    right      = dpi(5),
+    widget     = wibox.container.margin,
 
     set_status = function(self, is_playing)
         self:get_children_by_id("titlew")[1]:emit_signal("widget::redraw_needed")
@@ -113,7 +113,7 @@ local w = wibox.widget {
         self:get_children_by_id("artistw")[1]:emit_signal("widget::redraw_needed")
     end,
 
-    set_text = function(self, title, artist)
+    set_text   = function(self, title, artist)
         local title_to_display = title
         if self:get_children_by_id("titlew")[1]:get_text() ~= title_to_display then
             self:get_children_by_id("titlew")[1]:set_text(title_to_display)
@@ -126,17 +126,17 @@ local w = wibox.widget {
 }
 
 -- Box the Widget
-local music = helpers.box_ba_widget(w, true, 2)
+local music       = helpers.box_ba_widget(w, true, 2)
 
 -- ===================================================================
 -- Tooltip
 -- ===================================================================
 
-local tooltip = awful.tooltip {
-    objects = { music },
-    font = beautiful.font .. "11",
-    mode = "outside",
-    align = "right",
+local tooltip     = awful.tooltip {
+    objects             = { music },
+    font                = beautiful.font .. "11",
+    mode                = "outside",
+    align               = "right",
     preferred_positions = { "right", "left", "bottom" }
 }
 
@@ -144,7 +144,7 @@ local tooltip = awful.tooltip {
 -- Actions
 -- ===================================================================
 
-local update = function(widget, args, _, _, _)
+local update      = function(widget, args, _, _, _)
     -- Update status
     widget:set_status(args.status == "Playing" and true or false)
 
@@ -159,7 +159,7 @@ local update = function(widget, args, _, _, _)
     -- Catch podcast
     if args.artist == nil and args.album ~= nil and args.title ~= nil then
         cur_artist = args.album -- Podcasts are whack. The artist is under the 'album' metadata
-        cur_title = args.title
+        cur_title  = args.title
 
         widget:set_text(cur_title, cur_artist)
         widget:set_visible(true)
@@ -168,8 +168,8 @@ local update = function(widget, args, _, _, _)
     -- Update text
     if args.artist ~= nil and args.title ~= nil and args.album ~= nil then
         cur_artist = args.artist
-        cur_title = args.title
-        cur_album = args.album
+        cur_title  = args.title
+        cur_album  = args.album
 
         widget:set_text(cur_title, cur_artist)
         widget:set_visible(true)

@@ -10,37 +10,37 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local wibox = require("wibox")
-local helpers = require("helpers")
-local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local awful         = require("awful")
+local wibox         = require("wibox")
+local helpers       = require("helpers")
+local beautiful     = require("beautiful")
+local dpi           = beautiful.xresources.apply_dpi
 
-local has_pam, pam = pcall(require, "liblua_pam")
+local has_pam, pam  = pcall(require, "liblua_pam")
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local characters_entered = 0
-local max_displayable_chars = 16
+local chars_entered = 0
+local max_chars     = 16
 
 -- ===================================================================
 -- Load Widgets
 -- ===================================================================
 
-local datetime = require("ui.widgets.lockscreen.datetime")
-local input = require("ui.widgets.lockscreen.input")
+local datetime      = require("ui.widgets.lockscreen.datetime")
+local input         = require("ui.widgets.lockscreen.input")
 
 -- ===================================================================
 -- Lockscreen
 -- ===================================================================
 
-local lockscreen = wibox({
+local lockscreen    = wibox({
 	visible = false,
-	ontop = true,
-	type = "splash",
-	screen = screen.primary,
+	ontop   = true,
+	type    = "splash",
+	screen  = screen.primary,
 	bgimage = cache.wallpapers[screen.primary.index][1].blurred,
 })
 
@@ -55,12 +55,12 @@ local function set_visibility(v)
 end
 
 local function reset()
-	characters_entered = 0;
+	chars_entered = 0;
 	input.change_text("")
 end
 
 local function fail()
-	characters_entered = 0;
+	chars_entered = 0;
 	input.change_text("")
 end
 
@@ -110,17 +110,17 @@ local function grab_password()
 		},
 		keypressed_callback = function(mod, key, cmd)
 			if #key == 1 then
-				characters_entered = characters_entered + 1
+				chars_entered = chars_entered + 1
 			elseif key == "BackSpace" then
-				if characters_entered > 0 then
-					characters_entered = characters_entered - 1
+				if chars_entered > 0 then
+					chars_entered = chars_entered - 1
 				end
 			end
 
-			if characters_entered >= max_displayable_chars then
-				input.change_text(string.rep(" ", max_displayable_chars))
+			if chars_entered >= max_chars then
+				input.change_text(string.rep(" ", max_chars))
 			else
-				input.change_text(string.rep(" ", characters_entered))
+				input.change_text(string.rep(" ", chars_entered))
 			end
 		end,
 		exe_callback        = function(input)

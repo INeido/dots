@@ -10,10 +10,10 @@
 -- Initialization
 -- ===================================================================
 
-local wibox = require("wibox")
-local helpers = require("helpers")
-local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local wibox         = require("wibox")
+local helpers       = require("helpers")
+local beautiful     = require("beautiful")
+local dpi           = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Create Widgets
@@ -24,18 +24,18 @@ local create_widget = function(icon, min, max)
         {
             {
                 -- Chart
-                id = "chart",
-                min_value = min,
-                max_value = max,
-                value = 100,
+                id            = "chart",
+                min_value     = min,
+                max_value     = max,
+                value         = 100,
                 forced_height = dpi(80),
-                forced_width = dpi(80),
-                thickness = dpi(10),
-                start_angle = math.pi * 1.5,
-                rounded_edge = true,
-                bg = beautiful.bg_minimize,
-                colors = { beautiful.accent },
-                widget = wibox.container.arcchart
+                forced_width  = dpi(80),
+                thickness     = dpi(10),
+                start_angle   = math.pi * 1.5,
+                rounded_edge  = true,
+                bg            = beautiful.bg_minimize,
+                colors        = { beautiful.accent },
+                widget        = wibox.container.arcchart
             },
             {
                 -- Icon in the center
@@ -55,7 +55,7 @@ local create_widget = function(icon, min, max)
             widget = wibox.widget.textbox,
         },
         spacing = dpi(10),
-        layout = wibox.layout.fixed.vertical,
+        layout  = wibox.layout.fixed.vertical,
     }
     return w
 end
@@ -64,11 +64,11 @@ end
 -- Widget
 -- ===================================================================
 
-local util = create_widget("", 0, 100)
-local ram = create_widget("", 0, 100)
-local temp = create_widget("", 30, 100)
+local util          = create_widget("", 0, 100)
+local ram           = create_widget("", 0, 100)
+local temp          = create_widget("", 30, 100)
 
-local w = wibox.widget {
+local w             = wibox.widget {
     -- Header Text
     {
         text   = "CPU",
@@ -80,7 +80,7 @@ local w = wibox.widget {
     ram,
     temp,
     spacing = dpi(15),
-    layout = wibox.layout.fixed.vertical,
+    layout  = wibox.layout.fixed.vertical,
 }
 
 -- ===================================================================

@@ -29,7 +29,8 @@ settings.display           = "xrandr --output DP-0 --primary --mode 2560x1440 --
 -- ===================================================================
 
 -- Layout
-settings.bar_location      = "top" -- 'top', 'bottom'
+settings.bar_location      = "top"  -- 'top', 'bottom'
+settings.bulletin_location = "left" -- 'left', 'right'
 
 -- Switches
 settings.enable_titlebar   = false
@@ -43,7 +44,7 @@ settings.wp_blur           = "08"  -- In hex
 -- Tags
 settings.tags              = {
 	{
-		layout = awful.layout.suit.tile,
+		layout   = awful.layout.suit.tile,
 		selected = true,
 	},
 	{

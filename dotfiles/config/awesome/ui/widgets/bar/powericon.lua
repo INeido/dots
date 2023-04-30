@@ -10,23 +10,23 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
-local wibox = require("wibox")
+local awful     = require("awful")
+local gears     = require("gears")
+local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local image = cache.power_icon
+local image     = cache.power_icon
 
 -- ===================================================================
 -- Widget
 -- ===================================================================
 
-local w = wibox.widget {
+local w         = wibox.widget {
     -- Add spacer
     {
         -- Add margins outside
@@ -40,8 +40,8 @@ local w = wibox.widget {
                     nil,
                     -- The actual widget goes here
                     {
-                        id = "image",
-                        image = gears.color.recolor_image(image, beautiful.fg_normal),
+                        id     = "image",
+                        image  = gears.color.recolor_image(image, beautiful.fg_normal),
                         widget = wibox.widget.imagebox,
                     },
                     expand = "none",
@@ -50,14 +50,14 @@ local w = wibox.widget {
                 expand = "none",
                 layout = wibox.layout.align.horizontal,
             },
-            bg = beautiful.widget_normal,
-            shape = gears.shape.rect,
+            bg     = beautiful.widget_normal,
+            shape  = gears.shape.rect,
             widget = wibox.container.background,
         },
         margins = dpi(3),
-        widget = wibox.container.margin,
+        widget  = wibox.container.margin,
     },
-    left = dpi(10),
+    left   = dpi(10),
     widget = wibox.container.margin,
 }
 

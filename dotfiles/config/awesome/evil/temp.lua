@@ -10,13 +10,13 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
+local awful    = require("awful")
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local script = [[bash -c "sensors | grep 'Tctl' | awk '{print $2}' | cut -c2-3"]]
+local script   = [[bash -c "sensors | grep 'Tctl' | awk '{print $2}' | cut -c2-3"]]
 local interval = 5
 
 -- ===================================================================

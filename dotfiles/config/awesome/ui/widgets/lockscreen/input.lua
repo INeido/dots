@@ -10,33 +10,33 @@
 -- Initialization
 -- ===================================================================
 
-local wibox = require("wibox")
-local helpers = require("helpers")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local icon = ""
+local icon      = ""
 
 -- ===================================================================
 -- Date & Time
 -- ===================================================================
 
-local lock = wibox.widget {
-	font = beautiful.iconfont .. "14",
+local lock      = wibox.widget {
+	font   = beautiful.iconfont .. "14",
 	markup = helpers.text_color(icon, beautiful.fg_normal),
-	align = "center",
+	align  = "center",
 	valign = "center",
 	widget = wibox.widget.textbox,
 }
 
-local input = wibox.widget {
-	font = beautiful.iconfont .. "11",
+local input     = wibox.widget {
+	font   = beautiful.iconfont .. "11",
 	markup = helpers.text_color("", beautiful.fg_normal),
-	align = "center",
+	align  = "center",
 	widget = wibox.widget.textbox,
 }
 
@@ -45,27 +45,27 @@ local input = wibox.widget {
 -- ===================================================================
 
 -- Create the widget
-local w = wibox.widget {
+local w         = wibox.widget {
 	-- Input box widget
 	{
 		input,
-		forced_width = dpi(320),
+		forced_width  = dpi(320),
 		forced_height = dpi(40),
-		bg = beautiful.bg_normal .. "AA",
-		widget = wibox.container.background,
+		bg            = beautiful.bg_normal .. "AA",
+		widget        = wibox.container.background,
 	},
 	-- Spacer
 	{
 		margins = dpi(5),
-		widget = wibox.container.margin,
+		widget  = wibox.container.margin,
 	},
 	-- Lock symbol widget
 	{
 		lock,
-		forced_width = dpi(50),
+		forced_width  = dpi(50),
 		forced_height = dpi(40),
-		bg = beautiful.bg_normal .. "AA",
-		widget = wibox.container.background,
+		bg            = beautiful.bg_normal .. "AA",
+		widget        = wibox.container.background,
 	},
 	layout = wibox.layout.align.horizontal,
 }

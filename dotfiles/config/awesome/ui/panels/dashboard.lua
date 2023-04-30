@@ -10,24 +10,24 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local wibox = require("wibox")
-local helpers = require("helpers")
+local awful     = require("awful")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Load Widgets
 -- ===================================================================
 
-local music = require("ui.widgets.dashboard.music")
-local clock = require("ui.widgets.dashboard.clock")
-local calendar = require("ui.widgets.dashboard.calendar")
-local network = require("ui.widgets.dashboard.network")
-local gpu = require("ui.widgets.dashboard.gpu")
-local cpu = require("ui.widgets.dashboard.cpu")
-local uptime = require("ui.widgets.dashboard.uptime")
-local storage = require("ui.widgets.dashboard.storage")
+local music     = require("ui.widgets.dashboard.music")
+local clock     = require("ui.widgets.dashboard.clock")
+local calendar  = require("ui.widgets.dashboard.calendar")
+local network   = require("ui.widgets.dashboard.network")
+local gpu       = require("ui.widgets.dashboard.gpu")
+local cpu       = require("ui.widgets.dashboard.cpu")
+local uptime    = require("ui.widgets.dashboard.uptime")
+local storage   = require("ui.widgets.dashboard.storage")
 
 -- ===================================================================
 -- Dashboard
@@ -35,9 +35,9 @@ local storage = require("ui.widgets.dashboard.storage")
 
 local dashboard = wibox({
     visible = false,
-    ontop = true,
-    type = "splash",
-    screen = screen.primary,
+    ontop   = true,
+    type    = "splash",
+    screen  = screen.primary,
     bgimage = cache.wallpapers[screen.primary.index][1].blurred,
 })
 

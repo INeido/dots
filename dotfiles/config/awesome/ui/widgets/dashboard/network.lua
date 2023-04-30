@@ -10,16 +10,16 @@
 -- Initialization
 -- ===================================================================
 
-local wibox = require("wibox")
-local helpers = require("helpers")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
 
 -- ===================================================================
 -- Widget
 -- ===================================================================
 
-local w = wibox.widget.textbox()
-w.font = beautiful.font .. "Bold 18"
+local w         = wibox.widget.textbox()
+w.font          = beautiful.font .. "Bold 18"
 
 -- ===================================================================
 -- Signal

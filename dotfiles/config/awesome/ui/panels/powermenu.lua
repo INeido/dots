@@ -10,16 +10,16 @@
 -- Initialization
 -- ===================================================================
 
-local awful        = require("awful")
-local wibox        = require("wibox")
-local helpers      = require("helpers")
-local beautiful    = require("beautiful")
+local awful     = require("awful")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
+local beautiful = require("beautiful")
 
 -- ===================================================================
 -- Load Widgets
 -- ===================================================================
 
-local buttons = {}
+local buttons   = {}
 
 -- To prevent a nil value from entering
 local function add_button(module)
@@ -42,9 +42,9 @@ local confirmation = require("ui.widgets.powermenu.confirmation")
 
 local powermenu    = wibox({
     visible = false,
-    ontop = true,
-    type = "splash",
-    screen = screen.primary,
+    ontop   = true,
+    type    = "splash",
+    screen  = screen.primary,
     bgimage = cache.wallpapers[screen.primary.index][1].blurred,
 })
 
@@ -65,7 +65,7 @@ local last_focused = 1
 local function confirmation_show(action)
     -- Show confirmation
     confirmation.yes.visible = true
-    confirmation.no.visible = true
+    confirmation.no.visible  = true
 
     -- Hide powermenu
     goodbyer:get_children_by_id("textbox")[1].markup = helpers.text_color(settings.confirmation_text, beautiful.fg_focus)
@@ -83,7 +83,7 @@ end
 local function confirmation_hide()
     -- Hide confirmation
     confirmation.yes.visible = false
-    confirmation.no.visible = false
+    confirmation.no.visible  = false
 
     -- Show powermenu
     goodbyer:get_children_by_id("textbox")[1].markup = helpers.text_color(settings.goodbyer_text, beautiful.fg_focus)

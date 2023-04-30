@@ -10,10 +10,10 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
+local awful        = require("awful")
+local gears        = require("gears")
 
-local keys = {}
+local keys         = {}
 
 -- ===================================================================
 -- Mouse bindings
@@ -46,7 +46,7 @@ keys.clientbuttons = gears.table.join(
 -- Desktop Key bindings
 -- ===================================================================
 
-keys.globalkeys = gears.table.join(
+keys.globalkeys    = gears.table.join(
     awful.key(
         {},
         "XF86AudioPlay",
@@ -55,7 +55,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Play/Pause Track",
-            group = "Multimedia"
+            group       = "Multimedia"
         }),
     awful.key(
         {},
@@ -65,7 +65,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Play Next Track",
-            group = "Multimedia"
+            group       = "Multimedia"
         }),
     awful.key(
         {},
@@ -75,7 +75,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Play Previous Track",
-            group = "Multimedia"
+            group       = "Multimedia"
         }),
     awful.key(
         { settings.modkey },
@@ -85,7 +85,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Lock screen",
-            group = "launcher"
+            group       = "launcher"
         }),
     awful.key(
         { settings.modkey },
@@ -95,7 +95,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Rofi drun",
-            group = "launcher"
+            group       = "launcher"
         }),
     awful.key(
         { settings.modkey },
@@ -106,14 +106,14 @@ keys.globalkeys = gears.table.join(
                 function(_, _, _, _)
                     require("naughty").notify({
                         title = "Screenshot taken!",
-                        text = "Screenshot saved and copied to clipboard.",
+                        text  = "Screenshot saved and copied to clipboard.",
                     })
                 end
             )
         end,
         {
             description = "Screenshot Selection",
-            group = "launcher"
+            group       = "launcher"
         }),
     awful.key(
         { settings.modkey },
@@ -124,14 +124,14 @@ keys.globalkeys = gears.table.join(
                 function(_, _, _, _)
                     require("naughty").notify({
                         title = "Screenshot taken!",
-                        text = "Screenshot saved and copied to clipboard.",
+                        text  = "Screenshot saved and copied to clipboard.",
                     })
                 end
             )
         end,
         {
             description = "Screenshot Screen",
-            group = "launcher"
+            group       = "launcher"
         }),
     awful.key(
         { settings.modkey },
@@ -141,7 +141,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Toggle Powermenu",
-            group = "launcher"
+            group       = "launcher"
         }),
 
     awful.key(
@@ -152,7 +152,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Start File Explorer",
-            group = "launcher"
+            group       = "launcher"
         }),
     awful.key(
         { settings.modkey, },
@@ -162,7 +162,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Toggle Dashboard",
-            group = "launcher"
+            group       = "launcher"
         }),
     awful.key(
         { settings.modkey, },
@@ -170,7 +170,7 @@ keys.globalkeys = gears.table.join(
         awful.tag.viewprev,
         {
             description = "View Previous",
-            group = "tag"
+            group       = "tag"
         }),
     awful.key(
         { settings.modkey, },
@@ -178,7 +178,7 @@ keys.globalkeys = gears.table.join(
         awful.tag.viewnext,
         {
             description = "View Next",
-            group = "tag"
+            group       = "tag"
         }),
     awful.key(
         { settings.modkey, },
@@ -186,7 +186,7 @@ keys.globalkeys = gears.table.join(
         awful.tag.history.restore,
         {
             description = "Go Back",
-            group = "tag"
+            group       = "tag"
         }),
     awful.key(
         { settings.altkey, },
@@ -199,7 +199,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Go Back",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
@@ -209,7 +209,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Cycle Forwards",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
@@ -219,7 +219,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Cycle Layouts",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
@@ -229,7 +229,7 @@ keys.globalkeys = gears.table.join(
         end,
         {
             description = "Open a Terminal",
-            group = "launcher"
+            group       = "launcher"
         }),
     awful.key(
         { settings.modkey, "Control" },
@@ -237,7 +237,7 @@ keys.globalkeys = gears.table.join(
         awesome.restart,
         {
             description = "Reload Awesome",
-            group = "awesome"
+            group       = "awesome"
         }),
     awful.key(
         { settings.modkey, "Shift" },
@@ -245,7 +245,7 @@ keys.globalkeys = gears.table.join(
         awesome.quit,
         {
             description = "Quit Awesome",
-            group = "awesome"
+            group       = "awesome"
         })
 )
 
@@ -253,7 +253,7 @@ keys.globalkeys = gears.table.join(
 -- Client Key bindings
 -- ===================================================================
 
-keys.clientkeys = gears.table.join(
+keys.clientkeys    = gears.table.join(
     awful.key(
         { settings.modkey, },
         "f",
@@ -263,7 +263,7 @@ keys.clientkeys = gears.table.join(
         end,
         {
             description = "Toggle Fullscreen",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
@@ -273,7 +273,7 @@ keys.clientkeys = gears.table.join(
         end,
         {
             description = "Close",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, "Control" },
@@ -281,7 +281,7 @@ keys.clientkeys = gears.table.join(
         awful.client.floating.toggle,
         {
             description = "Toggle Floating",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
@@ -291,7 +291,7 @@ keys.clientkeys = gears.table.join(
         end,
         {
             description = "Toggle keep on top",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
@@ -301,7 +301,7 @@ keys.clientkeys = gears.table.join(
         end,
         {
             description = "Minimize",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
@@ -312,7 +312,7 @@ keys.clientkeys = gears.table.join(
         end,
         {
             description = "Toggle Maximize",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
@@ -320,7 +320,7 @@ keys.clientkeys = gears.table.join(
         awful.mouse.client.move,
         {
             description = "Move",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
@@ -328,21 +328,21 @@ keys.clientkeys = gears.table.join(
         awful.mouse.client.resize,
         {
             description = "Resize",
-            group = "client"
+            group       = "client"
         }),
     awful.key(
         { settings.modkey, },
         "v",
         function(c)
             local current_screen = c.screen
-            local next_screen = current_screen:get_next_in_direction("right")
+            local next_screen    = current_screen:get_next_in_direction("right")
             c:move_to_screen(next_screen)
             client.focus = c
             c:raise()
         end,
         {
             description = "Move to next screen",
-            group = "client"
+            group       = "client"
         })
 )
 
@@ -353,7 +353,7 @@ for i = 1, 9 do
         awful.key({ settings.modkey }, "#" .. i + 9,
             function()
                 local screen = awful.screen.focused()
-                local tag = screen.tags[i]
+                local tag    = screen.tags[i]
                 if tag then
                     tag:view_only()
                 end

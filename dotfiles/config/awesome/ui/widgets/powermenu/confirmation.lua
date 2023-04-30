@@ -10,16 +10,16 @@
 -- Initialization
 -- ===================================================================
 
-local wibox = require("wibox")
-local helpers = require("helpers")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Widgets
 -- ===================================================================
 
-local yes = wibox.widget {
+local yes       = wibox.widget {
     id     = "button",
     text   = "Yes",
     markup = helpers.text_color("Yes", beautiful.fg_focus),
@@ -29,7 +29,7 @@ local yes = wibox.widget {
     widget = wibox.widget.textbox,
 }
 
-local no = wibox.widget {
+local no        = wibox.widget {
     id     = "button",
     text   = "No",
     markup = helpers.text_color("No", beautiful.fg_focus),
@@ -40,9 +40,9 @@ local no = wibox.widget {
 }
 
 -- Box the widgets
-yes = helpers.box_pm_widget(yes, dpi(152), dpi(100))
-yes.visible = false
-no = helpers.box_pm_widget(no, dpi(152), dpi(100))
-no.visible = false
+yes             = helpers.box_pm_widget(yes, dpi(152), dpi(100))
+yes.visible     = false
+no              = helpers.box_pm_widget(no, dpi(152), dpi(100))
+no.visible      = false
 
 return { yes = yes, no = no }

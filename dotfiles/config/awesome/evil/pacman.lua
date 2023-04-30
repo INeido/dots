@@ -10,15 +10,15 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
+local awful     = require("awful")
 local beautiful = require("beautiful")
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local script = "sudo " .. beautiful.config_path .. "scripts/pacman.sh check"
-local interval = 600
+local script    = "sudo " .. beautiful.config_path .. "scripts/pacman.sh check"
+local interval  = 600
 
 -- ===================================================================
 -- Daemon

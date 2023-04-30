@@ -11,24 +11,24 @@
 -- Initialization
 -- ===================================================================
 
-local gears = require("gears")
-local wibox = require("wibox")
-local helpers = require("helpers")
+local gears     = require("gears")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local text = settings.goodbyer_text
+local text      = settings.goodbyer_text
 
 -- ===================================================================
 -- Widget
 -- ===================================================================
 
 -- Create the widget
-local w = wibox.widget {
+local w         = wibox.widget {
     -- Outer Margin
     {
         -- Background
@@ -43,18 +43,18 @@ local w = wibox.widget {
                 align  = "center",
                 widget = wibox.widget.textbox,
             },
-            top = dpi(20),
+            top    = dpi(20),
             bottom = dpi(20),
-            left = dpi(20),
-            right = dpi(20),
+            left   = dpi(20),
+            right  = dpi(20),
             widget = wibox.container.margin,
         },
-        bg = beautiful.widget_normal .. "AA",
-        shape = gears.shape.rect,
+        bg     = beautiful.widget_normal .. "AA",
+        shape  = gears.shape.rect,
         widget = wibox.container.background,
     },
     margins = beautiful.useless_gap,
-    widget = wibox.container.margin,
+    widget  = wibox.container.margin,
 }
 
 return w

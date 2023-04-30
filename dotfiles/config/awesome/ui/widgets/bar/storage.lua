@@ -10,11 +10,11 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local wibox = require("wibox")
-local helpers = require("helpers")
+local awful     = require("awful")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Functions
@@ -63,15 +63,15 @@ local w = wibox.widget {
         {
             -- Add Widget
             storage,
-            fg = beautiful.fg_focus,
+            fg     = beautiful.fg_focus,
             widget = wibox.container.background,
         },
         spacing = dpi(2),
-        layout = wibox.layout.fixed.horizontal,
+        layout  = wibox.layout.fixed.horizontal,
     },
     widget = wibox.container.margin,
-    left = dpi(8),
-    right = dpi(8),
+    left   = dpi(8),
+    right  = dpi(8),
 }
 
 -- Box the widget
@@ -82,10 +82,10 @@ w = helpers.box_ba_widget(w, false, 5)
 -- ===================================================================
 
 local tooltip = awful.tooltip {
-    objects = { w },
-    font = beautiful.font .. "11",
-    mode = "outside",
-    align = "right",
+    objects             = { w },
+    font                = beautiful.font .. "11",
+    mode                = "outside",
+    align               = "right",
     preferred_positions = { "right", "left", "bottom" }
 }
 

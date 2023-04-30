@@ -10,9 +10,9 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
-local helpers = require("helpers")
+local awful     = require("awful")
+local gears     = require("gears")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
 
 -- ===================================================================
@@ -32,7 +32,7 @@ end)
 -- ===================================================================
 
 tag.connect_signal("property::selected", function(t)
-    local tag_screen = t.screen
+    local tag_screen    = t.screen
     local selected_tags = tag_screen.selected_tags
 
     if #selected_tags > 0 then
@@ -47,10 +47,10 @@ end)
 -- ===================================================================
 
 -- Calculate the current hash value
-local hash = helpers.get_folder_hash(beautiful.config_path .. "wallpapers/")
+local hash       = helpers.get_folder_hash(beautiful.config_path .. "wallpapers/")
 
 -- Read the last known hash value from the file
-local file = io.open(beautiful.config_path .. "wp_hash.txt", "r")
+local file       = io.open(beautiful.config_path .. "wp_hash.txt", "r")
 local saved_hash = ""
 if file ~= nil then
     saved_hash = file:read("*all")

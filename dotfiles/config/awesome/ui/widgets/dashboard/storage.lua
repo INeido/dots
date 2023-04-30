@@ -10,18 +10,18 @@
 -- Initialization
 -- ===================================================================
 
-local wibox = require("wibox")
+local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Functions
 -- ===================================================================
 
 local function format_size(kilobytes)
-    local units = { "KB", "MB", "GB", "TB", "PB" }
+    local units      = { "KB", "MB", "GB", "TB", "PB" }
     local unit_index = 1
-    local size = tonumber(kilobytes)
+    local size       = tonumber(kilobytes)
     while size >= 1024 and unit_index < #units do
         size = size / 1024
         unit_index = unit_index + 1
@@ -50,17 +50,17 @@ local create_widget = function(name)
         {
             {
                 -- Chart
-                id = "chart",
-                max_value = 100,
-                value = 100,
+                id            = "chart",
+                max_value     = 100,
+                value         = 100,
                 forced_height = dpi(80),
-                forced_width = dpi(80),
-                thickness = dpi(10),
-                start_angle = math.pi * 1.5,
-                rounded_edge = true,
-                bg = beautiful.bg_minimize,
-                colors = { beautiful.accent },
-                widget = wibox.container.arcchart
+                forced_width  = dpi(80),
+                thickness     = dpi(10),
+                start_angle   = math.pi * 1.5,
+                rounded_edge  = true,
+                bg            = beautiful.bg_minimize,
+                colors        = { beautiful.accent },
+                widget        = wibox.container.arcchart
             },
             {
                 -- Text in the center
@@ -79,7 +79,7 @@ local create_widget = function(name)
             widget = wibox.widget.textbox,
         },
         spacing = dpi(10),
-        layout = wibox.layout.fixed.vertical,
+        layout  = wibox.layout.fixed.vertical,
     }
     return w
 end
@@ -90,7 +90,7 @@ end
 
 local w = wibox.widget {
     spacing = dpi(70),
-    layout = wibox.layout.fixed.horizontal,
+    layout  = wibox.layout.fixed.horizontal,
 }
 
 -- ===================================================================

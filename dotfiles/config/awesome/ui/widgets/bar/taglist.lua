@@ -10,19 +10,19 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
-local wibox = require("wibox")
-local helpers = require("helpers")
+local awful     = require("awful")
+local gears     = require("gears")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local w, arr = nil, nil
-local mode = settings.taglist_mode
+local w, arr    = nil, nil
+local mode      = settings.taglist_mode
 if mode == "number" then
     arr = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" }
 elseif mode == "roman" then

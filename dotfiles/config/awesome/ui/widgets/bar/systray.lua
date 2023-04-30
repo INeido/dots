@@ -10,8 +10,8 @@
 -- Initialization
 -- ===================================================================
 
-local wibox = require("wibox")
-local helpers = require("helpers")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
 
 -- ===================================================================
@@ -19,7 +19,7 @@ local beautiful = require("beautiful")
 -- ===================================================================
 
 -- Create and size systray
-local systray = wibox.widget.systray()
+local systray   = wibox.widget.systray()
 systray:set_base_size(beautiful.systray_icon_size)
 
 -- Create the widget

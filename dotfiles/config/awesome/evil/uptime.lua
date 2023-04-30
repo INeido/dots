@@ -10,13 +10,13 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
+local awful    = require("awful")
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local script = [[bash -c "cat /proc/uptime | cut -d' ' -f1 | cut -d'.' -f1"]]
+local script   = [[bash -c "cat /proc/uptime | cut -d' ' -f1 | cut -d'.' -f1"]]
 local interval = 5
 
 -- ===================================================================

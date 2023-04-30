@@ -10,18 +10,18 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
+local awful           = require("awful")
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
 local script_metadata = "playerctl -p " .. settings.musicplayer .. " metadata"
-local script_status = "playerctl -p " .. settings.musicplayer .. " status"
+local script_status   = "playerctl -p " .. settings.musicplayer .. " status"
 local script_position = "playerctl -p " .. settings.musicplayer .. " position"
-local script_volume = "playerctl -p " .. settings.musicplayer .. " volume"
+local script_volume   = "playerctl -p " .. settings.musicplayer .. " volume"
 
-local interval = 1
+local interval        = 1
 
 -- ===================================================================
 -- Daemon
@@ -48,14 +48,14 @@ awful.widget.watch(script_status, interval, function(_, stat)
                 end
 
                 awesome.emit_signal("evil::music", {
-                    status = status or nil,
+                    status   = status or nil,
                     position = position or nil,
-                    volume = volume or nil,
-                    length = metadata.length or nil,
-                    album = metadata.album or nil,
-                    artist = metadata.artist or nil,
-                    title = metadata.title or nil,
-                    art = metadata.arturl or nil,
+                    volume   = volume or nil,
+                    length   = metadata.length or nil,
+                    album    = metadata.album or nil,
+                    artist   = metadata.artist or nil,
+                    title    = metadata.title or nil,
+                    art      = metadata.arturl or nil,
                 })
             end)
         end)

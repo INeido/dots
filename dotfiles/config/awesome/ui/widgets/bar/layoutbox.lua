@@ -10,16 +10,16 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
-local helpers = require("helpers")
+local awful     = require("awful")
+local gears     = require("gears")
+local helpers   = require("helpers")
 local beautiful = require("beautiful")
 
 -- ===================================================================
 -- Buttons
 -- ===================================================================
 
-local buttons = gears.table.join(
+local buttons   = gears.table.join(
     awful.button({}, 1, function() awful.layout.inc(1) end),
     awful.button({}, 3, function() awful.layout.inc(-1) end),
     awful.button({}, 4, function() awful.layout.inc(1) end),

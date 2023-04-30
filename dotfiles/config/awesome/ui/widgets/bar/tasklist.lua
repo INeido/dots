@@ -9,17 +9,17 @@
 -- Initialization
 -- ===================================================================
 
-local awful = require("awful")
-local gears = require("gears")
-local wibox = require("wibox")
+local awful     = require("awful")
+local gears     = require("gears")
+local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Buttons
 -- ===================================================================
 
-local buttons = gears.table.join(
+local buttons   = gears.table.join(
 -- Let Click
     awful.button({}, 1, function(c)
         if c == client.focus then
@@ -72,9 +72,9 @@ local function tasklist(s)
                 bottom = dpi(4),
                 widget = wibox.container.margin,
             },
-            id = "indicator_role",
-            shape = gears.shape.rect,
-            widget = wibox.container.background,
+            id              = "indicator_role",
+            shape           = gears.shape.rect,
+            widget          = wibox.container.background,
             create_callback = function(self, c, index, clients) --luacheck: no unused args
                 self:get_children_by_id("clienticon")[1].client = c
 
