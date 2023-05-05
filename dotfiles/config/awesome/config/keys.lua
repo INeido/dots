@@ -12,6 +12,7 @@
 
 local awful        = require("awful")
 local gears        = require("gears")
+local helpers      = require("helpers")
 
 local keys         = {}
 
@@ -99,17 +100,19 @@ keys.globalkeys    = gears.table.join(
         }),
     awful.key(
         { settings.modkey },
+        "c",
+        function()
+            helpers.get_color()
+        end,
+        {
+            description = "Color Picker",
+            group       = "launcher"
+        }),
+    awful.key(
+        { settings.modkey },
         "r",
         function()
-            awful.spawn.easy_async_with_shell(
-                "file=$(mktemp -t screenshot_XXXXXX.png) && maim -suBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png",
-                function(_, _, _, _)
-                    require("naughty").notify({
-                        title = "Screenshot taken!",
-                        text  = "Screenshot saved and copied to clipboard.",
-                    })
-                end
-            )
+            helpers.take_screenshot(false)
         end,
         {
             description = "Screenshot Selection",
@@ -119,15 +122,7 @@ keys.globalkeys    = gears.table.join(
         { settings.modkey },
         "t",
         function()
-            awful.spawn.easy_async_with_shell(
-                "file=$(mktemp -t screenshot_XXXXXX.png) && maim -uBo \"$file\" && xclip -selection clipboard -t image/png < \"$file\" && mv \"$file\" ~/Pictures/$(date +%s).png",
-                function(_, _, _, _)
-                    require("naughty").notify({
-                        title = "Screenshot taken!",
-                        text  = "Screenshot saved and copied to clipboard.",
-                    })
-                end
-            )
+            helpers.take_screenshot(true)
         end,
         {
             description = "Screenshot Screen",
@@ -137,7 +132,7 @@ keys.globalkeys    = gears.table.join(
         { settings.modkey },
         "p",
         function()
-            pm_open()
+            pm_toggle()
         end,
         {
             description = "Toggle Powermenu",
@@ -156,9 +151,19 @@ keys.globalkeys    = gears.table.join(
         }),
     awful.key(
         { settings.modkey, },
+        "b",
+        function()
+            bu_toggle()
+        end,
+        {
+            description = "Toggle Bulletin",
+            group       = "launcher"
+        }),
+    awful.key(
+        { settings.modkey, },
         "d",
         function()
-            db_open()
+            db_toggle()
         end,
         {
             description = "Toggle Dashboard",

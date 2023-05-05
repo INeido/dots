@@ -23,7 +23,7 @@ screen.connect_signal("list", function()
 end)
 
 -- Client decorations
-client.connect_signal("request::titlebars", function(c) add_decorations(c) end)
+--client.connect_signal("request::titlebars", function(c) add_decorations(c) end)
 
 -- Client border color
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)

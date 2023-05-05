@@ -36,20 +36,8 @@ local w         = wibox.widget {
 -- ===================================================================
 
 awesome.connect_signal("evil::uptime", function(args)
-    local minutes = math.floor(args.time / 60)
-    local hours   = math.floor(minutes / 60)
-    local days    = math.floor(hours / 24)
-
-    local text    = ""
-
-    if days > 0 then
-        text = string.format(helpers.text_color("", beautiful.accent) .. " %d days, %d h, %d m", days, hours % 24,
-            minutes % 60)
-    elseif hours > 0 then
-        text = string.format(helpers.text_color("", beautiful.accent) .. " %d hours, %d minutes", hours, minutes % 60)
-    else
-        text = string.format(helpers.text_color("", beautiful.accent) .. " %d minutes", minutes)
-    end
+    local text = helpers.text_color(" ", beautiful.accent) ..
+    helpers.format_time(args.time, nil, "<time> min", "<time> hours", "<time> days")
 
     w:get_children_by_id("text")[1]:set_markup(text)
 end)

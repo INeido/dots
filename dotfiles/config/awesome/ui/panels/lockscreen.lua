@@ -16,6 +16,7 @@ local helpers       = require("helpers")
 local beautiful     = require("beautiful")
 local dpi           = beautiful.xresources.apply_dpi
 
+-- (Credit @RMTT)
 local has_pam, pam  = pcall(require, "liblua_pam")
 
 -- ===================================================================
@@ -180,4 +181,4 @@ lockscreen:setup {
 }
 
 -- Show lockscreen after creation
-ls_show()
+--ls_show()

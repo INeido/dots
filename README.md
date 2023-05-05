@@ -327,10 +327,10 @@ You can edit the autostart apps in the ../scripts/autostart.sh file.
 - [x] Improve ~~spotify~~ music widget
 - [x] Add lock screen
 - [x] Multimonitor support
+- [x] Improve notifications
 - [ ] Improve client switcher (alt+tab)
 - [ ] Improve window decorations
 - [ ] Improve tasklist
-- [ ] Improve notifications
 - [ ] Add screen saver
 - [ ] Add settings menu
 - [ ] Laptop support

@@ -29,8 +29,8 @@ settings.display           = "xrandr --output DP-0 --primary --mode 2560x1440 --
 -- ===================================================================
 
 -- Layout
-settings.bar_location      = "top"  -- 'top', 'bottom'
-settings.bulletin_location = "left" -- 'left', 'right'
+settings.bar_location      = "top"   -- 'top', 'bottom'
+settings.bulletin_location = "right" -- 'left', 'right'
 
 -- Switches
 settings.enable_titlebar   = false
@@ -41,17 +41,22 @@ settings.wp_fullres        = false -- Can be a performance hit on slow machines
 settings.wp_quality        = "80"  -- In percent
 settings.wp_blur           = "08"  -- In hex
 
+-- Notifications
+settings.arc_animation_fps = "60"  -- Potential performance hit
+
+
 -- Tags
 settings.tags              = {
 	{
-		layout   = awful.layout.suit.tile,
+		layout = awful.layout.suit.tile,
+
+	},
+	{
+		layout = awful.layout.suit.max,
+	},
+	{
+		layout = awful.layout.suit.max,
 		selected = true,
-	},
-	{
-		layout = awful.layout.suit.max,
-	},
-	{
-		layout = awful.layout.suit.max,
 	},
 	{
 		layout = awful.layout.suit.floating,
@@ -74,7 +79,10 @@ settings.modkey            = "Mod4"
 settings.altkey            = "Mod1"
 
 -- Autorun
-settings.autorun           = { settings.musicplayer, "steam", "discord" }
+settings.autorun           = { settings.musicplayer, "discord" }
+
+-- Paths
+settings.screenshot_path   = os.getenv("HOME") .. "/Pictures/"
 
 -- ===================================================================
 -- Widgets
@@ -94,24 +102,32 @@ settings.confirmation_text = "Are you sure?"
 -- Network Interface for the widget
 settings.network_interface = "enp42s0"
 
+-- Bulletin
+
+settings.create_embeds     = true
+settings.max_embeds        = "5"
+
 -- Bar
 
--- Taglist mode
+-- Taglist
 settings.taglist_mode      = "icon" -- 'icon', 'dot', 'number', 'roman', 'alphabet'
 
--- RAM format
+-- RAM
 settings.ram_format        = "<used> GB" -- <used>, <free>, <available>, <usage>, <total>
 settings.ram_factor        = 1024        -- The default values are in MB. So a factor of '1024' makes GB.
 
--- Storage format
+-- Storage
 settings.storage_format    = "<usage> %" -- <used>, <free>, <usage>, <size>
 settings.storage_factor    = 1024 * 1024 -- The default values are in KB. So a factor of '1024' makes GB.
 
--- Clock format
+-- Clock
 settings.clock_format      = "%H : %M"
 
--- Date format
+-- Date
 settings.date_format       = "%a, %B %d"
+
+-- Pacman
+settings.pacman_notif      = true
 
 -- Dashboard
 

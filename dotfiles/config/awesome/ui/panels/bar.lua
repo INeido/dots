@@ -10,30 +10,31 @@
 -- Initialization
 -- ===================================================================
 
-local awful     = require("awful")
-local wibox     = require("wibox")
-local beautiful = require("beautiful")
+local awful        = require("awful")
+local wibox        = require("wibox")
+local beautiful    = require("beautiful")
 
 -- ===================================================================
 -- Load Widgets
 -- ===================================================================
 
-local starticon = require("ui.widgets.bar.starticon")
-local powericon = require("ui.widgets.bar.powericon")
-local layoutbox = require("ui.widgets.bar.layoutbox")
-local systray   = require("ui.widgets.bar.systray")
-local taglist   = require("ui.widgets.bar.taglist")
-local tasklist  = require("ui.widgets.bar.tasklist")
-local music     = require("ui.widgets.bar.music")
-local pacman    = require("ui.widgets.bar.pacman")
-local date      = require("ui.widgets.bar.date")
-local clock     = require("ui.widgets.bar.clock")
-local cpu       = require("ui.widgets.bar.cpu")
-local ram       = require("ui.widgets.bar.ram")
-local temp      = require("ui.widgets.bar.temp")
-local network   = require("ui.widgets.bar.network")
-local storage   = require("ui.widgets.bar.storage")
-local battery   = require("ui.widgets.bar.battery")
+local starticon    = require("ui.widgets.bar.starticon")
+local powericon    = require("ui.widgets.bar.powericon")
+local bulletinicon = require("ui.widgets.bar.bulletinicon")
+local layoutbox    = require("ui.widgets.bar.layoutbox")
+local systray      = require("ui.widgets.bar.systray")
+local taglist      = require("ui.widgets.bar.taglist")
+local tasklist     = require("ui.widgets.bar.tasklist")
+local music        = require("ui.widgets.bar.music")
+local pacman       = require("ui.widgets.bar.pacman")
+local date         = require("ui.widgets.bar.date")
+local clock        = require("ui.widgets.bar.clock")
+local cpu          = require("ui.widgets.bar.cpu")
+local ram          = require("ui.widgets.bar.ram")
+local temp         = require("ui.widgets.bar.temp")
+local network      = require("ui.widgets.bar.network")
+local storage      = require("ui.widgets.bar.storage")
+local battery      = require("ui.widgets.bar.battery")
 
 -- ===================================================================
 -- Left
@@ -91,6 +92,7 @@ local function right(s)
             pacman,
             date,
             clock,
+            bulletinicon,
             powericon,
             layout = wibox.layout.fixed.horizontal,
         },

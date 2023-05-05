@@ -13,6 +13,7 @@
 local awful     = require("awful")
 local gears     = require("gears")
 local wibox     = require("wibox")
+local naughty   = require("naughty")
 local beautiful = require("beautiful")
 local dpi       = beautiful.xresources.apply_dpi
 
@@ -22,7 +23,10 @@ local cairo     = require("lgi").cairo
 local helpers   = {}
 
 -- Colorize Text
-function helpers.text_color(text, color)
+function helpers.text_color(text, color, underline)
+    if underline then
+        return "<span foreground='" .. color .. "'><u>" .. text .. "</u></span>"
+    end
     return "<span foreground='" .. color .. "'>" .. text .. "</span>"
 end
 
@@ -38,6 +42,22 @@ function helpers.vpad(height)
         forced_height = height,
         layout = wibox.layout.fixed.vertical
     }
+end
+
+function helpers.return_date_time(format)
+    return os.date(format)
+end
+
+function helpers.parse_to_seconds(time)
+    local hourInSec = tonumber(string.sub(time, 1, 2)) * 3600
+    local minInSec  = tonumber(string.sub(time, 4, 5)) * 60
+    local getSec    = tonumber(string.sub(time, 7, 8))
+    return (hourInSec + minInSec + getSec)
+end
+
+function helpers.get_time_diff(time)
+    return helpers.parse_to_seconds(helpers.return_date_time('%H:%M:%S')) -
+        helpers.parse_to_seconds(time)
 end
 
 -- Capitalize the first letter of the string
@@ -64,6 +84,184 @@ function helpers.run_apps(apps)
     end
 end
 
+-- Jump to a client
+function helpers.jump_to_client(c)
+    if c then
+        -- Focus the client
+        client.focus = c
+
+        -- Raise the client
+        c:raise()
+
+        -- Unminimize the client if it's minimized
+        if c.minimized then
+            c.minimized = false
+        end
+
+        -- Jump to the tag that has the client
+        local t = c.first_tag
+        if t then
+            t:view_only()
+        end
+    end
+end
+
+-- Convert seconds to a time string
+function helpers.format_time(seconds, sec, min, h, d)
+    local minutes           = math.floor(seconds / 60)
+    local hours             = math.floor(minutes / 60)
+    local days              = math.floor(hours / 24)
+    local seconds_remainder = seconds % 60
+    local minutes_remainder = minutes % 60
+    local hours_remainder   = hours % 24
+
+    if sec ~= nil then
+        sec = sec:gsub("<time>", seconds_remainder or "0") .. ""
+    else
+        sec = ""
+    end
+    if min ~= nil then
+        min = min:gsub("<time>", minutes_remainder or "0") .. " "
+    else
+        min = ""
+    end
+    if h ~= nil then
+        h = h:gsub("<time>", hours_remainder or "0") .. " "
+    else
+        h = ""
+    end
+    if d ~= nil then
+        d = d:gsub("<time>", days or "0") .. " "
+    else
+        d = ""
+    end
+
+    if days > 0 then
+        return d .. h .. min .. sec
+    elseif hours > 0 then
+        return h .. min .. sec
+    elseif minutes > 0 then
+        return min .. sec
+    else
+        return sec
+    end
+end
+
+-- Copy text into clipboard
+function helpers.copy_to_clipboard(text)
+    os.execute(string.format("echo -n  '%s' | xclip -selection clipboard", text))
+end
+
+-- Get color of a pixel
+function helpers.get_color()
+    awful.spawn.easy_async_with_shell(
+    -- TO-DO format to rgb
+        [[maim -st 0 | convert - -resize 1x1\! -format '%[hex:p{0,0}]' info:-]],
+        function(stdout, _, _, _)
+            -- Aborted
+            if stdout == nil or stdout == "" then
+                return
+            end
+
+            -- Copy screenshot to clipboard
+            helpers.copy_to_clipboard("#" .. string.sub(stdout, 1, 6))
+
+            local copy_color = naughty.action {
+                name = "#" .. string.sub(stdout, 1, 6) .. " (RGB)",
+                icon_only = false,
+            }
+
+            copy_color:connect_signal("invoked", function()
+                helpers.copy_to_clipboard("#" .. string.sub(stdout, 1, 6))
+            end)
+
+            local copy_color_opacity = naughty.action {
+                name = "#" .. string.sub(stdout, 1, 8) .. " (RGBA)",
+                icon_only = false,
+            }
+
+            copy_color_opacity:connect_signal("invoked", function()
+                helpers.copy_to_clipboard("#" .. string.sub(stdout, 1, 8))
+            end)
+
+            local icon = gears.color.recolor_image(cache.square_icon, gears.color("#" .. string.sub(stdout, 1, 6)))
+
+            -- Show notification
+            naughty.notification({
+                app_name = "Color Picker",
+                icon = icon,
+                timeout = 5,
+                title = "Color extracted and copied to clipboard!",
+                message = "Your hexcode is: #" .. string.sub(stdout, 1, 6),
+                actions = { copy_color, copy_color_opacity }
+            })
+
+            collectgarbage("collect")
+        end
+    )
+end
+
+-- Takes a screenshot
+function helpers.take_screenshot(full)
+    local cmd = nil
+    local file = "screenshot_" .. os.time() .. ".png"
+    if full then
+        cmd = "maim -uBo " .. settings.screenshot_path .. file
+    else
+        cmd = "maim -suBo " .. settings.screenshot_path .. file
+    end
+
+    awful.spawn.easy_async_with_shell(
+        cmd,
+        function(_, sterror, _, _)
+            -- Aborted
+            if sterror == "Selection was cancelled by keystroke or right-click.\n" then
+                return
+            end
+
+            -- Copy screenshot to clipboard
+            os.execute("xclip -selection clipboard -t image/png < " .. settings.screenshot_path .. file)
+
+            local copy_image = naughty.action {
+                name = "Copy",
+                icon_only = false,
+            }
+
+            copy_image:connect_signal("invoked", function()
+                os.execute("xclip -selection clipboard -t image/png < " .. settings.screenshot_path .. file)
+            end)
+
+            local open_folder = naughty.action {
+                name = "Open Folder",
+                icon_only = false,
+            }
+
+            open_folder:connect_signal("invoked", function()
+                awful.spawn(settings.fileexplorer .. " " .. settings.screenshot_path, false)
+            end)
+
+            local delete_image = naughty.action {
+                name = "Delete",
+                icon_only = false,
+            }
+
+            delete_image:connect_signal("invoked", function()
+                awful.spawn("rm " .. settings.screenshot_path .. file, false)
+            end)
+
+            -- Show notification
+            naughty.notification({
+                app_name = "Screenshot Tool",
+                icon = settings.screenshot_path .. file,
+                timeout = 5,
+                title = "Screenshot taken!",
+                message = "Image saved and copied to clipboard.",
+                actions = { copy_image, open_folder, delete_image }
+            })
+        end
+    )
+end
+
 -- Maximize the surface/image based on the screen size
 function helpers.surf_maximize(surf, s)
     local w, h = gears.surface.get_size(surf)
@@ -80,6 +278,74 @@ function helpers.surf_maximize(surf, s)
     surf:finish()
 
     return scaled_surf
+end
+
+-- Extracts links from a given string
+function helpers.extract_link(text)
+    local links = {}
+    for url in text:gmatch("https?://%S+") do
+        table.insert(links, url)
+    end
+    return links
+end
+
+-- Get website metadata
+function helpers.get_website_metadata(link, callback)
+    -- Handle youtu.be exception
+    local domain = link:match("^https?://([^/]+)%/?.-$")
+
+    if domain == "youtu.be" then
+        link = link:gsub("youtu.be/", "www.youtube.com/watch?v=")
+    end
+
+    awful.spawn.easy_async_with_shell("curl -s '" .. link .. "'", function(stdout, stderr)
+        -- Check for HTTP error
+        local status_code = stdout:match("HTTP/%d%.%d (%d%d%d)")
+        if status_code and (status_code:match("^4%d%d$") or status_code:match("^5%d%d$")) then
+            if callback then
+                callback(
+                    nil,
+                    "HTTP error " .. status_code)
+            end
+            return
+        end
+
+        local title_regex1 = "<title>(.-)</title>"
+        local title_regex2 = "<meta%s+property=\"og:title\"%s+content=\"(.-)\""
+        local title_regex3 = "<meta%s+name=\"title\"%s+content=\"(.-)\""
+
+        local desc_regex1 = "<meta%s+name=\"description\"%s+content=\"(.-)\""
+        local desc_regex2 = "<meta%s+property=\"og:description\"%s+content=\"(.-)\""
+
+        local title = stdout:match(title_regex1) or stdout:match(title_regex2) or stdout:match(title_regex3)
+        local description = stdout:match(desc_regex1) or stdout:match(desc_regex2)
+
+        -- Fix HTML formatting
+        if title then
+            title = title:gsub("&nbsp;", " "):gsub("\n", ""):gsub("&ndash;", "-"):gsub("^%s+", "")
+        else
+            -- If there is no title, display the Domain name
+            title = domain
+        end
+
+        -- Fix for 'Error 403' on google queries
+        if title:match("^%f[Error 403]Error 403") then
+            if callback then
+                callback(
+                    nil,
+                    "HTTP error 403")
+            end
+            return
+        end
+
+        -- Return metadata table
+        if callback then
+            callback(
+                title or "Untitled",
+                description or "No description available."
+            )
+        end
+    end)
 end
 
 -- Blur a given image
