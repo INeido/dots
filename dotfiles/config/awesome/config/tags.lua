@@ -34,18 +34,7 @@ end)
 
 -- Focus last client when switching tags
 tag.connect_signal("property::selected", function(t)
-  if t.selected == false then
-    for _, c in ipairs(t:clients()) do
-      --require("naughty").notification({ title = "test", text = "test: " .. client.focus.name })
-      if c.focus == true then
-        cache.last_focused_client[t.index] = c
-        require("naughty").notification({ title = "test", text = "de: " .. cache.last_focused_client[t.index].name })
-      end
-    end
-  else
-    if cache.last_focused_client[t.index] then
-      cache.last_focused_client[t.index]:emit_signal("focus")
-      require("naughty").notification({ title = "test", text = "re: " .. cache.last_focused_client[t.index].name })
-    end
+  if t.selected == true then
+    client.focus = cache.client_focus[t.index]
   end
 end)

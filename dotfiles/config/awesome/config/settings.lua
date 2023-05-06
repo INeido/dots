@@ -43,19 +43,17 @@ settings.wp_blur           = "08"  -- In hex
 -- Notifications
 settings.arc_animation_fps = "60"  -- Potential performance hit
 
-
 -- Tags
 settings.tags              = {
 	{
 		layout = awful.layout.suit.tile,
-
-	},
-	{
-		layout = awful.layout.suit.max,
-	},
-	{
-		layout = awful.layout.suit.max,
 		selected = true,
+	},
+	{
+		layout = awful.layout.suit.max,
+	},
+	{
+		layout = awful.layout.suit.max,
 	},
 	{
 		layout = awful.layout.suit.floating,

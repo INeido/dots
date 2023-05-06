@@ -155,7 +155,6 @@ end
 -- Get color of a pixel
 function helpers.get_color()
     awful.spawn.easy_async_with_shell(
-    -- TO-DO format to rgb
         [[maim -st 0 | convert - -resize 1x1\! -format '%[hex:p{0,0}]' info:-]],
         function(stdout, _, _, _)
             -- Aborted

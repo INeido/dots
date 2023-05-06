@@ -20,6 +20,10 @@ cache                     = {}
 -- Variables
 -- ===================================================================
 
+-- List of focused clients
+cache.client_focus        = {}
+cache.client_focus_lost        = {}
+
 -- Wallpapers
 cache.wallpapers          = helpers.load_wallpapers()
 
