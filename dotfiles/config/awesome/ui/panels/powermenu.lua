@@ -10,37 +10,69 @@
 -- Initialization
 -- ===================================================================
 
-local awful     = require("awful")
-local wibox     = require("wibox")
-local helpers   = require("helpers")
-local beautiful = require("beautiful")
+local awful          = require("awful")
+local wibox          = require("wibox")
+local helpers        = require("helpers")
+local beautiful      = require("beautiful")
 
 -- ===================================================================
 -- Load Widgets
 -- ===================================================================
 
-local buttons   = {}
+local goodbyer       = require("ui.widgets.powermenu.goodbyer")
+local confirmation   = require("ui.widgets.powermenu.confirmation")
+local create_button  = require("ui.widgets.powermenu.button")
+
+-- ===================================================================
+-- Create Buttons
+-- ===================================================================
+
+local buttons        = {}
+local buttons_widget = wibox.widget {
+    layout = wibox.layout.fixed.horizontal,
+}
 
 -- To prevent a nil value from entering
-local function add_button(module)
-    local button = require(module)
-    if button ~= nil then
-        table.insert(buttons, button)
+local function add_button(icon, action)
+    if icon ~= nil then
+        local w = create_button(icon)
+        -- Add the widget to the table
+        table.insert(buttons, {
+            w = w,
+            a = action
+        })
+        -- Add the widget to the container widget
+        buttons_widget:add(w)
     end
 end
 
-add_button("ui.widgets.powermenu.logout")
-add_button("ui.widgets.powermenu.shutdown")
-add_button("ui.widgets.powermenu.reboot")
-
-local goodbyer     = require("ui.widgets.powermenu.goodbyer")
-local confirmation = require("ui.widgets.powermenu.confirmation")
+-- Lock
+add_button("", function()
+    ls_show()
+end)
+-- Sleep
+add_button("", function()
+    ls_show()
+    awful.spawn.with_shell("systemctl suspend")
+end)
+-- Logout
+add_button("", function()
+    awesome.quit()
+end)
+-- Shutdown
+add_button("", function()
+    awful.spawn.with_shell("poweroff")
+end)
+-- Reboot
+add_button("", function()
+    awful.spawn.with_shell("reboot")
+end)
 
 -- ===================================================================
 -- Powermenu
 -- ===================================================================
 
-local powermenu    = wibox({
+local powermenu = wibox({
     visible = false,
     ontop   = true,
     type    = "splash",
@@ -64,8 +96,8 @@ local last_focused = 1
 
 local function confirmation_show(action)
     -- Show confirmation
-    confirmation.yes.visible = true
-    confirmation.no.visible  = true
+    confirmation.yes.visible                         = true
+    confirmation.no.visible                          = true
 
     -- Hide powermenu
     goodbyer:get_children_by_id("textbox")[1].markup = helpers.text_color(settings.confirmation_text, beautiful.fg_focus)
@@ -82,8 +114,8 @@ end
 
 local function confirmation_hide()
     -- Hide confirmation
-    confirmation.yes.visible = false
-    confirmation.no.visible  = false
+    confirmation.yes.visible                         = false
+    confirmation.no.visible                          = false
 
     -- Show powermenu
     goodbyer:get_children_by_id("textbox")[1].markup = helpers.text_color(settings.goodbyer_text, beautiful.fg_focus)
@@ -264,12 +296,7 @@ powermenu:setup {
                 confirmation.no,
                 layout = wibox.layout.fixed.horizontal,
             },
-            {
-                buttons[1].w,
-                buttons[2].w,
-                buttons[3].w,
-                layout = wibox.layout.fixed.horizontal,
-            },
+            buttons_widget,
             layout = wibox.layout.fixed.vertical,
         },
         nil,
