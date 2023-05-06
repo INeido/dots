@@ -80,9 +80,13 @@ awful.rules.rules = {
     rule       = { class = "Steam" },
     properties = {
       titlebars_enabled = false,
+      tag = screen.tags[2]
     },
-    callback   = function(c)
-      awful.client.movetotag(screen.tags[2], c)
-    end,
+  },
+  {
+    rule       = { class = "Discord" },
+    properties = {
+      tag = screen.tags[1]
+    },
   }
 }
