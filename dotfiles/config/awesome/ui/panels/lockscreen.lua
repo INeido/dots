@@ -181,4 +181,4 @@ lockscreen:setup {
 }
 
 -- Show lockscreen after creation
---ls_show()
+ls_show()

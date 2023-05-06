@@ -10,25 +10,30 @@
 -- Initialization
 -- ===================================================================
 
-local awful     = require("awful")
-local beautiful = require("beautiful")
+local awful    = require("awful")
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local script    = "sudo " .. beautiful.config_path .. "scripts/pacman.sh check"
-local interval  = 600
+local script   = [[bash -c "checkupdates"]]
+local interval = 600
 
 -- ===================================================================
 -- Daemon
 -- ===================================================================
 
 awful.widget.watch(script, interval, function(_, stdout)
-    local count = string.gsub(stdout, "\n", "")
+    local packages = {}
+
+    for val in stdout:gmatch("([^\n]+)") do
+        if val ~= nil then
+            table.insert(packages, val)
+        end
+    end
 
     awesome.emit_signal("evil::pacman", {
-        count = count,
+        packages = packages or {}
     })
 
     collectgarbage("collect")

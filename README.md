@@ -145,20 +145,6 @@ A few more things to watch out for.
     sudo systemctl start NetworkManager.service
     ```
 
-3. Tthe Network Manager Applet and the pacman update script has to be started as sudo. We have to therefore disable the requirement for a password. Add the following line to your /etc/sudoers.d by doing:
-    ```bash
-    # Changes to sudoers have to be done using visudo
-    # Optional: Change your editor from vi
-    export EDITOR="nano"
-    # Open visudo using the variable you just set
-    sudo -E visudo
-    ```
-    Now you can add the following line:
-    ```bash
-    # Of course, change <Username> to your username
-    <Username> ALL=NOPASSWD: /usr/bin/nm-applet, /home/<Username>/.config/awesome/scripts/pacman.sh
-    ```
-
 </details>
 
 <details close>

@@ -13,9 +13,10 @@ brightnessctl
 acpi
 ttf-font-awesome
 picom
-highlight
 imagemagick
 networkmanager
 maim
 xlcip
 papirus-icon-theme
+pacman-contrib
+lxsession

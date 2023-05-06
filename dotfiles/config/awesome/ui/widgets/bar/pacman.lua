@@ -10,25 +10,32 @@
 -- Initialization
 -- ===================================================================
 
-local awful     = require("awful")
-local wibox     = require("wibox")
-local helpers   = require("helpers")
-local naughty   = require("naughty")
-local beautiful = require("beautiful")
-local dpi       = beautiful.xresources.apply_dpi
+local awful      = require("awful")
+local wibox      = require("wibox")
+local helpers    = require("helpers")
+local naughty    = require("naughty")
+local beautiful  = require("beautiful")
+local dpi        = beautiful.xresources.apply_dpi
 
 -- ===================================================================
--- Get Packages
+-- Variables
 -- ===================================================================
 
-local pacman    = wibox.widget.textbox()
-pacman.font     = beautiful.font .. "11"
+local update_cmd = "pkexec --disable-internal-agent pacman -Syu --noconfirm"
+local updating   = false
+
+-- ===================================================================
+-- Widget
+-- ===================================================================
+
+local pacman     = wibox.widget.textbox()
+pacman.font      = beautiful.font .. "11"
 
 -- ===================================================================
 -- Icon
 -- ===================================================================
 
-local icon      = wibox.widget {
+local icon       = wibox.widget {
     font   = beautiful.iconfont .. "11",
     markup = helpers.text_color(" ", beautiful.accent),
     valign = "center",
@@ -41,7 +48,7 @@ local icon      = wibox.widget {
 -- ===================================================================
 
 -- Create the widget
-local w         = wibox.widget {
+local w          = wibox.widget {
     -- Add margins outside
     {
         icon,
@@ -61,13 +68,13 @@ local w         = wibox.widget {
 }
 
 -- Box the widget
-w               = helpers.box_ba_widget(w, true, 5)
+w                = helpers.box_ba_widget(w, true, 5)
 
 -- ===================================================================
 -- Tooltip
 -- ===================================================================
 
-local tooltip   = awful.tooltip {
+local tooltip    = awful.tooltip {
     objects             = { w },
     font                = beautiful.font .. "11",
     mode                = "outside",
@@ -80,7 +87,7 @@ local tooltip   = awful.tooltip {
 -- ===================================================================
 
 awesome.connect_signal("evil::pacman", function(args)
-    pacman.text = args.count
+    pacman.text = #args.packages
     local updates = pacman.text or "0"
     local text = ""
     if updates == "0" then
@@ -98,7 +105,8 @@ end)
 
 w:connect_signal("button::press", function(_, _, _, button)
     -- Run the updates in the background when left-clicked
-    if button == 1 then
+    if button == 1 and not updating then
+        updating = true
         local start_time = helpers.return_date_time('%H:%M:%S')
         -- Before the Update
         tooltip.text = "Updating..."
@@ -109,9 +117,28 @@ w:connect_signal("button::press", function(_, _, _, button)
             return
         end
 
-        -- After the update
-        awful.spawn.easy_async("sudo " .. beautiful.config_path .. "scripts/pacman.sh", function(_, _, _, _)
+        awful.spawn.easy_async("bash -c \"" .. update_cmd .. "\"", function(_, stderror, _, _)
+            if stderror ~= nil and stderror ~= "" then
+                if string.find(stderror, "warning") then
+                    -- Send warning
+                    naughty.nonotificationtify({
+                        title = "Warning!",
+                        text = stderror,
+                        timeout = 0
+                    })
+                else
+                    -- Send error
+                    naughty.notification({
+                        urgency = "critical",
+                        title = "Error!",
+                        text = stderror,
+                    })
+                end
+            end
+
             tooltip.text = "You are up to date!"
+
+            updating = false
 
             local time_diff = helpers.get_time_diff(start_time)
             local time = helpers.format_time(time_diff, "<time> seconds", "<time> minutes", "<time> hours", nil)
