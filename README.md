@@ -284,6 +284,7 @@ You can edit the autostart apps in the ../scripts/autostart.sh file.
 | Lock computer | mod + l |
 | Fullscreen screenshot | mod + t |
 | Selection screenshot | mod + r |
+| Color picker | mod + c |
 
 ### Apps
 | Task | Bind |

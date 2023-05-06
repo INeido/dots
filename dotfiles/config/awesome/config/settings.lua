@@ -79,7 +79,7 @@ settings.modkey            = "Mod4"
 settings.altkey            = "Mod1"
 
 -- Autorun
-settings.autorun           = { settings.musicplayer, "discord" }
+settings.autorun           = { settings.musicplayer, "steam", "discord" }
 
 -- Paths
 settings.screenshot_path   = os.getenv("HOME") .. "/Pictures/"
