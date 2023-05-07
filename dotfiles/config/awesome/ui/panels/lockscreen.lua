@@ -128,6 +128,7 @@ local function grab_password()
 			if authenticate(input) then
 				reset()
 				set_visibility(false)
+				ex_close()
 			else
 				fail()
 				grab_password()
@@ -141,6 +142,7 @@ function ls_show()
 	-- You can also trigget the lockscreen from the powermenu, so make sure to close it.
 	pm_close()
 	set_visibility(true)
+	ex_open()
 	grab_password()
 end
 
