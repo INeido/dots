@@ -82,7 +82,6 @@ update_file() {
 			mv ~/$file ~/$file.old
 		else
 			rm -rf ~/$file
-			mkdir ~/$file
 		fi
 	else
 		echo "Installing $name configs..."
