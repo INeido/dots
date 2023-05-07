@@ -66,7 +66,7 @@ local function header(reset_function)
 	-- ===================================================================
 
 	bin_widget:buttons(gears.table.join(
-		awful.button({}, 1, function()
+		awful.button({}, 1, nil, function()
 			reset_function()
 		end)
 	))

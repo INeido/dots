@@ -22,7 +22,10 @@ cache                     = {}
 
 -- List of focused clients
 cache.client_focus        = {}
-cache.client_focus_lost        = {}
+cache.client_focus_lost   = {}
+
+-- Client Icons
+cache.client_icons        = {}
 
 -- Wallpapers
 cache.wallpapers          = helpers.load_wallpapers()

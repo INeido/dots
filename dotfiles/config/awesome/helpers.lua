@@ -65,6 +65,11 @@ function helpers.capitalize(str)
     return str:gsub("^%l", string.upper)
 end
 
+-- Uncapitalize the first letter of the string
+function helpers.uncapitalize(str)
+    return str:gsub("^%u", string.lower)
+end
+
 -- Start an array of apps
 function helpers.run_apps(apps)
     for _, app in ipairs(apps) do
@@ -78,6 +83,9 @@ function helpers.run_apps(apps)
             function(stdout)
                 if stdout == "" then
                     awful.spawn(client)
+                    return true
+                else
+                    return false
                 end
             end
         )
@@ -102,6 +110,82 @@ function helpers.jump_to_client(c)
         local t = c.first_tag
         if t then
             t:view_only()
+        end
+    end
+end
+
+-- Returns the icon for a given client
+function helpers.find_icon(class, client)
+    local name
+
+    local default     = "/usr/share/icons/Papirus-Dark/128x128/apps/application-default-icon.svg"
+    local resolutions = { "128x128", "96x96", "64x64", "48x48", "42x42", "32x32", "24x24", "16x16" }
+
+    if class or client then
+        if class then
+            if string.match(class, "^steam_app_%d+$") then
+                name = "steam_icon_" .. class:match("%d+") .. ".svg"
+            else
+                name = class .. ".svg"
+            end
+        else
+            if client.class then
+                name = client.class .. ".svg"
+            elseif client.name then
+                name = client.name .. ".svg"
+            end
+        end
+
+        -- Exception for OSS version of VS Code
+        if name == "code-oss.svg" then
+            name = "code.svg"
+        elseif name == "steamwebhelper.svg" then
+            name = "Steam.svg"
+        end
+
+        for i, icon in ipairs(cache.client_icons) do
+            -- Replace "-" with "%%-" to prevent match problem and memory leak
+            if icon.name:match(name:gsub("-", "%%-")) then
+                return cache.client_icons[i].surface
+            end
+        end
+
+        for _, res in ipairs(resolutions) do
+            local dir = "/usr/share/icons/" .. beautiful.icon_theme .. "/" .. res .. "/apps/"
+
+            if io.open(dir .. helpers.uncapitalize(name), "r") ~= nil then
+                cache.client_icons[#cache.client_icons + 1] = {
+                    surface = gears.surface.load(dir .. helpers.uncapitalize(name)), name = name }
+                return cache.client_icons[#cache.client_icons].surface
+            elseif io.open(dir .. helpers.capitalize(name), "r") ~= nil then
+                cache.client_icons[#cache.client_icons + 1] = {
+                    surface = gears.surface.load(dir .. helpers.capitalize(name)), name = name }
+                return cache.client_icons[#cache.client_icons].surface
+            end
+        end
+
+        -- Fallback to steamcache icons
+        if class then
+            if string.match(class, "^steam_app_%d+$") then
+                local dir = os.getenv("HOME") .. "/.steam/steam/appcache/librarycache/"
+
+                if io.open(dir .. class:match("%d+") .. "_icon.jpg", "r") ~= nil then
+                    cache.client_icons[#cache.client_icons + 1] = {
+                        surface = gears.surface.load(dir .. class:match("%d+") .. "_icon.jpg"), name = "steam_icon_" .. class:match("%d+") .. ".svg" }
+                    return cache.client_icons[#cache.client_icons].surface
+                end
+            end
+        end
+
+        -- Fallback to client icon or default
+        if client then
+            if client.icon then
+                return client.icon
+            else
+                return gears.surface.load_uncached(default)
+            end
+        else
+            return gears.surface.load_uncached(default)
         end
     end
 end

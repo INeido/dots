@@ -63,15 +63,8 @@ end
 
 local function middle(s)
     return {
-        {
-            tasklist(s),
-            layout = wibox.layout.fixed.horizontal,
-        },
-        left   = beautiful.useless_gap,
-        right  = beautiful.useless_gap,
-        top    = beautiful.useless_gap,
-        bottom = beautiful.useless_gap,
-        widget = wibox.container.margin,
+        tasklist(s),
+        layout = wibox.layout.fixed.horizontal,
     }
 end
 

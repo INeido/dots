@@ -79,7 +79,7 @@ local w                = wibox.widget {
                         forced_height = dpi(30),
                         widget        = wibox.widget.textbox,
                         buttons       = awful.util.table.join(
-                            awful.button({}, 1, function()
+                            awful.button({}, 1, nil, function()
                                 awful.util.spawn("playerctl previous")
                             end)
                         )
@@ -93,7 +93,7 @@ local w                = wibox.widget {
                         forced_height = dpi(30),
                         widget        = wibox.widget.textbox,
                         buttons       = awful.util.table.join(
-                            awful.button({}, 1, function()
+                            awful.button({}, 1, nil, function()
                                 awful.util.spawn("playerctl play-pause")
                             end)
                         )
@@ -109,7 +109,7 @@ local w                = wibox.widget {
                         forced_height = dpi(30),
                         widget        = wibox.widget.textbox,
                         buttons       = awful.util.table.join(
-                            awful.button({}, 1, function()
+                            awful.button({}, 1, nil, function()
                                 awful.util.spawn("playerctl next")
                             end)
                         ),

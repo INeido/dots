@@ -24,43 +24,6 @@ settings.password          = "root"
 settings.display           = "xrandr --output DP-0 --primary --mode 2560x1440 --pos 0x0 --rotate normal --rate 239.97"
 
 -- ===================================================================
--- Look & Feel
--- ===================================================================
-
--- Layout
-settings.bar_location      = "top"   -- 'top', 'bottom'
-settings.bulletin_location = "right" -- 'left', 'right'
-
--- Switches
-settings.enable_titlebar   = false
-settings.sloppy_focus      = false
-
--- Wallpaper - If any of these change, re-render the wallpaper by deleting wp_hash.txt and restarting Awesome!
-settings.wp_fullres        = false -- Can be a performance hit on slow machines
-settings.wp_quality        = "80"  -- In percent
-settings.wp_blur           = "08"  -- In hex
-
--- Notifications
-settings.arc_animation_fps = "60"  -- Potential performance hit
-
--- Tags
-settings.tags              = {
-	{
-		layout = awful.layout.suit.tile,
-		selected = true,
-	},
-	{
-		layout = awful.layout.suit.max,
-	},
-	{
-		layout = awful.layout.suit.max,
-	},
-	{
-		layout = awful.layout.suit.floating,
-	},
-}
-
--- ===================================================================
 -- General
 -- ===================================================================
 
@@ -80,6 +43,47 @@ settings.autorun           = { settings.musicplayer, "steam", "discord" }
 
 -- Paths
 settings.screenshot_path   = os.getenv("HOME") .. "/Pictures/"
+
+-- ===================================================================
+-- Look & Feel
+-- ===================================================================
+
+-- Layout
+settings.bar_location      = "top"   -- 'top', 'bottom'
+settings.bulletin_location = "right" -- 'left', 'right'
+
+-- Switches
+settings.enable_titlebar   = false
+settings.sloppy_focus      = false
+
+-- Wallpaper - If any of these change, re-render the wallpaper by deleting wp_hash.txt and restarting Awesome!
+settings.wp_fullres        = false -- Can be a performance hit on slow machines
+settings.wp_quality        = "80"  -- In percent
+settings.wp_blur           = "08"  -- In hex
+
+-- Notifications
+settings.arc_animation_fps = "60" -- Potential performance hit
+
+-- Tags
+settings.tags              = {
+	{
+		layout   = awful.layout.suit.tile,
+		pinned   = {},
+		selected = true,
+	},
+	{
+		layout = awful.layout.suit.max,
+		pinned = { "steam", "steam_app_548430", "steam_app_730" },
+	},
+	{
+		layout = awful.layout.suit.max,
+		pinned = { settings.terminal, settings.fileexplorer, "qutebrowser", "code-oss" },
+	},
+	{
+		layout = awful.layout.suit.floating,
+		pinned = { settings.terminal, settings.fileexplorer },
+	},
+}
 
 -- ===================================================================
 -- Widgets

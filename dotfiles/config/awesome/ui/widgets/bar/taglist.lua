@@ -36,10 +36,10 @@ end
 -- ===================================================================
 
 local buttons = gears.table.join(
-    awful.button({}, 1, function(t) t:view_only() end),
-    awful.button({}, 3, awful.tag.viewtoggle),
-    awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
-    awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
+    awful.button({}, 1, nil, function(t) t:view_only() end),
+    awful.button({}, 3, nil, awful.tag.viewtoggle),
+    awful.button({}, 4, nil, function(t) awful.tag.viewnext(t.screen) end),
+    awful.button({}, 5, nil, function(t) awful.tag.viewprev(t.screen) end)
 )
 
 -- ===================================================================

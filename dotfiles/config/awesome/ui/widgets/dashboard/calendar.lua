@@ -81,18 +81,18 @@ local w = wibox.widget {
 
 w:buttons(gears.table.join(
 -- Left Click - Reset date to current date
-    awful.button({}, 1, function()
+    awful.button({}, 1, nil, function()
         w.date = os.date("*t")
     end),
     -- Scroll - Move to previous or next month
-    awful.button({}, 4, function()
+    awful.button({}, 4, nil, function()
         if w.date.month - 1 == os.date("*t").month then
             w.date = os.date("*t")
         else
             w.date = { month = w.date.month - 1, year = w.date.year }
         end
     end),
-    awful.button({}, 5, function()
+    awful.button({}, 5, nil, function()
         if w.date.month + 1 == os.date("*t").month then
             w.date = os.date("*t")
         else

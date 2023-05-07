@@ -63,7 +63,7 @@ end)
 -- ===================================================================
 
 w:buttons(gears.table.join(
-    awful.button({}, 1, function()
+    awful.button({}, 1, nil, function()
         bu_toggle()
     end)
 ))

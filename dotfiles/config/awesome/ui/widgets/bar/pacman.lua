@@ -10,32 +10,37 @@
 -- Initialization
 -- ===================================================================
 
-local awful      = require("awful")
-local wibox      = require("wibox")
-local helpers    = require("helpers")
-local naughty    = require("naughty")
-local beautiful  = require("beautiful")
-local dpi        = beautiful.xresources.apply_dpi
+local awful        = require("awful")
+local wibox        = require("wibox")
+local helpers      = require("helpers")
+local naughty      = require("naughty")
+local beautiful    = require("beautiful")
+local dpi          = beautiful.xresources.apply_dpi
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local update_cmd = "pkexec --disable-internal-agent pacman -Syu --noconfirm"
-local updating   = false
+local update_cmd   = "pkexec --disable-internal-agent pacman -Syu --noconfirm"
+local polkit_agent = "/usr/bin/lxpolkit"
+local tooltip_text = ""
+local updating     = false
+
+-- Make sure polkit is running
+awful.spawn.once(polkit_agent)
 
 -- ===================================================================
 -- Widget
 -- ===================================================================
 
-local pacman     = wibox.widget.textbox()
-pacman.font      = beautiful.font .. "11"
+local pacman       = wibox.widget.textbox()
+pacman.font        = beautiful.font .. "11"
 
 -- ===================================================================
 -- Icon
 -- ===================================================================
 
-local icon       = wibox.widget {
+local icon         = wibox.widget {
     font   = beautiful.iconfont .. "11",
     markup = helpers.text_color(" ", beautiful.accent),
     valign = "center",
@@ -48,7 +53,7 @@ local icon       = wibox.widget {
 -- ===================================================================
 
 -- Create the widget
-local w          = wibox.widget {
+local w            = wibox.widget {
     -- Add margins outside
     {
         icon,
@@ -68,13 +73,13 @@ local w          = wibox.widget {
 }
 
 -- Box the widget
-w                = helpers.box_ba_widget(w, true, 5)
+w                  = helpers.box_ba_widget(w, true, 5)
 
 -- ===================================================================
 -- Tooltip
 -- ===================================================================
 
-local tooltip    = awful.tooltip {
+local tooltip      = awful.tooltip {
     objects             = { w },
     font                = beautiful.font .. "11",
     mode                = "outside",
@@ -89,14 +94,13 @@ local tooltip    = awful.tooltip {
 awesome.connect_signal("evil::pacman", function(args)
     pacman.text = #args.packages
     local updates = pacman.text or "0"
-    local text = ""
     if updates == "0" then
-        text = "You are up to date!"
+        tooltip_text = "You are up to date!"
     else
-        text = "There are " .. updates .. " updates available."
+        tooltip_text = "There are " .. updates .. " updates available."
     end
 
-    tooltip.text = text
+    tooltip.text = tooltip_text
 end)
 
 -- ===================================================================
@@ -106,10 +110,9 @@ end)
 w:connect_signal("button::press", function(_, _, _, button)
     -- Run the updates in the background when left-clicked
     if button == 1 and not updating then
-        updating = true
         local start_time = helpers.return_date_time('%H:%M:%S')
-        -- Before the Update
-        tooltip.text = "Updating..."
+        updating         = true
+        tooltip.text     = "Updating..."
 
         -- Nothing to do
         if tonumber(pacman.text) == 0 then
@@ -134,6 +137,8 @@ w:connect_signal("button::press", function(_, _, _, button)
                         text = stderror,
                     })
                 end
+                tooltip.text = tooltip_text
+                return
             end
 
             tooltip.text = "You are up to date!"

@@ -86,10 +86,10 @@ end
 
 return function(c)
     local buttons = gears.table.join(
-        awful.button({}, 1, function()
+        awful.button({}, 1, nil, function()
             leftclick(c)
         end),
-        awful.button({}, 3, function()
+        awful.button({}, 3, nil, function()
             client.focus = c
             c:raise()
             awful.mouse.client.resize(c)

@@ -218,19 +218,19 @@ local function template(n)
 	end
 
 	close:buttons(gears.table.join(
-		awful.button({}, 1, function()
+		awful.button({}, 1, nil, function()
 			n:destroy()
 		end),
-		awful.button({}, 3, function()
+		awful.button({}, 3, nil, function()
 			n:destroy()
 		end)
 	))
 
 	w_template:buttons(gears.table.join(
-		awful.button({}, 1, function()
+		awful.button({}, 1, nil, function()
 			helpers.jump_to_client(n.clients[1])
 		end),
-		awful.button({}, 3, function()
+		awful.button({}, 3, nil, function()
 			n:destroy()
 		end)
 	))

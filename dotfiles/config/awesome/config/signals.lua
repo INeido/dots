@@ -63,7 +63,9 @@ client.connect_signal("untagged", function(c)
             cache.client_focus[tag.index] = prev_client
             local focus = cache.client_focus_lost[tag.index]
             if focus then
-                client.focus = focus
+                if focus.valid then
+                    client.focus = focus
+                end
             end
         end
     end
@@ -76,7 +78,11 @@ client.connect_signal("property::minimized", function(c)
         if tag then
             local focus = cache.client_focus_lost[tag.index]
             if focus then
-                client.focus = focus
+                if not focus.minimized then
+                    if focus.valid then
+                        client.focus = focus
+                    end
+                end
             end
         end
     end

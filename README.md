@@ -315,9 +315,9 @@ You can edit the autostart apps in the ../scripts/autostart.sh file.
 - [x] Add lock screen
 - [x] Multimonitor support
 - [x] Improve notifications
+- [x] Improve tasklist
 - [ ] Improve client switcher (alt+tab)
 - [ ] Improve window decorations
-- [ ] Improve tasklist
 - [ ] Add screen saver
 - [ ] Add settings menu
 - [ ] Laptop support

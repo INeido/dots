@@ -67,7 +67,7 @@ local function create_embed(link, bg, fg, border, callback)
 		-- ===================================================================
 
 		title_widget:buttons(gears.table.join(
-			awful.button({}, 1, function()
+			awful.button({}, 1, nil, function()
 				-- Make this prio over other thing
 				awful.spawn("xdg-open " .. link)
 			end)
@@ -308,10 +308,10 @@ local function create_notification(n, close_function)
 	-- ===================================================================
 
 	notification:buttons(gears.table.join(
-		awful.button({}, 1, function()
+		awful.button({}, 1, nil, function()
 			helpers.jump_to_client(n.clients[1])
 		end),
-		awful.button({}, 2, function()
+		awful.button({}, 2, nil, function()
 			close_function(notification)
 		end)
 	))

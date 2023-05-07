@@ -67,7 +67,7 @@ theme.widget_background            = "#333333"
 theme.widget_hover                 = "#3F3F3F"
 theme.widget_press                 = "#4F4F4F"
 theme.widget_inactive              = "#5F5F5F"
-theme.widget_selected              = "#FFFFFF"
+theme.widget_selected              = "#4F4F4F"
 theme.widget_urgent                = "#B30000"
 theme.taglist_bg_urgent            = theme.widget_urgent
 
