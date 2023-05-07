@@ -42,6 +42,8 @@ theme.systray_icon_spacing         = dpi(5)
 theme.useless_gap                  = dpi(5)
 theme.border_width                 = dpi(3)
 
+theme.notification_spacing         = dpi(16)
+
 -- ===================================================================
 -- Colors
 -- ===================================================================

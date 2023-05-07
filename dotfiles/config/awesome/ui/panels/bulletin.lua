@@ -131,6 +131,7 @@ naughty.connect_signal('request::display', function(n)
 	-- Display the notification using the default implementation
 	if bulletin.visible == false then
 		naughty.layout.box { notification = n, widget_template = not_template(n) }
+		naughty.layout.box.buttons = nil
 	else
 		n:destroy(1)
 	end

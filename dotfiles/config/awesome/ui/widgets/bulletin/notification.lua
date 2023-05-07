@@ -140,6 +140,20 @@ local function create_notification(n, close_function)
 		app_name = helpers.capitalize(n.app_name)
 	end
 
+	local app_icon_widget = wibox.widget.imagebox()
+	if app_name ~= "System Notification" then
+		app_icon_widget.forced_width = dpi(22)
+		app_icon_widget.forced_height = dpi(22)
+
+		if app_name == "Color Picker" then
+			app_icon_widget.image = cache.colorpicker_icon
+		elseif app_name == "Screenshot Tool" then
+			app_icon_widget.image = cache.screenshot_icon
+		else
+			app_icon_widget.image = helpers.find_icon(app_name)
+		end
+	end
+
 	local bg, fg, border
 	if n.urgency == "low" then
 		bg = "#262627"
@@ -231,7 +245,12 @@ local function create_notification(n, close_function)
 					{
 						{
 							{
-								app_name_widget,
+								{
+									app_icon_widget,
+									app_name_widget,
+									spacing = dpi(5),
+									layout = wibox.layout.fixed.horizontal,
+								},
 								nil,
 								time_widget,
 								layout = wibox.layout.align.horizontal,
@@ -326,6 +345,16 @@ local function create_notification(n, close_function)
 
 	notification:connect_signal("mouse::leave", function()
 		notification.bg = bg
+	end)
+
+	actions_template:connect_signal("mouse::enter", function()
+		actions_template.bg = bg .. "AA"
+		--w.border_color = "#00B0F0"
+	end)
+
+	actions_template:connect_signal("mouse::leave", function()
+		actions_template.bg = bg
+		--w.border_color = border
 	end)
 
 	return notification
