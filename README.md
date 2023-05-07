@@ -14,11 +14,7 @@
     ·
     <a href="#setup">Setup</a>
     ·
-    <a href="#features">Features</a>
-    ·
     <a href="#settings">Settings</a>
-    ·
-    <a href="#keys">Keys</a>
     ·
     <a href="#todos">Todos</a>
 </div>
@@ -34,36 +30,11 @@ This is my daily driver setup on both my home computer and laptop.
 
 Please consider, that this rice is tailored for myself. I did try to make it as configurable as possible, as you will see later if you read on, but it is not perfect.
 
+Make sure to check out the [Wiki](https://github.com/INeido/dots/wiki) for more information!
+
 ![](https://github.com/INeido/dots/blob/main/samples/sample1.png?raw=true)
 
-<details close>
-    <summary><samp><b>More screenshots</b></samp></summary>
-
-<br>
-
-VS Code in fullscreen
-![](https://github.com/INeido/dots/blob/main/samples/sample2.png?raw=true)
-
-<br>
-
-Dashboard
-![](https://github.com/INeido/dots/blob/main/samples/sample3.png?raw=true)
-
-<br>
-
-Powermenu
-![](https://github.com/INeido/dots/blob/main/samples/sample4.png?raw=true)
-
-<br>
-
-Lockscreen
-![](https://github.com/INeido/dots/blob/main/samples/sample5.png?raw=true)
-
-<br>
-
-</details>
-
-<br>
+More pictures in the [Gallery](https://github.com/INeido/dots/wiki/Gallery).
 
 
 # Info
@@ -112,197 +83,9 @@ NOTE: The following instructions require Arch and AwesomeWM to be installed!
     dotdrop install --profile=PC0
     ```
 
-
-<details close>
-    <summary><samp><b>More Setup</b></samp></summary>
-
-<br>
-
-Optional requirements. For these you have to enable the 'multilib' repository in pacman.
-
-    ```bash
-    # Uncomment multilib
-    sudo nano /etc/pacman.conf
-    
-    pacman -S --needed - < opt_requirements.txt
-    ```
-
-A few more things to watch out for.
-
-1. Installing oh-my-zsh and plugins:
-    ```bash
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-autosuggestions
-
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    ```
-
-2. Network Manager service has to be enabled and started:
-    ```bash
-    sudo systemctl enable NetworkManager.service
-
-    sudo systemctl start NetworkManager.service
-    ```
-
-</details>
-
-<details close>
-    <summary><samp><b>Tips & Tricks</b></samp></summary>
-
-<br>
-
-1. Installing yay.
-    ```bash
-    git clone https://aur.archlinux.org/yay.git
-    cd yay
-    makepkg -si
-    ```
-
-2. Enable auto-login using systemd.
-    Create a new service by creatign the following file:
-    ```bash
-    sudo nano /etc/systemd/system/getty@tty1.service.d/autologin.conf
-    ```
-
-    Paste this text, with your Username, into the file
-    ```
-    [Service]
-    ExecStart=
-    ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin <Username> %I $TERM
-    ```
-
-    Retart the daemon
-    ```bash
-    sudo systemctl daemon-reload
-    ```
-
-3. Set your screen DPI.
-    First, go to [dpi.lv](https://dpi.lv/) and figure out your DPI.
-    You can then enter this DPI in the following file to set it system-wide:
-    ```bash
-    nano .Xresources
-    ```
-
-    Enter ```Xft.dpi: <your DPI>``` and save.
-
-</details>
-
-
-# Features
-
-### Music widget
-
-This widget is visible in the dashboard with the cover art and media buttons.
-
-![](https://github.com/INeido/dots/blob/main/samples/feature0.png?raw=true)
-
-And also as a minimal display in the top panel.
-
-![](https://github.com/INeido/dots/blob/main/samples/feature1.png?raw=true)
-
-<details close>
-    <summary><samp><b>more info</b></samp></summary>
-
-When hovering over the widget it displays the song progress using a bar at the bottom.
-
-![](https://github.com/INeido/dots/blob/main/samples/feature0_0.png?raw=true)
-
-Using the scrollwheel you can adjust the volume. When doing so the progress bar transform into the volume bar.
-
-![](https://github.com/INeido/dots/blob/main/samples/feature0_1.png?raw=true)
-
-You can interact with the minimal music widget in the top panel using:
-- Left click: Toggle Player Visibility
-- Right click: Toggle play/pause
-- Scroll up: Increase volume
-- Scroll down: Decrease volume
-
-</details>
-
-### Pacman widget
-
-Minimalistic pacman widget showing the number of pending updates.
-Click it to run the updates.
-
-![](https://github.com/INeido/dots/blob/main/samples/feature2.png?raw=true)
-
-### Dashboard
-
-A collection of widgets to conwey important information.
-
-![](https://github.com/INeido/dots/blob/main/samples/feature3.png?raw=true)
-
-
-### Powermenu
-
-A quick menu to turn off, restart or log off the computer.
-
-![](https://github.com/INeido/dots/blob/main/samples/feature4.png?raw=true)
-
-
-<details close>
-    <summary><samp><b>more info</b></samp></summary>
-
-You can use the arrow keys to switch the selection and press enter to execute. Or just use the mouse.
-
-</details>
-
-
 # Settings
 
 Using the [settings.lua](https://github.com/INeido/dots/blob/main/dotfiles/config/awesome/config/settings.lua) file you can change a few settings. After a change AwesomeWM has to be reloaded.
-
-The options should be pretty self explanatory.
-
-You can edit the autostart apps in the ../scripts/autostart.sh file.
-
-
-# Keys
-
-### Global
-| Task | Bind |
-| ---- | ---- |
-| Reload AwesomeWM | mod + control + r |
-| Quit AwesomeWM | mod + shift + q |
-| Open Dashboard | mod + d |
-| Open Powermenu | mod + p |
-| Lock computer | mod + l |
-| Fullscreen screenshot | mod + t |
-| Selection screenshot | mod + r |
-| Color picker | mod + c |
-
-### Apps
-| Task | Bind |
-| ---- | ---- |
-| Run File Explorer | mod + e |
-| Run Rofi drun | mod + space |
-| Run Terminal | mod + return |
-
-### Client
-| Task | Bind |
-| ---- | ---- |
-| Toggle Fullscreen | mod + f |
-| Toggle Maximize | mod + m |
-| Toggle Floating | mod + control + space |
-| Close | mod + q |
-| Keep on top | mod + t |
-| Keep minimize | mod + n |
-| Move | mod + mouse1 |
-| Resie | mod + mouse3 |
-| Move to next screen | mod + v |
-| Move to tag | mod + shift + \<tag number> |
-
-### Tag & Layout
-| Task | Bind |
-| ---- | ---- |
-| Previous Tag | mod + left_arrow |
-| Next Tag | mod + right_arrow |
-| Last Tag | mod + escape |
-| Last Client | alt + tab |
-| Cycle Clients | mod + tab |
-| Cycle Layouts | mod + s |
-| View Tag | mod + \<tag number> |
 
 
 # Todos
@@ -316,10 +99,10 @@ You can edit the autostart apps in the ../scripts/autostart.sh file.
 - [x] Multimonitor support
 - [x] Improve notifications
 - [x] Improve tasklist
+- [ ] Laptop support (Brightness & Volume OSD)
 - [ ] Improve client switcher (alt+tab)
 - [ ] Improve window decorations
 - [ ] Add screen saver
 - [ ] Add settings menu
-- [ ] Laptop support
 - [ ] Add animations [(rubato)](https://open-vsx.org/vscode/item?itemName=s-nlf-fh.glassit)
 - [ ] Add more bugs
