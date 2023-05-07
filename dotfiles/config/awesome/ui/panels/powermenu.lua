@@ -139,103 +139,137 @@ end
 function pm_close()
     awful.keygrabber.stop(powermenu.grabber)
     powermenu.visible = false
+    ex_close()
     confirmation_hide()
 end
+
+local function left()
+    if confirmation.yes.visible == true then
+        if helpers.button_isfocused(confirmation.yes) then
+            confirmation.yes:emit_signal("mouse::leave")
+            confirmation.no:emit_signal("mouse::enter")
+        elseif helpers.button_isfocused(confirmation.no) then
+            confirmation.yes:emit_signal("mouse::enter")
+            confirmation.no:emit_signal("mouse::leave")
+        else
+            confirmation.yes:emit_signal("mouse::enter")
+            confirmation.no:emit_signal("mouse::leave")
+        end
+    else
+        local focus = false
+        for i, button in ipairs(buttons) do
+            if helpers.button_isfocused(button.w) then
+                -- Move focus to the previous button
+                if i > 1 then
+                    button.w:emit_signal("mouse::leave")
+                    buttons[i - 1].w:emit_signal("mouse::enter")
+                elseif i == 1 then
+                    button.w:emit_signal("mouse::leave")
+                    buttons[#buttons].w:emit_signal("mouse::enter")
+                end
+                focus = true
+                break
+            end
+        end
+        if not focus then
+            buttons[#buttons].w:emit_signal("mouse::enter")
+        end
+    end
+end
+
+local function right()
+    if confirmation.yes.visible == true then
+        if helpers.button_isfocused(confirmation.yes) then
+            confirmation.yes:emit_signal("mouse::leave")
+            confirmation.no:emit_signal("mouse::enter")
+        elseif helpers.button_isfocused(confirmation.no) then
+            confirmation.yes:emit_signal("mouse::enter")
+            confirmation.no:emit_signal("mouse::leave")
+        else
+            confirmation.yes:emit_signal("mouse::enter")
+            confirmation.no:emit_signal("mouse::leave")
+        end
+    else
+        local focus = false
+        for i, button in ipairs(buttons) do
+            if helpers.button_isfocused(button.w) then
+                -- Move focus to the next button
+                if i < #buttons then
+                    button.w:emit_signal("mouse::leave")
+                    buttons[i + 1].w:emit_signal("mouse::enter")
+                elseif i == #buttons then
+                    button.w:emit_signal("mouse::leave")
+                    buttons[1].w:emit_signal("mouse::enter")
+                end
+                focus = true
+                break
+            end
+        end
+        if not focus then
+            buttons[1].w:emit_signal("mouse::enter")
+        end
+    end
+end
+
+local function select(id)
+    if id then
+        last_focused = id
+        confirmation_show(buttons[id].a)
+    elseif confirmation.yes.visible == true then
+        if helpers.button_isfocused(confirmation.yes) then
+            confirmation.yes:emit_signal("button::press", nil, nil, nil, 1)
+        else
+            confirmation.no:emit_signal("button::press", nil, nil, nil, 1)
+        end
+    else
+        for _, button in ipairs(buttons) do
+            if helpers.button_isfocused(button.w) then
+                button.w:emit_signal("button::press", nil, nil, nil, 1)
+                break
+            end
+        end
+    end
+end
+
+local keybinds = {
+    ["left"]   = left,
+    ["right"]  = right,
+    ["return"] = select,
+    ["space"]  = select,
+    ["escape"] = pm_close,
+    ["q"]      = pm_close,
+    ["f1"]     = pm_close,
+    ["l"]      = function() select(1) end, -- Lock
+    ["s"]      = function() select(2) end, -- Sleep
+    ["e"]      = function() select(3) end, -- Exit (Logout)
+    ["p"]      = function() select(4) end, -- Poweroff (Shutdown)
+    ["r"]      = function() select(5) end, -- Reboot
+}
 
 -- This is a mess
 function pm_open()
     -- Unfocus all buttons. For some reason they are all focused sometimes
     pm_unfocus()
+
     -- Set the first button as active by default
     buttons[1].w:emit_signal("mouse::enter")
+
     -- Close the Dashboard
     db_close()
+
     -- Open Powermenu
     powermenu.visible = true
+    ex_open()
+
     -- Start Keygrabber
     powermenu.grabber = awful.keygrabber.run(function(_, key, event)
+        -- Ignore case
+        key = key:lower()
+
         if event == "release" then return end
-        if key == "Escape" or key == "q" or key == "F1" then
-            pm_close()
-        elseif key == "Left" then
-            if confirmation.yes.visible == true then
-                if helpers.button_isfocused(confirmation.yes) then
-                    confirmation.yes:emit_signal("mouse::leave")
-                    confirmation.no:emit_signal("mouse::enter")
-                elseif helpers.button_isfocused(confirmation.no) then
-                    confirmation.yes:emit_signal("mouse::enter")
-                    confirmation.no:emit_signal("mouse::leave")
-                else
-                    confirmation.yes:emit_signal("mouse::enter")
-                    confirmation.no:emit_signal("mouse::leave")
-                end
-            else
-                local focus = false
-                for i, button in ipairs(buttons) do
-                    if helpers.button_isfocused(button.w) then
-                        -- Move focus to the previous button
-                        if i > 1 then
-                            button.w:emit_signal("mouse::leave")
-                            buttons[i - 1].w:emit_signal("mouse::enter")
-                        elseif i == 1 then
-                            button.w:emit_signal("mouse::leave")
-                            buttons[#buttons].w:emit_signal("mouse::enter")
-                        end
-                        focus = true
-                        break
-                    end
-                end
-                if not focus then
-                    buttons[#buttons].w:emit_signal("mouse::enter")
-                end
-            end
-        elseif key == "Right" then
-            if confirmation.yes.visible == true then
-                if helpers.button_isfocused(confirmation.yes) then
-                    confirmation.yes:emit_signal("mouse::leave")
-                    confirmation.no:emit_signal("mouse::enter")
-                elseif helpers.button_isfocused(confirmation.no) then
-                    confirmation.yes:emit_signal("mouse::enter")
-                    confirmation.no:emit_signal("mouse::leave")
-                else
-                    confirmation.yes:emit_signal("mouse::enter")
-                    confirmation.no:emit_signal("mouse::leave")
-                end
-            else
-                local focus = false
-                for i, button in ipairs(buttons) do
-                    if helpers.button_isfocused(button.w) then
-                        -- Move focus to the next button
-                        if i < #buttons then
-                            button.w:emit_signal("mouse::leave")
-                            buttons[i + 1].w:emit_signal("mouse::enter")
-                        elseif i == #buttons then
-                            button.w:emit_signal("mouse::leave")
-                            buttons[1].w:emit_signal("mouse::enter")
-                        end
-                        focus = true
-                        break
-                    end
-                end
-                if not focus then
-                    buttons[1].w:emit_signal("mouse::enter")
-                end
-            end
-        elseif key == "Return" or key == "space" then
-            if confirmation.yes.visible == true then
-                if helpers.button_isfocused(confirmation.yes) then
-                    confirmation.yes:emit_signal("button::press", _, _, _, 1)
-                else
-                    confirmation_hide()
-                end
-            else
-                for _, button in ipairs(buttons) do
-                    if helpers.button_isfocused(button.w) then
-                        button.w:emit_signal("button::press", _, _, _, 1)
-                        break
-                    end
-                end
-            end
+
+        if keybinds[key] then
+            keybinds[key]()
         end
     end)
 end
@@ -257,9 +291,7 @@ confirmation.yes:connect_signal("button::press", function(_, _, _, button)
 end)
 
 confirmation.no:connect_signal("button::press", function(_, _, _, button)
-    if button == 1 then
-        confirmation_hide()
-    end
+    confirmation_hide()
 end)
 
 for i, button in ipairs(buttons) do

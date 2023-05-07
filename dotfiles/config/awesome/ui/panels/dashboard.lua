@@ -56,15 +56,20 @@ dashboard.grabber = nil
 function db_close()
     awful.keygrabber.stop(dashboard.grabber)
     dashboard.visible = false
+    ex_close()
 end
 
 function db_open()
     -- Reset Calendar
     calendar.date = os.date("*t")
+
     -- Close the Powermenu
     pm_close()
+
     -- Open Dashboard
     dashboard.visible = true
+    ex_open()
+
     -- Start Keygrabber TO-DO: Keygrabber is broken. It swallows every key and breaks the global keybinds.
     dashboard.grabber = awful.keygrabber.run(function(_, key, event)
         if event == "release" then return end
