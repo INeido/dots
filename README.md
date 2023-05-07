@@ -57,36 +57,17 @@ More pictures in the [Gallery](https://github.com/INeido/dots/wiki/Gallery).
 
 # Setup
 
-NOTE: The following instructions require Arch and AwesomeWM to be installed!
+| Method | Command |
+| ------ | --------|
+| **curl** | `sh -c "$(curl -fsSL https://raw.githubusercontent.com/INeido/dots/master/install.sh)"` |
+| **wget** | `sh -c "$(wget -O- https://raw.githubusercontent.com/INeido/dots/master/install.sh)"` |
+| **fetch** | `sh -c "$(fetch -o - https://raw.githubusercontent.com/INeido/dots/master/install.sh)"` |
 
-1. Clone the package.
-    ```bash
-    git clone https://github.com/INeido/dots
-    cd ./dots
-    ```
-
-2. Install the arch requirements.
-    ```bash
-    pacman -S --needed - < arch_requirements.txt
-    ```
-
-3. Don't forget the python requirements.
-    ```bash
-    # You may need to run...
-    python -m ensurepip
-    # before running...
-    python -m pip install -r python_requirements.txt
-    ```
-
-4. Finally, the dots can be installed using dotdrop.
-    ```bash
-    dotdrop install --profile=PC0
-    ```
+For manual isntallation see [Setup](https://github.com/INeido/dots/wiki/Setup).
 
 # Settings
 
 Using the [settings.lua](https://github.com/INeido/dots/blob/main/dotfiles/config/awesome/config/settings.lua) file you can change a few settings. After a change AwesomeWM has to be reloaded.
-
 
 # Todos
 
