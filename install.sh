@@ -134,7 +134,7 @@ echo ""
 
 install_if_needed $REQUIREMENTS
 
-# Install oh-my-zsh
+# Install oh-my-zsh and plugins
 CHSH="no"
 RUNZSH="no"
 KEEP_ZSHRC="yes"
@@ -144,9 +144,16 @@ if [ -d $ZSH ]; then
 else
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
-
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+if [ -d "$ZSH/custom/plugins/zsh-autosuggestions" ]; then
+	echo "zsh-autosuggestions is already installed"
+else
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-autosuggestions
+fi
+if [ -d "$ZSH/custom/plugins/zsh-syntax-highlighting" ]; then
+	echo "zsh-syntax-highlighting is already installed"
+else
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+fi
 
 # 4.
 echo ""
