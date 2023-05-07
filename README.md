@@ -57,13 +57,13 @@ More pictures in the [Gallery](https://github.com/INeido/dots/wiki/Gallery).
 
 # Setup
 
-| Method | Command |
-| ------ | --------|
-| **curl** | `sh -c "$(curl -fsSL https://raw.githubusercontent.com/INeido/dots/master/install.sh)"` |
-| **wget** | `sh -c "$(wget -O- https://raw.githubusercontent.com/INeido/dots/master/install.sh)"` |
-| **fetch** | `sh -c "$(fetch -o - https://raw.githubusercontent.com/INeido/dots/master/install.sh)"` |
+The config is installed by running the following command in your terminal.
 
-For manual installation see [Setup](https://github.com/INeido/dots/wiki/Setup).
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/INeido/dots/master/install.sh)"
+```
+
+For more options see [Setup](https://github.com/INeido/dots/wiki/Setup).
 
 # Settings
 
