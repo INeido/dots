@@ -252,6 +252,14 @@ rm -rf ./dots >/dev/null
 echo ""
 echo "Installation complete!"
 echo ""
+echo "Before you proceed, make sure to check the following file:"
+echo "$HOME/.config/awesome/config/settings.lua"
+echo "You HAVE to make changes so that the settings match your system."
+echo "Important settings are marked with '!Important'"
+echo ""
+
+read -n 1 -s -r -p "After you are done, press any key to continue..."
+echo ""
 
 if pgrep awesome >/dev/null; then
 	echo "Restart AwesomeWM using the keybind: CRTL + SUPER (Windows) + R"
