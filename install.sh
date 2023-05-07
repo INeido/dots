@@ -157,7 +157,7 @@ echo "Clone Git Repository..."
 if [ -d ./dots ]; then
 	rm -rf ./dots
 fi
-git clone https://github.com/INeido/dots
+git clone --depth=1 https://github.com/INeido/dots
 echo ""
 
 echo "Copying dotfiles..."

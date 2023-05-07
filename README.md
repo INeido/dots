@@ -63,7 +63,7 @@ More pictures in the [Gallery](https://github.com/INeido/dots/wiki/Gallery).
 | **wget** | `sh -c "$(wget -O- https://raw.githubusercontent.com/INeido/dots/master/install.sh)"` |
 | **fetch** | `sh -c "$(fetch -o - https://raw.githubusercontent.com/INeido/dots/master/install.sh)"` |
 
-For manual isntallation see [Setup](https://github.com/INeido/dots/wiki/Setup).
+For manual installation see [Setup](https://github.com/INeido/dots/wiki/Setup).
 
 # Settings
 
@@ -80,6 +80,7 @@ Using the [settings.lua](https://github.com/INeido/dots/blob/main/dotfiles/confi
 - [x] Multimonitor support
 - [x] Improve notifications
 - [x] Improve tasklist
+- [x] Add Installscript
 - [ ] Laptop support (Brightness & Volume OSD)
 - [ ] Improve client switcher (alt+tab)
 - [ ] Improve window decorations
