@@ -25,6 +25,10 @@ echo ""
 ensure_yay() {
 	if ! command -v yay &>/dev/null; then
 		echo "yay is not installed. Installing yay..."
+		# sudo?
+		# samples take a long time
+		# "dont disturb" mode where everything goes into bulletin
+		#
 		git clone https://aur.archlinux.org/yay.git
 		cd yay
 		makepkg -si
@@ -46,6 +50,19 @@ install_if_needed() {
 	done
 }
 
+# Installs packages with a choice for the user
+install_optional() {
+	local REQ="$@"
+	for package in $REQ; do
+		if ! yay -Qs $package >/dev/null; then
+			echo "Installing $package"
+			yay -S --needed $package
+		else
+			echo "$package is already installed"
+		fi
+	done
+}
+
 # Backup current settings and copy new ones
 update_folder() {
 	local folder="$1"
@@ -53,13 +70,13 @@ update_folder() {
 	if [ -d ~/$folder ]; then
 		if [ $backup = "yes" ]; then
 			echo "$name configs detected, backing up..."
-			if [ -d ~/$folder.old ]; then
-				rm -rf ~/$folder.old
-				mkdir ~/$folder.old
+			if [ -d ~/$folder.bak ]; then
+				rm -rf ~/$folder.bak
+				mkdir ~/$folder.bak
 			else
-				mkdir ~/$folder.old
+				mkdir ~/$folder.bak
 			fi
-			mv ~/$folder/* ~/$folder.old/
+			mv ~/$folder ~/$folder.bak/
 		else
 			echo "$name configs detected, deleting..."
 			rm -rf ~/$folder
@@ -79,7 +96,7 @@ update_file() {
 	if [ -f ~/$file ]; then
 		if [ $backup = "yes" ]; then
 			echo "$name config detected, backing up..."
-			mv ~/$file ~/$file.old
+			mv ~/$file ~/$file.bak
 		else
 			rm -rf ~/$file
 		fi
@@ -87,6 +104,46 @@ update_file() {
 		echo "Installing $name configs..."
 	fi
 	cp ./dots/dotfiles/$file ~/$file
+}
+
+# Adjust xinit file to start AwesomeWM
+adjust_xinit_file() {
+	# Check if xinit file exists
+	if [ -f "$HOME/.xinitrc" ]; then
+		# Check if AwesomeWM is already set as the window manager
+		if grep -q "exec awesome" "$HOME/.xinitrc"; then
+			echo "AwesomeWM is already set as the window manager in $HOME/.xinitrc"
+		else
+			echo "Backing up existing .xinitrc file to ${HOME}/.xinitrc.bak"
+			mv "${HOME}/.xinitrc" "${HOME}/.xinitrc.bak"
+
+			# Add line to start AwesomeWM
+			echo "exec awesome" >>"$HOME/.xinitrc"
+			echo "Added line to start AwesomeWM in $HOME/.xinitrc"
+		fi
+	else
+		# Create xinit file and add line to start AwesomeWM
+		echo "exec awesome" >"$HOME/.xinitrc"
+		echo "Created $HOME/.xinitrc and added line to start AwesomeWM"
+	fi
+}
+
+# Enable autologin for the current user
+enable_autologin() {
+	# Create a new directory for the autologin configuration file
+	sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
+
+	# Create the autologin configuration file
+	sudo tee /etc/systemd/system/getty@tty1.service.d/autologin.conf >/dev/null <<EOF
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty -o '-p -f -- \\\\u' --noclear --autologin $USER %I \$TERM
+EOF
+
+	# Reload the systemd daemon
+	sudo systemctl daemon-reload
+
+	echo "Autologin enabled for user: $USER"
 }
 
 # Settings
@@ -135,15 +192,24 @@ echo ""
 install_if_needed $REQUIREMENTS
 
 # Install oh-my-zsh and plugins
-CHSH="no"
-RUNZSH="no"
-KEEP_ZSHRC="yes"
-ZSH="$HOME/.config/oh-my-zsh"
-if [ -d $ZSH ]; then
-	echo "oh-my-zsh is already installed"
-else
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+if [ -d "$HOME/.config/oh-my-zsh" ]; then
+	if [ $backup = "yes" ]; then
+		echo "oh-my-zsh configs detected, backing up..."
+		if [ -d $HOME/.config/oh-my-zsh.bak ]; then
+			rm -rf $HOME/.config/oh-my-zsh.bak
+			mkdir $HOME/.config/oh-my-zsh.bak
+		else
+			mkdir $HOME/.config/oh-my-zsh.bak
+		fi
+		mv $HOME/.config/oh-my-zsh $HOME/.config/oh-my-zsh.bak
+	else
+		echo "oh-my-zsh configs detected, deleting..."
+		rm -rf $HOME/.config/oh-my-zsh
+	fi
 fi
+echo "Installing oh-my-zsh..."
+ZSH="$HOME/.config/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+
 if [ -d "$ZSH/custom/plugins/zsh-autosuggestions" ]; then
 	echo "zsh-autosuggestions is already installed"
 else
@@ -210,13 +276,13 @@ echo ""
 
 case $rec in
 [yY][eE][sS] | [yY])
-	install_if_needed $APPLICATIONS
+	install_optional $APPLICATIONS
 	;;
 [nN][oO] | [nN])
 	continue
 	;;
 [*])
-	install_if_needed $APPLICATIONS
+	install_optional $APPLICATIONS
 	;;
 esac
 
@@ -229,13 +295,30 @@ echo ""
 
 case $opt in
 [yY][eE][sS] | [yY])
-	install_if_needed $OPTIONAL
+	install_optional $OPTIONAL
 	;;
 [nN][oO] | [nN])
 	continue
 	;;
 [*])
-	install_if_needed $OPTIONAL
+	install_optional $OPTIONAL
+	;;
+esac
+
+echo ""
+
+read -r -p ":: Do you want to enable autologin for tty1? [Y/n]: " login
+echo ""
+
+case $login in
+[yY][eE][sS] | [yY])
+	enable_autologin
+	;;
+[nN][oO] | [nN])
+	continue
+	;;
+[*])
+	enable_autologin
 	;;
 esac
 
@@ -246,28 +329,20 @@ echo "Finishing up..."
 echo "==================================================================="
 echo ""
 
+adjust_xinit_file
+
+echo ""
 echo "Cleaning temp files..."
 rm -rf ./dots >/dev/null
 
 echo ""
 echo "Installation complete!"
 echo ""
-echo "Before you proceed, make sure to check the following file:"
-echo "$HOME/.config/awesome/config/settings.lua"
-echo "You HAVE to make changes so that the settings match your system."
-echo "Important settings are marked with '!Important'"
-echo ""
-
-read -n 1 -s -r -p "After you are done, press any key to continue..."
-echo ""
+echo "Make sure to complete the finishing touches as explained on the github repo:"
+echo "https://github.com/INeido/dots/wiki/Setup"
 
 if pgrep awesome >/dev/null; then
 	echo "Restart AwesomeWM using the keybind: CRTL + SUPER (Windows) + R"
 else
-	echo "Starting AwesomeWM..."
-	if [[ $(tty) = /dev/tty1 ]]; then
-		startx
-	else
-		echo "Not in tty1. Start AwesomeWM manually using: startx"
-	fi
+	echo "Start AwesomeWM by typing 'startx'"
 fi
