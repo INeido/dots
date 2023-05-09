@@ -33,14 +33,14 @@ awful.spawn.once(polkit_agent)
 -- Widget
 -- ===================================================================
 
-local pacman       = wibox.widget.textbox()
-pacman.font        = beautiful.font .. "11"
+local pacman  = wibox.widget.textbox()
+pacman.font   = beautiful.font .. "11"
 
 -- ===================================================================
 -- Icon
 -- ===================================================================
 
-local icon         = wibox.widget {
+local icon    = wibox.widget {
     font   = beautiful.iconfont .. "11",
     markup = helpers.text_color(" ", beautiful.accent),
     valign = "center",
@@ -53,7 +53,7 @@ local icon         = wibox.widget {
 -- ===================================================================
 
 -- Create the widget
-local w            = wibox.widget {
+local w       = wibox.widget {
     -- Add margins outside
     {
         icon,
@@ -73,13 +73,13 @@ local w            = wibox.widget {
 }
 
 -- Box the widget
-w                  = helpers.box_ba_widget(w, true, 5)
+w             = helpers.box_ba_widget(w, true, 5)
 
 -- ===================================================================
 -- Tooltip
 -- ===================================================================
 
-local tooltip      = awful.tooltip {
+local tooltip = awful.tooltip {
     objects             = { w },
     font                = beautiful.font .. "11",
     mode                = "outside",
@@ -124,7 +124,8 @@ w:connect_signal("button::press", function(_, _, _, button)
             if stderror ~= nil and stderror ~= "" then
                 if string.find(stderror, "warning") then
                     -- Send warning
-                    naughty.nonotificationtify({
+                    naughty.notification({
+                        app_name = "Pacman Widget",
                         title = "Warning!",
                         text = stderror,
                         timeout = 0
@@ -132,6 +133,7 @@ w:connect_signal("button::press", function(_, _, _, button)
                 else
                     -- Send error
                     naughty.notification({
+                        app_name = "Pacman Widget",
                         urgency = "critical",
                         title = "Error!",
                         text = stderror,
@@ -154,7 +156,7 @@ w:connect_signal("button::press", function(_, _, _, button)
                     app_name = "Pacman Widget",
                     timeout = 5,
                     title = "Update finished",
-                    message = pacman.text .. " packages have been updated in " .. time .. ".",
+                    text = pacman.text .. " packages have been updated in " .. time .. ".",
                 })
             end
 

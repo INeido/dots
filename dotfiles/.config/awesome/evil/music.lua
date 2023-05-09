@@ -10,6 +10,7 @@
 -- Initialization
 -- ===================================================================
 
+local gears           = require("gears")
 local awful           = require("awful")
 
 -- ===================================================================
@@ -27,39 +28,52 @@ local interval        = 1
 -- Daemon
 -- ===================================================================
 
-awful.widget.watch(script_status, interval, function(_, stat)
-    local status = stat:gsub("%s+", "")
-    if status == " " then status = nil end
-    awful.spawn.easy_async_with_shell(script_position, function(pos)
-        local position = pos:gsub("%s+", "")
-        if position == " " then position = nil end
-        awful.spawn.easy_async_with_shell(script_volume, function(vol)
-            local volume = vol:gsub("%s+", "")
-            if volume == " " then volume = nil end
-            awful.spawn.easy_async_with_shell(script_metadata, function(data)
-                local metadata = {}
+local function try_script()
+    awful.spawn.easy_async_with_shell(script_status, function(stat)
+        local status = stat:gsub("%s+", "")
+        if status == " " then status = nil end
+        awful.spawn.easy_async_with_shell(script_position, function(pos)
+            local position = pos:gsub("%s+", "")
+            if position == " " then position = nil end
+            awful.spawn.easy_async_with_shell(script_volume, function(vol)
+                local volume = vol:gsub("%s+", "")
+                if volume == " " then volume = nil end
+                awful.spawn.easy_async_with_shell(script_metadata, function(data)
+                    local metadata = {}
 
-                for line in data:gmatch("[^\r\n]+") do
-                    local key, value = line:match("^%s*" .. settings.musicplayer .. "%s+(%S+)%s+(.+)$")
-                    key = key:gsub("^.-%:", "")
-                    if key and value then
-                        if value == " " then metadata[key:lower()] = nil else metadata[key:lower()] = value end
+                    for line in data:gmatch("[^\r\n]+") do
+                        local key, value = line:match("^%s*" .. settings.musicplayer .. "%s+(%S+)%s+(.+)$")
+                        key = key:gsub("^.-%:", "")
+                        if key and value then
+                            if value == " " then metadata[key:lower()] = nil else metadata[key:lower()] = value end
+                        end
                     end
-                end
 
-                awesome.emit_signal("evil::music", {
-                    status   = status or nil,
-                    position = position or nil,
-                    volume   = volume or nil,
-                    length   = metadata.length or nil,
-                    album    = metadata.album or nil,
-                    artist   = metadata.artist or nil,
-                    title    = metadata.title or nil,
-                    art      = metadata.arturl or nil,
-                })
+                    awesome.emit_signal("evil::music", {
+                        status   = status or nil,
+                        position = position or nil,
+                        volume   = volume or nil,
+                        length   = metadata.length or nil,
+                        album    = metadata.album or nil,
+                        artist   = metadata.artist or nil,
+                        title    = metadata.title or nil,
+                        art      = metadata.arturl or nil,
+                    })
+
+                    collectgarbage("collect")
+                end)
             end)
         end)
     end)
+end
 
-    collectgarbage("collect")
-end)
+-- ===================================================================
+-- Timer
+-- ===================================================================
+
+gears.timer {
+    timeout   = interval,
+    call_now  = true,
+    autostart = true,
+    callback  = try_script
+}

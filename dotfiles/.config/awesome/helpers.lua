@@ -78,8 +78,7 @@ function helpers.run_apps(apps)
         if app == "spotify" then
             client = "spotify-launcher"
         end
-        awful.spawn.easy_async_with_shell(
-            string.format("ps aux | grep '%s' | grep -v grep | awk '{print $2}'", client),
+        awful.spawn.easy_async_with_shell(string.format("ps aux | grep '%s' | grep -v grep | awk '{print $2}'", client),
             function(stdout)
                 if stdout == "" then
                     awful.spawn(client)
@@ -87,8 +86,7 @@ function helpers.run_apps(apps)
                 else
                     return false
                 end
-            end
-        )
+            end)
     end
 end
 
@@ -171,7 +169,9 @@ function helpers.find_icon(class, client)
 
                 if io.open(dir .. class:match("%d+") .. "_icon.jpg", "r") ~= nil then
                     cache.client_icons[#cache.client_icons + 1] = {
-                        surface = gears.surface.load(dir .. class:match("%d+") .. "_icon.jpg"), name = "steam_icon_" .. class:match("%d+") .. ".svg" }
+                        surface = gears.surface.load(dir .. class:match("%d+") .. "_icon.jpg"),
+                        name = "steam_icon_" .. class:match("%d+") .. ".svg"
+                    }
                     return cache.client_icons[#cache.client_icons].surface
                 end
             end
@@ -275,7 +275,7 @@ function helpers.get_color()
                 icon = icon,
                 timeout = 5,
                 title = "Color extracted and copied to clipboard!",
-                message = "Your hexcode is: #" .. string.sub(stdout, 1, 6),
+                text = "Your hexcode is: #" .. string.sub(stdout, 1, 6),
                 actions = { copy_color, copy_color_opacity }
             })
 
@@ -288,60 +288,64 @@ end
 function helpers.take_screenshot(full)
     local cmd = nil
     local file = "screenshot_" .. os.time() .. ".png"
+
+    -- Check if Screenshot Path folder exists, create it if it doesn't
+    if not os.rename(settings.screenshot_path, settings.screenshot_path) then
+        awful.spawn.with_shell("mkdir -p " .. settings.screenshot_path)
+    end
+
     if full then
         cmd = "maim -uBo " .. settings.screenshot_path .. file
     else
         cmd = "maim -suBo " .. settings.screenshot_path .. file
     end
 
-    awful.spawn.easy_async_with_shell(
-        cmd,
-        function(_, sterror, _, _)
-            -- Aborted
-            if sterror == "Selection was cancelled by keystroke or right-click.\n" then
-                return
-            end
-
-            -- Copy screenshot to clipboard
-            os.execute("xclip -selection clipboard -t image/png < " .. settings.screenshot_path .. file)
-
-            local copy_image = naughty.action {
-                name = "Copy",
-                icon_only = false,
-            }
-
-            copy_image:connect_signal("invoked", function()
-                os.execute("xclip -selection clipboard -t image/png < " .. settings.screenshot_path .. file)
-            end)
-
-            local open_folder = naughty.action {
-                name = "Open Folder",
-                icon_only = false,
-            }
-
-            open_folder:connect_signal("invoked", function()
-                awful.spawn(settings.fileexplorer .. " " .. settings.screenshot_path, false)
-            end)
-
-            local delete_image = naughty.action {
-                name = "Delete",
-                icon_only = false,
-            }
-
-            delete_image:connect_signal("invoked", function()
-                awful.spawn("rm " .. settings.screenshot_path .. file, false)
-            end)
-
-            -- Show notification
-            naughty.notification({
-                app_name = "Screenshot Tool",
-                icon = settings.screenshot_path .. file,
-                timeout = 5,
-                title = "Screenshot taken!",
-                message = "Image saved and copied to clipboard.",
-                actions = { copy_image, open_folder, delete_image }
-            })
+    awful.spawn.easy_async_with_shell(cmd, function(_, sterror, _, _)
+        -- Aborted
+        if sterror == "Selection was cancelled by keystroke or right-click.\n" then
+            return
         end
+
+        -- Copy screenshot to clipboard
+        os.execute("xclip -selection clipboard -t image/png < " .. settings.screenshot_path .. file)
+
+        local copy_image = naughty.action {
+            name = "Copy",
+            icon_only = false,
+        }
+
+        copy_image:connect_signal("invoked", function()
+            os.execute("xclip -selection clipboard -t image/png < " .. settings.screenshot_path .. file)
+        end)
+
+        local open_folder = naughty.action {
+            name = "Open Folder",
+            icon_only = false,
+        }
+
+        open_folder:connect_signal("invoked", function()
+            awful.spawn(settings.fileexplorer .. " " .. settings.screenshot_path, false)
+        end)
+
+        local delete_image = naughty.action {
+            name = "Delete",
+            icon_only = false,
+        }
+
+        delete_image:connect_signal("invoked", function()
+            awful.spawn("rm " .. settings.screenshot_path .. file, false)
+        end)
+
+        -- Show notification
+        naughty.notification({
+            app_name = "Screenshot Tool",
+            icon = settings.screenshot_path .. file,
+            timeout = 5,
+            title = "Screenshot taken!",
+            text = "Image saved and copied to clipboard.",
+            actions = { copy_image, open_folder, delete_image }
+        })
+    end
     )
 end
 
@@ -627,20 +631,24 @@ function helpers.load_wallpapers()
 
     -- Load normal wallpapers
     local f = io.popen(script_normal)
-    for file in f:lines() do
-        table.insert(temp.normal, gears.surface.load(file))
-        -- Save the filenames
-        local filename = file:match(".+/([^/]+)$") -- Extract the filename portion of the path
-        table.insert(wallpapers.filenames, filename)
+    if f then
+        for file in f:lines() do
+            table.insert(temp.normal, gears.surface.load(file))
+            -- Save the filenames
+            local filename = file:match(".+/([^/]+)$") -- Extract the filename portion of the path
+            table.insert(wallpapers.filenames, filename)
+        end
+        f:close()
     end
-    f:close()
 
     -- Load blurred wallpapers
     f = io.popen(script_blurred)
-    for file in f:lines() do
-        table.insert(temp.blurred, gears.surface.load(file))
+    if f then
+        for file in f:lines() do
+            table.insert(temp.blurred, gears.surface.load(file))
+        end
+        f:close()
     end
-    f:close()
 
     -- Scales the wallpapers for every different screen
     awful.screen.connect_for_each_screen(function(s)
@@ -663,10 +671,13 @@ function helpers.load_tag_icons()
     local script = "ls " .. beautiful.config_path .. "icons/tags/*.svg"
 
     local f = io.popen(script)
-    for file in f:lines() do
-        table.insert(icons, gears.surface.load(file))
+    if f then
+        for file in f:lines() do
+            table.insert(icons, gears.surface.load(file))
+        end
+        f:close()
     end
-    f:close()
+
     return icons
 end
 
