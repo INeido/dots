@@ -16,7 +16,7 @@ configuration {
 	drun-display-format:        "{name}";
     drun-match-fields:          "name,generic,exec,categories,keywords";
 	window-format:              "{w} · {c} · {t}";
-    dpi: 92;
+    dpi:                        92;
 }
 
 /*****----- Global Properties -----*****/

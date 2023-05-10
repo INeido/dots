@@ -77,6 +77,7 @@ update_folder() {
 				mkdir ~/$folder.bak
 			fi
 			mv ~/$folder ~/$folder.bak/
+			mkdir ~/$folder
 		else
 			echo "$name configs detected, deleting..."
 			rm -rf ~/$folder
@@ -232,14 +233,20 @@ echo "Clone Git Repository..."
 if [ -d ./dots ]; then
 	rm -rf ./dots
 fi
-git clone --depth=1 https://github.com/INeido/dots
+# Only clone dotfiles, we don't need the samples
+git clone --depth=1 --filter=blob:none --sparse https://github.com/INeido/dots
+cd dots
+git sparse-checkout init --cone
+git sparse-checkout set dotfiles
+cd ..
 echo ""
 
 echo "Copying dotfiles..."
 update_file ".zshrc" "zshrc"
+update_file ".config/qutebrowser/config.py" "Qutebrowser: config.py"
+update_file ".config/qutebrowser/autoconfig.yml" "Qutebrowser: autoconfig.yml"
 update_folder ".config/alacritty" "Alacritty"
 update_folder ".config/neofetch" "Neofetch"
-update_folder ".config/qutebrowser" "Qutebrowser"
 update_folder ".config/rofi" "Rofi"
 update_folder ".config/awesome" "Awesome"
 

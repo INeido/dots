@@ -101,7 +101,6 @@ settings.confirmation_text = "Are you sure?"
 -- General
 
 -- Network Interface for the widget
--- TO-DO add tutorial in wiki
 settings.network_interface = "enp42s0"
 
 -- Bulletin
@@ -134,7 +133,7 @@ settings.pacman_notif      = true
 -- Dashboard
 
 -- Enter the drives you want to get data from for the widget
-settings.drive_names       = { "/" }
+settings.drive_names       = { "/", "/Games" }
 
 -- Musicplayer art temp folder
 settings.musicplayer_temp  = "/tmp"
