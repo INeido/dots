@@ -67,44 +67,41 @@ install_optional() {
 update_folder() {
 	local folder="$1"
 	local name="$2"
-	if [ -d ~/$folder ]; then
+	if [ -d $HOME/$folder ]; then
 		if [ $backup = "yes" ]; then
 			echo "$name configs detected, backing up..."
-			if [ -d ~/$folder.bak ]; then
-				rm -rf ~/$folder.bak
-				mkdir ~/$folder.bak
+			if [ -d $HOME/$folder.bak ]; then
+				rm -rf $HOME/$folder.bak
+				mkdir $HOME/$folder.bak
 			else
-				mkdir ~/$folder.bak
+				mkdir $HOME/$folder.bak
 			fi
-			mv ~/$folder ~/$folder.bak/
-			mkdir ~/$folder
+			mv $HOME/$folder $HOME/$folder.bak
 		else
 			echo "$name configs detected, deleting..."
-			rm -rf ~/$folder
-			mkdir ~/$folder
+			rm -rf $HOME/$folder
 		fi
-	else
-		mkdir ~/$folder
 	fi
 	echo "Installing $name configs..."
-	cp -r ./dots/dotfiles/$folder/* ~/$folder
+	mkdir $HOME/$folder
+	cp -r ./dots/dotfiles/$folder/* $HOME/$folder
 }
 
 # Backup current settings and copy new ones
 update_file() {
 	local file="$1"
 	local name="$2"
-	if [ -f ~/$file ]; then
+	if [ -f $HOME/$file ]; then
 		if [ $backup = "yes" ]; then
 			echo "$name config detected, backing up..."
-			mv ~/$file ~/$file.bak
+			mv $HOME/$file $HOME/$file.bak
 		else
-			rm -rf ~/$file
+			rm -rf $HOME/$file
 		fi
 	else
 		echo "Installing $name configs..."
 	fi
-	cp ./dots/dotfiles/$file ~/$file
+	cp ./dots/dotfiles/$file $HOME/$file
 }
 
 # Adjust xinit file to start AwesomeWM
@@ -115,8 +112,8 @@ adjust_xinit_file() {
 		if grep -q "exec awesome" "$HOME/.xinitrc"; then
 			echo "AwesomeWM is already set as the window manager in $HOME/.xinitrc"
 		else
-			echo "Backing up existing .xinitrc file to ${HOME}/.xinitrc.bak"
-			mv "${HOME}/.xinitrc" "${HOME}/.xinitrc.bak"
+			echo "Backing up existing .xinitrc file to $HOME/.xinitrc.bak"
+			mv "$HOME/.xinitrc" "$HOME/.xinitrc.bak"
 
 			# Add line to start AwesomeWM
 			echo "exec awesome" >>"$HOME/.xinitrc"
@@ -214,12 +211,12 @@ ZSH="$HOME/.config/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.
 if [ -d "$ZSH/custom/plugins/zsh-autosuggestions" ]; then
 	echo "zsh-autosuggestions is already installed"
 else
-	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.config/oh-my-zsh/custom}/plugins/zsh-autosuggestions
 fi
 if [ -d "$ZSH/custom/plugins/zsh-syntax-highlighting" ]; then
 	echo "zsh-syntax-highlighting is already installed"
 else
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.config/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$HOME/.config/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 
 # 4.
@@ -263,14 +260,14 @@ echo ""
 case $pam in
 [yY][eE][sS] | [yY])
 	install_if_needed "lua-pam-git"
-	cp /usr/lib/lua-pam/liblua_pam.so ~/.config/awesome/
+	cp /usr/lib/lua-pam/liblua_pam.so $HOME/.config/awesome/
 	;;
 [nN][oO] | [nN])
 	continue
 	;;
 [*])
 	install_if_needed "lua-pam-git"
-	cp /usr/lib/lua-pam/liblua_pam.so ~/.config/awesome/
+	cp /usr/lib/lua-pam/liblua_pam.so $HOME/.config/awesome/
 	;;
 esac
 
