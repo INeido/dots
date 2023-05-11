@@ -249,7 +249,7 @@ update_file ".config/rofi/launcher.rasi" "Rofi: launcher.rasi"
 update_file ".config/rofi/launcher.rasi" "Rofi: launcher.rasi"
 update_file ".gtkrc-2.0" "GTK 2.0 Config"
 update_file ".config/gtk-3.0/settings.ini" "GTK 3.0 Config"
-update_folder ".themes/Neido\: Code" "GTK Theme"
+update_folder ".themes/Neido_Code" "GTK Theme"
 update_folder ".config/awesome" "Awesome"
 
 # 5.
