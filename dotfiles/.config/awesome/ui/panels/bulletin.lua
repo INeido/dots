@@ -12,7 +12,6 @@
 
 local awful        = require("awful")
 local wibox        = require("wibox")
-local helpers      = require("helpers")
 local naughty      = require("naughty")
 local beautiful    = require("beautiful")
 local dpi          = beautiful.xresources.apply_dpi
@@ -91,6 +90,9 @@ end
 -- Add a notification
 function add_notification(n)
 	scrollbox:insert(1, notification(n, remove_notification))
+	if #scrollbox:get_children() > settings.max_entries then
+		scrollbox:remove(#scrollbox:get_children())
+	end
 	bu_update()
 end
 

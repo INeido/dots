@@ -108,8 +108,9 @@ settings.network_interface = "enp42s0"
 
 -- Bulletin
 
-settings.create_embeds     = true
+settings.create_embeds     = true -- Could be a security risk because it downloads the html content... I guess
 settings.max_embeds        = "5"
+settings.max_entries       = "50" -- Too many can cause serious lag
 
 -- Bar
 
@@ -136,7 +137,7 @@ settings.pacman_notif      = true
 -- Dashboard
 
 -- Enter the drives you want to get data from for the widget
-settings.drive_names       = { "/", "/Games" }
+settings.drive_names       = { "/" }
 
 -- Musicplayer art temp folder
 settings.musicplayer_temp  = "/tmp"
