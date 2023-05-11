@@ -21,7 +21,6 @@ local dpi          = beautiful.xresources.apply_dpi
 -- Widgets
 -- ===================================================================
 
-local not_template = require("ui.widgets.bulletin.not_template")
 local notification = require("ui.widgets.bulletin.notification")
 local header       = require("ui.widgets.bulletin.header")
 local scrollbox    = wibox.widget {
@@ -90,7 +89,7 @@ local function remove_notification(n_)
 end
 
 -- Add a notification
-local function add_notification(n)
+function add_notification(n)
 	scrollbox:insert(1, notification(n, remove_notification))
 	bu_update()
 end
@@ -112,30 +111,13 @@ function bu_toggle()
 	end
 end
 
+function bu_get_visibility()
+	return bulletin.visible
+end
+
 -- ===================================================================
 -- Signals
 -- ===================================================================
-
-naughty.connect_signal('request::display', function(n)
-	-- Add destroyed notifications to the bulletin
-	n:connect_signal('destroyed', function(self, reason, keep_visible)
-		-- Timeout
-		if reason == 1 then
-			add_notification(n)
-			-- User dismissed
-		elseif reason == 2 then
-			helpers.jump_to_client(n.clients[1])
-		end
-	end)
-
-	-- Display the notification using the default implementation
-	if bulletin.visible == false then
-		naughty.layout.box { notification = n, widget_template = not_template(n) }
-		naughty.layout.box.buttons = nil
-	else
-		n:destroy(1)
-	end
-end)
 
 -- Make the scrollbox actually scrollable (Credit @OlMon)
 scrollbox:connect_signal("button::press", function(_, _, _, button)

@@ -27,6 +27,8 @@ settings.display           = "xrandr --output DP-0 --primary --mode 2560x1440 --
 -- General
 -- ===================================================================
 
+settings.do_not_disturb    = false
+
 -- Apps
 settings.terminal          = "alacritty"
 settings.browser           = "qutebrowser"
