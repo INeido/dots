@@ -83,7 +83,7 @@ update_folder() {
 		fi
 	fi
 	echo "Installing $name configs..."
-	mkdir $HOME/$folder
+	mkdir -p "$HOME/$folder"
 	cp -r ./dots/dotfiles/$folder/* $HOME/$folder
 }
 
