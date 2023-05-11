@@ -67,24 +67,24 @@ install_optional() {
 update_folder() {
 	local folder="$1"
 	local name="$2"
-	if [ -d $HOME/$folder ]; then
+	if [ -d "$HOME/$folder" ]; then
 		if [ $backup = "yes" ]; then
 			echo "$name configs detected, backing up..."
-			if [ -d $HOME/$folder.bak ]; then
-				rm -rf $HOME/$folder.bak
-				mkdir $HOME/$folder.bak
+			if [ -d "$HOME/$folder.bak" ]; then
+				rm -rf "$HOME/$folder.bak"
+				mkdir "$HOME/$folder.bak"
 			else
-				mkdir $HOME/$folder.bak
+				mkdir "$HOME/$folder.bak"
 			fi
-			mv $HOME/$folder $HOME/$folder.bak
+			mv "$HOME/$folder" "$HOME/$folder.bak"
 		else
 			echo "$name configs detected, deleting..."
-			rm -rf $HOME/$folder
+			rm -rf "$HOME/$folder"
 		fi
 	fi
 	echo "Installing $name configs..."
 	mkdir -p "$HOME/$folder"
-	cp -r ./dots/dotfiles/$folder/* $HOME/$folder
+	cp -r "./dots/dotfiles/$folder/*" "$HOME/$folder"
 }
 
 # Backup current settings and copy new ones
