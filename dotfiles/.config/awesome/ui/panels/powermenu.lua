@@ -47,7 +47,7 @@ local function add_button(icon, action)
 end
 
 -- Lock
-add_button("", function()
+add_button("", function()
     ls_show()
 end)
 -- Sleep
