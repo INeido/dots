@@ -19,7 +19,7 @@ local naughty      = require("naughty")
 -- ===================================================================
 
 local script_index = 1
-local scripts      = { [[upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/percentage/ {print $2}']] }
+local scripts      = { [[upower -i $(upower -e | grep BAT) | awk '/percentage/ {print $2}']] }
 local interval     = 10
 local timer        = gears.timer {}
 
@@ -29,7 +29,7 @@ local timer        = gears.timer {}
 
 local function try_script()
     awful.spawn.easy_async_with_shell(scripts[script_index], function(stdout)
-        local percentage = stdout:gsub("\n", "")
+        local percentage = stdout:gsub("\n", ""):gsub("%%", "")
 
         if not tonumber(percentage) then
             -- Invalid output, try next script
@@ -66,9 +66,11 @@ end
 -- Timer
 -- ===================================================================
 
-timer = gears.timer {
-    timeout   = interval,
-    call_now  = true,
-    autostart = true,
-    callback  = try_script
-}
+if settings.laptop_mode then
+    timer = gears.timer {
+        timeout   = interval,
+        call_now  = true,
+        autostart = true,
+        callback  = try_script
+    }
+end

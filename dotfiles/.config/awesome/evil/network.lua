@@ -21,7 +21,7 @@ local naughty      = require("naughty")
 local script_index = 1
 local scripts      = {
     "awk '/" .. settings.network_interface .. "/{print $2,$10}' /proc/net/dev",
-    "awk '/ wlan0 /{print $2,$10}' /proc/net/dev"
+    "awk '/wlan0/{print $2,$10}' /proc/net/dev"
 }
 local interval     = 2
 local timer        = gears.timer {}

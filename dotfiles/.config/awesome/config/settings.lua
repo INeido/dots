@@ -27,7 +27,8 @@ settings.display           = "xrandr --output DP-0 --primary --mode 2560x1440 --
 -- General
 -- ===================================================================
 
-settings.do_not_disturb    = false
+settings.do_not_disturb    = false -- Notifications won't show, rather land in Bulletin
+settings.laptop_mode       = false -- Enables battery daemon
 
 -- Apps
 settings.terminal          = "alacritty"
