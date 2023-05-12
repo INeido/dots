@@ -47,6 +47,7 @@ cache.bulletin_icon       = gears.surface.load(beautiful.config_path .. "icons/n
 cache.square_icon         = gears.surface.load(beautiful.config_path .. "icons/square.svg")
 cache.colorpicker_icon    = gears.surface.load(beautiful.config_path .. "icons/colorpicker.svg")
 cache.screenshot_icon     = gears.surface.load(beautiful.config_path .. "icons/screenshot.svg")
+cache.battery_icon     = gears.surface.load(beautiful.config_path .. "icons/battery.svg")
 
 -- Clients
 cache.last_focused_client = {}

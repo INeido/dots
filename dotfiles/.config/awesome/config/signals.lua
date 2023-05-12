@@ -23,18 +23,6 @@ local beautiful = require("beautiful")
 -- Fix, for when your monitor turns off and loses its settings
 screen.connect_signal("list", function() awful.spawn.with_shell(settings.display) end)
 
--- Focus last client when switching tags
-tag.connect_signal("property::selected", function(t)
-    if t.selected == true then
-        local focus = cache.client_focus_lost[t.index]
-        if focus then
-            if focus.valid then
-                client.focus = focus
-            end
-        end
-    end
-end)
-
 screen.connect_signal("request::wallpaper", function(args)
     -- This breaks the normal requests, but I think its inevitable here
     if args.id then
@@ -114,7 +102,10 @@ client.connect_signal("untagged", function(c)
             local focus = cache.client_focus_lost[tag.index]
             if focus then
                 if focus.valid then
-                    client.focus = focus
+                    if not focus.minimized then
+                        client.focus = focus
+                        focus:raise()
+                    end
                 end
             end
         end
@@ -128,10 +119,26 @@ client.connect_signal("property::minimized", function(c)
         if tag then
             local focus = cache.client_focus_lost[tag.index]
             if focus then
-                if not focus.minimized then
-                    if focus.valid then
+                if focus.valid then
+                    if not focus.minimized then
                         client.focus = focus
+                        focus:raise()
                     end
+                end
+            end
+        end
+    end
+end)
+
+-- Focus last client when switching tags
+tag.connect_signal("property::selected", function(t)
+    if t.selected == true then
+        local focus = cache.client_focus[t.index]
+        if focus then
+            if focus.valid then
+                if not focus.minimized then
+                    client.focus = focus
+                    focus:raise()
                 end
             end
         end

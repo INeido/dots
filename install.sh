@@ -2,7 +2,7 @@
 set -e
 
 # Variables
-REQUIREMENTS="zsh awesome-git rofi lolcat neofetch playerctl brightnessctl acpi ttf-font-awesome ttf-fira-code imagemagick networkmanager maim xclip papirus-icon-theme pacman-contrib picom lxsession"
+REQUIREMENTS="zsh awesome-git rofi lolcat neofetch playerctl brightnessctl upower acpi ttf-font-awesome ttf-fira-code imagemagick networkmanager maim xclip papirus-icon-theme pacman-contrib picom lxsession"
 APPLICATIONS="code htop nemo qutebrowser alacritty spotify-launcher"
 OPTIONAL="discord vlc steam signal-desktop remmina bitwarden lutris virt-manager python freerdp network-manager-applet networkmanager-openvpn"
 

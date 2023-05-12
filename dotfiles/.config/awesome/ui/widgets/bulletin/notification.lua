@@ -149,6 +149,8 @@ local function create_notification(n, close_function)
 			app_icon_widget.image = cache.colorpicker_icon
 		elseif app_name == "Screenshot Tool" then
 			app_icon_widget.image = cache.screenshot_icon
+		elseif app_name == "Battery Widget" then
+			app_icon_widget.image = cache.battery_icon
 		else
 			app_icon_widget.image = helpers.find_icon(app_name)
 		end
