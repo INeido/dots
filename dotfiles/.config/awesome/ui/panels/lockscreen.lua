@@ -76,34 +76,34 @@ end
 local function grab_password()
 	awful.prompt.run {
 		hooks               = {
-			{ {}, 'Escape',
+			{ {}, "Escape",
 				function(_)
 					reset()
 					grab_password()
 				end
 			},
 			-- Prevent keygrabber crash
-			{ { 'Control' }, 'Delete',
+			{ { "Control" }, "Delete",
 				function()
 					reset()
 					grab_password()
 				end },
-			{ { 'Control' }, 's',
+			{ { "Control" }, "s",
 				function()
 					reset()
 					grab_password()
 				end },
-			{ { 'Control' }, 'r',
+			{ { "Control" }, "r",
 				function()
 					reset()
 					grab_password()
 				end },
-			{ { 'Control' }, 'g',
+			{ { "Control" }, "g",
 				function()
 					reset()
 					grab_password()
 				end },
-			{ { 'Control' }, 'c',
+			{ { "Control" }, "c",
 				function()
 					reset()
 					grab_password()

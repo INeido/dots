@@ -202,7 +202,7 @@ local w                = wibox.widget {
 
 local update           = function(args, _, _, _)
     -- Update status
-    w:set_status(args.status == 'Playing' and true or false)
+    w:set_status(args.status == "Playing" and true or false)
 
     -- Update running
     if args.status ~= "Playing" and args.status ~= "Paused" then

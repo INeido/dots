@@ -462,8 +462,8 @@ end
 -- Calculates the hash of a folder
 function helpers.get_folder_hash(folder)
     local cmd = "cd " .. folder .. " && find . -type f -print0 | sort -z | xargs -0 md5sum | md5sum"
-    local f = assert(io.popen(cmd, 'r'))
-    local hash = f:read('*a')
+    local f = assert(io.popen(cmd, "r"))
+    local hash = f:read("*a")
     f:close()
     return hash:sub(1, -2)
 end

@@ -121,9 +121,9 @@ local function create_notification(n, close_function)
 	}
 
 	-- Get timestamps
-	local start_time      = helpers.return_date_time('%H:%M:%S')
-	local exact_time      = helpers.return_date_time('%I:%M %p')
-	local exact_date_time = helpers.return_date_time('%b %d, %I:%M %p')
+	local start_time      = helpers.return_date_time("%H:%M:%S")
+	local exact_time      = helpers.return_date_time("%I:%M %p")
+	local exact_date_time = helpers.return_date_time("%b %d, %I:%M %p")
 
 	local icon_fallback   = gears.color.recolor_image(beautiful.config_path .. "icons/bell.svg", beautiful.fg_normal)
 	local icon_widget     = wibox.widget.imagebox(n.icon)
@@ -185,11 +185,11 @@ local function create_notification(n, close_function)
 
 			-- Under 1 min
 			if time_diff < 60 then
-				time_widget:set_markup('now')
+				time_widget:set_markup("now")
 				-- Over 1 min but under 1 hour
 			elseif time_diff >= 60 and time_diff < 3600 then
 				local time_in_minutes = math.floor(time_diff / 60)
-				time_widget:set_markup(time_in_minutes .. 'm ago')
+				time_widget:set_markup(time_in_minutes .. "m ago")
 				-- Over 1 hour but under 1 day
 			elseif time_diff >= 3600 and time_diff < 86400 then
 				time_widget:set_markup(exact_time)
@@ -199,7 +199,7 @@ local function create_notification(n, close_function)
 				return false
 			end
 
-			collectgarbage('collect')
+			collectgarbage("collect")
 		end
 	}
 
@@ -215,7 +215,7 @@ local function create_notification(n, close_function)
 				{
 					{
 						{
-							id     = 'text_role',
+							id     = "text_role",
 							font   = beautiful.font .. "11",
 							widget = wibox.widget.textbox,
 						},

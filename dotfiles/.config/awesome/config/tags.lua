@@ -27,19 +27,3 @@ awful.screen.connect_for_each_screen(function(s)
 		})
 	end
 end)
-
--- ===================================================================
--- Signal
--- ===================================================================
-
--- Focus last client when switching tags
-tag.connect_signal("property::selected", function(t)
-	if t.selected == true then
-		local focus = cache.client_focus_lost[t.index]
-		if focus then
-			if focus.valid then
-				client.focus = focus
-			end
-		end
-	end
-end)

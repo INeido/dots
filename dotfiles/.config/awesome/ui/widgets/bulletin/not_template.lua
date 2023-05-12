@@ -50,7 +50,7 @@ local function template(n)
 				{
 					{
 						{
-							id     = 'text_role',
+							id     = "text_role",
 							font   = beautiful.font .. "11",
 							widget = wibox.widget.textbox,
 						},

@@ -20,7 +20,10 @@ local beautiful = require("beautiful")
 -- ===================================================================
 
 local function set_wallpaper(s, id)
-    gears.wallpaper.set(cache.wallpapers[s.index][id].normal)
+    screen.emit_signal("request::wallpaper", {
+        s = s,
+        id = id
+    })
 end
 
 awful.screen.connect_for_each_screen(function(s)

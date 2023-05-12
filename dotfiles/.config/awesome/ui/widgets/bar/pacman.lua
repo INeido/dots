@@ -110,7 +110,7 @@ end)
 w:connect_signal("button::press", function(_, _, _, button)
     -- Run the updates in the background when left-clicked
     if button == 1 and not updating then
-        local start_time = helpers.return_date_time('%H:%M:%S')
+        local start_time = helpers.return_date_time("%H:%M:%S")
         updating         = true
         tooltip.text     = "Updating..."
 

@@ -11,6 +11,7 @@
 -- ===================================================================
 
 local awful     = require("awful")
+local wibox     = require("wibox")
 local helpers   = require("helpers")
 local naughty   = require("naughty")
 local beautiful = require("beautiful")
@@ -22,9 +23,35 @@ local beautiful = require("beautiful")
 -- Fix, for when your monitor turns off and loses its settings
 screen.connect_signal("list", function() awful.spawn.with_shell(settings.display) end)
 
-naughty.connect_signal('request::display', function(n)
+-- Focus last client when switching tags
+tag.connect_signal("property::selected", function(t)
+    if t.selected == true then
+        local focus = cache.client_focus_lost[t.index]
+        if focus then
+            if focus.valid then
+                client.focus = focus
+            end
+        end
+    end
+end)
+
+screen.connect_signal("request::wallpaper", function(args)
+    -- This breaks the normal requests, but I think its inevitable here
+    if args.id then
+        awful.wallpaper {
+            screen = args.s,
+            widget = {
+                image = cache.wallpapers[args.s.index][args.id].normal,
+                resize = false,
+                widget = wibox.widget.imagebox,
+            }
+        }
+    end
+end)
+
+naughty.connect_signal("request::display", function(n)
     -- Add destroyed notifications to the bulletin
-    n:connect_signal('destroyed', function(self, reason, keep_visible)
+    n:connect_signal("destroyed", function(self, reason, keep_visible)
         -- Timeout
         if reason == 1 then
             add_notification(n)
