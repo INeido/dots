@@ -69,7 +69,7 @@ end)
 
 w:buttons(gears.table.join(
     awful.button({}, 1, nil, function()
-        db_toggle()
+        awesome.emit_signal("dashboard::toggle")
     end)
 ))
 

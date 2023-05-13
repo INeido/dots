@@ -37,7 +37,9 @@ local input         = require("ui.widgets.lockscreen.input")
 -- Lockscreen
 -- ===================================================================
 
-local lockscreen    = wibox({
+local lockscreen    = {}
+
+lockscreen.panel    = wibox({
 	visible = false,
 	ontop   = true,
 	type    = "splash",
@@ -45,14 +47,14 @@ local lockscreen    = wibox({
 	bgimage = cache.wallpapers[screen.primary.index][1].blurred,
 })
 
-awful.placement.maximize(lockscreen)
+awful.placement.maximize(lockscreen.panel)
 
 -- ===================================================================
 -- Functions
 -- ===================================================================
 
 local function set_visibility(v)
-	lockscreen.visible = v
+	lockscreen.panel.visible = v
 end
 
 local function reset()
@@ -65,7 +67,7 @@ local function fail()
 	input.change_text("")
 end
 
-local authenticate = function(password)
+local function authenticate(password)
 	if has_pam then
 		return pam.auth_current_user(password)
 	else
@@ -128,7 +130,7 @@ local function grab_password()
 			if authenticate(input) then
 				reset()
 				set_visibility(false)
-				ex_close()
+				awesome.emit_signal("extender::close")
 			else
 				fail()
 				grab_password()
@@ -138,11 +140,11 @@ local function grab_password()
 	}
 end
 
-function ls_show()
-	-- You can also trigget the lockscreen from the powermenu, so make sure to close it.
-	pm_close()
+local function show()
+	-- You can also trigger the lockscreen from the powermenu, so make sure to close it.
+	awesome.emit_signal("powermenu::close")
 	set_visibility(true)
-	ex_open()
+	awesome.emit_signal("extender::open")
 	grab_password()
 end
 
@@ -152,14 +154,19 @@ end
 
 -- Update background
 tag.connect_signal("property::selected", function(t)
-	helpers.update_background(lockscreen, t)
+	helpers.update_background(lockscreen.panel, t)
+end)
+
+-- Show lockscreen
+awesome.connect_signal("lockscreen::show", function()
+	show()
 end)
 
 -- ===================================================================
 -- Setup
 -- ===================================================================
 
-lockscreen:setup {
+lockscreen.panel:setup {
 	{
 		{
 			{
@@ -181,6 +188,3 @@ lockscreen:setup {
 	},
 	layout = wibox.layout.stack,
 }
-
--- Show lockscreen after creation
-ls_show()

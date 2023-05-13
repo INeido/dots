@@ -48,11 +48,11 @@ end
 
 -- Lock
 add_button("", function()
-    ls_show()
+    awesome.emit_signal("lockscreen::show")
 end)
 -- Sleep
 add_button("", function()
-    ls_show()
+    awesome.emit_signal("lockscreen::show")
     awful.spawn.with_shell("systemctl suspend")
 end)
 -- Logout
@@ -72,7 +72,9 @@ end)
 -- Powermenu
 -- ===================================================================
 
-local powermenu = wibox({
+local powermenu = {}
+
+powermenu.panel = wibox({
     visible = false,
     ontop   = true,
     type    = "splash",
@@ -80,7 +82,7 @@ local powermenu = wibox({
     bgimage = cache.wallpapers[screen.primary.index][1].blurred,
 })
 
-awful.placement.maximize(powermenu)
+awful.placement.maximize(powermenu.panel)
 
 -- ===================================================================
 -- Variables
@@ -128,7 +130,7 @@ local function confirmation_hide()
     buttons[last_focused].w:emit_signal("mouse::enter")
 end
 
-function pm_unfocus()
+local function unfocus()
     for i, button in ipairs(buttons) do
         button.w:emit_signal("mouse::leave")
     end
@@ -136,10 +138,10 @@ function pm_unfocus()
     confirmation.no:emit_signal("mouse::leave")
 end
 
-function pm_close()
+local function close()
     awful.keygrabber.stop(powermenu.grabber)
-    powermenu.visible = false
-    ex_close()
+    powermenu.panel.visible = false
+    awesome.emit_signal("extender::close")
     confirmation_hide()
 end
 
@@ -236,9 +238,9 @@ local keybinds = {
     ["right"]  = right,
     ["return"] = select,
     ["space"]  = select,
-    ["escape"] = pm_close,
-    ["q"]      = pm_close,
-    ["f1"]     = pm_close,
+    ["escape"] = close,
+    ["q"]      = close,
+    ["f1"]     = close,
     ["l"]      = function() select(1) end, -- Lock
     ["s"]      = function() select(2) end, -- Sleep
     ["e"]      = function() select(3) end, -- Exit (Logout)
@@ -247,19 +249,19 @@ local keybinds = {
 }
 
 -- This is a mess
-function pm_open()
+local function open()
     -- Unfocus all buttons. For some reason they are all focused sometimes
-    pm_unfocus()
+    unfocus()
 
     -- Set the first button as active by default
     buttons[1].w:emit_signal("mouse::enter")
 
     -- Close the Dashboard
-    db_close()
+    awesome.emit_signal("dashboard::close")
 
     -- Open Powermenu
-    powermenu.visible = true
-    ex_open()
+    powermenu.panel.visible = true
+    awesome.emit_signal("extender::open")
 
     -- Start Keygrabber
     powermenu.grabber = awful.keygrabber.run(function(_, key, event)
@@ -274,11 +276,11 @@ function pm_open()
     end)
 end
 
-function pm_toggle()
-    if powermenu.visible then
-        pm_close()
+local function toggle()
+    if powermenu.panel.visible then
+        close()
     else
-        pm_open()
+        open()
     end
 end
 
@@ -307,14 +309,29 @@ end
 
 -- Update background
 tag.connect_signal("property::selected", function(t)
-    helpers.update_background(powermenu, t)
+    helpers.update_background(powermenu.panel, t)
+end)
+
+-- Open powermenu
+awesome.connect_signal("powermenu::open", function()
+    open()
+end)
+
+-- Close powermenu
+awesome.connect_signal("powermenu::close", function()
+    close()
+end)
+
+-- Toggle powermenu
+awesome.connect_signal("powermenu::toggle", function()
+    toggle()
 end)
 
 -- ===================================================================
 -- Setup
 -- ===================================================================
 
-powermenu:setup {
+powermenu.panel:setup {
     -- Center widgets vertically
     nil,
     {
@@ -339,5 +356,3 @@ powermenu:setup {
     expand = "none",
     layout = wibox.layout.align.vertical
 }
-
-return powermenu

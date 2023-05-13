@@ -37,27 +37,6 @@ screen.connect_signal("request::wallpaper", function(args)
     end
 end)
 
-naughty.connect_signal("request::display", function(n)
-    -- Add destroyed notifications to the bulletin
-    n:connect_signal("destroyed", function(self, reason, keep_visible)
-        -- Timeout
-        if reason == 1 then
-            add_notification(n)
-            -- User dismissed
-        elseif reason == 2 then
-            helpers.jump_to_client(n.clients[1])
-        end
-    end)
-
-    -- Display the notification using the default implementation
-    if bu_get_visibility() == false and not settings.do_not_disturb then
-        naughty.layout.box { notification = n, widget_template = require("ui.widgets.bulletin.not_template")(n) }
-        naughty.layout.box.buttons = nil
-    else
-        n:destroy(1)
-    end
-end)
-
 -- Client decorations
 client.connect_signal("request::titlebars", function(c) add_decorations(c) end)
 

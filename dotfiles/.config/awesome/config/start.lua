@@ -22,3 +22,6 @@ helpers.run_apps(settings.autorun)
 
 -- Set display settings
 awful.spawn.with_shell(settings.display)
+
+-- Open lockscreen
+awesome.emit_signal("lockscreen::show")

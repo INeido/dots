@@ -10,15 +10,15 @@
 -- Initialization
 -- ===================================================================
 
-local awful   = require("awful")
-local wibox   = require("wibox")
-local helpers = require("helpers")
+local awful     = require("awful")
+local wibox     = require("wibox")
+local helpers   = require("helpers")
 
 -- ===================================================================
 -- Variables
 -- ===================================================================
 
-local extenders     = {}
+local extenders = {}
 
 -- ===================================================================
 -- Panels
@@ -47,24 +47,24 @@ end)
 -- Functions
 -- ===================================================================
 
-function ex_close()
+local function close()
 	for i, panel in ipairs(extenders) do
 		panel.visible = false
 	end
 end
 
-function ex_open()
+local function open()
 	for i, panel in ipairs(extenders) do
 		panel.visible = true
 	end
 end
 
-function ex_toggle()
+local function toggle()
 	if #extenders ~= 0 then
 		if extenders[1].visible then
-			ex_close()
+			close()
 		else
-			ex_open()
+			open()
 		end
 	end
 end
@@ -78,4 +78,19 @@ tag.connect_signal("property::selected", function(t)
 	for i, panel in ipairs(extenders) do
 		helpers.update_background(panel, t)
 	end
+end)
+
+-- Open extender
+awesome.connect_signal("extender::open", function()
+	open()
+end)
+
+-- Close extender
+awesome.connect_signal("extender::close", function()
+	close()
+end)
+
+-- Toggle extender
+awesome.connect_signal("extender::toggle", function()
+	toggle()
 end)

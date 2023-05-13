@@ -64,7 +64,7 @@ end)
 
 w:buttons(gears.table.join(
     awful.button({}, 1, nil, function()
-        bu_toggle()
+        awesome.emit_signal("bulletin::toggle")
     end)
 ))
 

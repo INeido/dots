@@ -74,7 +74,7 @@ end)
 
 w:buttons(gears.table.join(
     awful.button({}, 1, nil, function()
-        pm_toggle()
+        awesome.emit_signal("powermenu::toggle")
     end)
 ))
 

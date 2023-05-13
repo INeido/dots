@@ -12,6 +12,7 @@
 
 local awful        = require("awful")
 local wibox        = require("wibox")
+local helpers      = require("helpers")
 local naughty      = require("naughty")
 local beautiful    = require("beautiful")
 local dpi          = beautiful.xresources.apply_dpi
@@ -43,7 +44,9 @@ local pointer      = 0
 -- Wibar
 -- ===================================================================
 
-local bulletin     = awful.wibar({
+local bulletin     = {}
+
+bulletin.panel     = awful.wibar({
 	visible           = false,
 	ontop             = true,
 	restrict_workarea = false,
@@ -64,14 +67,31 @@ local bulletin     = awful.wibar({
 -- ===================================================================
 
 -- Redraw the Notifications
-local function bu_update()
+local function update()
 	nbox:emit_signal("widget::redraw_needed")
+end
+
+local function close()
+	bulletin.panel.visible = false
+end
+
+local function open()
+	bulletin.panel.visible = true
+	naughty.destroy_all_notifications(nil, 1)
+end
+
+local function toggle()
+	if bulletin.panel.visible then
+		close()
+	else
+		open()
+	end
 end
 
 -- Remove every notification
 local function reset_notifications()
 	scrollbox:reset()
-	bu_update()
+	update()
 
 	-- Reset scroll
 	pointer = 0
@@ -84,37 +104,16 @@ local function remove_notification(n_)
 			scrollbox:remove(i)
 		end
 	end
-	bu_update()
+	update()
 end
 
 -- Add a notification
-function add_notification(n)
+local function add_notification(n)
 	scrollbox:insert(1, notification(n, remove_notification))
 	if #scrollbox:get_children() > tonumber(settings.max_entries) then
 		scrollbox:remove(#scrollbox:get_children())
 	end
-	bu_update()
-end
-
-function bu_close()
-	bulletin.visible = false
-end
-
-function bu_open()
-	bulletin.visible = true
-	naughty.destroy_all_notifications(nil, 1)
-end
-
-function bu_toggle()
-	if bulletin.visible then
-		bu_close()
-	else
-		bu_open()
-	end
-end
-
-function bu_get_visibility()
-	return bulletin.visible
+	update()
 end
 
 -- ===================================================================
@@ -136,15 +135,49 @@ scrollbox:connect_signal("button::press", function(_, _, _, button)
 	end
 end)
 
+naughty.connect_signal("request::display", function(n)
+	-- Add destroyed notifications to the bulletin
+	n:connect_signal("destroyed", function(self, reason, keep_visible)
+		-- Timeout
+		if reason == 1 then
+			add_notification(n)
+			-- User dismissed
+		elseif reason == 2 then
+			helpers.jump_to_client(n.clients[1])
+		end
+	end)
+
+	-- Display the notification using the default implementation
+	if bulletin.panel.visible == false and not settings.do_not_disturb then
+		naughty.layout.box { notification = n, widget_template = require("ui.widgets.bulletin.not_template")(n) }
+		naughty.layout.box.buttons = nil
+	else
+		n:destroy(1)
+	end
+end)
+
+-- Open bulletin
+awesome.connect_signal("bulletin::open", function()
+	open()
+end)
+
+-- Close bulletin
+awesome.connect_signal("bulletin::close", function()
+	close()
+end)
+
+-- Toggle bulletin
+awesome.connect_signal("bulletin::toggle", function()
+	toggle()
+end)
+
 -- ===================================================================
 -- Setup
 -- ===================================================================
 
-bulletin:setup {
+bulletin.panel:setup {
 	header(reset_notifications),
 	nbox,
 	nil,
 	layout = wibox.layout.align.vertical,
 }
-
-return bulletin

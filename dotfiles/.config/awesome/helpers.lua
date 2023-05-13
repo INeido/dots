@@ -600,7 +600,7 @@ function helpers.box_pm_widget(widget, width, height)
     }
 
     w:connect_signal("mouse::enter", function()
-        pm_unfocus()
+        awesome.emit_signal("powermenu::unfocus")
         widget:set_markup(helpers.text_color(widget:get_text(), beautiful.fg_normal))
     end)
     w:connect_signal("mouse::leave", function()

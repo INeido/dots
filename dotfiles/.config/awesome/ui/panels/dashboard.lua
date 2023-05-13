@@ -33,7 +33,9 @@ local storage   = require("ui.widgets.dashboard.storage")
 -- Dashboard
 -- ===================================================================
 
-local dashboard = wibox({
+local dashboard = {}
+
+dashboard.panel = wibox({
     visible = false,
     ontop   = true,
     type    = "splash",
@@ -41,7 +43,7 @@ local dashboard = wibox({
     bgimage = cache.wallpapers[screen.primary.index][1].blurred,
 })
 
-awful.placement.maximize(dashboard)
+awful.placement.maximize(dashboard.panel)
 
 -- ===================================================================
 -- Variables
@@ -53,28 +55,28 @@ dashboard.grabber = nil
 -- Functions
 -- ===================================================================
 
-function db_close()
+local function close()
     awful.keygrabber.stop(dashboard.grabber)
-    dashboard.visible = false
-    ex_close()
+    dashboard.panel.visible = false
+    awesome.emit_signal("extender::close")
 end
 
-function db_open()
+local function open()
     -- Reset Calendar
     calendar.date = os.date("*t")
 
     -- Close the Powermenu
-    pm_close()
+    awesome.emit_signal("powermenu::close")
 
     -- Open Dashboard
-    dashboard.visible = true
-    ex_open()
+    dashboard.panel.visible = true
+    awesome.emit_signal("extender::open")
 
     -- Start Keygrabber TO-DO: Keygrabber is broken. It swallows every key and breaks the global keybinds.
     dashboard.grabber = awful.keygrabber.run(function(_, key, event)
         if event == "release" then return end
         if key == "Escape" or key == "q" or key == "F1" or key == "d" then
-            db_close()
+            close()
             return true
         else
             return false
@@ -82,11 +84,11 @@ function db_open()
     end)
 end
 
-function db_toggle()
+local function toggle()
     if dashboard.visible then
-        db_close()
+        close()
     else
-        db_open()
+        open()
     end
 end
 
@@ -96,14 +98,29 @@ end
 
 -- Update background
 tag.connect_signal("property::selected", function(t)
-    helpers.update_background(dashboard, t)
+    helpers.update_background(dashboard.panel, t)
+end)
+
+-- Open dashboard
+awesome.connect_signal("dashboard::open", function()
+    open()
+end)
+
+-- Close dashboard
+awesome.connect_signal("dashboard::close", function()
+    close()
+end)
+
+-- Toggle dashboard
+awesome.connect_signal("dashboard::toggle", function()
+    toggle()
 end)
 
 -- ===================================================================
 -- Setup
 -- ===================================================================
 
-dashboard:setup {
+dashboard.panel:setup {
     -- Center widgets vertically
     nil,
     {
@@ -147,5 +164,3 @@ dashboard:setup {
     expand = "none",
     layout = wibox.layout.align.vertical
 }
-
-return dashboard

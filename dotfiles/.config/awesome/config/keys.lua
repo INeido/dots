@@ -79,10 +79,80 @@ keys.globalkeys    = gears.table.join(
             group       = "Multimedia"
         }),
     awful.key(
+        {},
+        "XF86AudioRaiseVolume",
+        function()
+            -- awesome.emit_signal("volume::up")
+        end,
+        {
+            description = "Raise Volume",
+            group       = "Multimedia"
+        }),
+    awful.key(
+        {},
+        "XF86AudioLowerVolume",
+        function()
+            -- awesome.emit_signal("volume::down")
+        end,
+        {
+            description = "Lower Volume",
+            group       = "Multimedia"
+        }),
+    awful.key(
+        {},
+        "XF86AudioMute",
+        function()
+            -- awesome.emit_signal("volume::mute")
+        end,
+        {
+            description = "Mute Audio",
+            group       = "Multimedia"
+        }),
+    awful.key(
+        {},
+        "XF86AudioMicMute",
+        function()
+            -- awesome.emit_signal("mic::mute")
+        end,
+        {
+            description = "Mute Microphone",
+            group       = "Multimedia"
+        }),
+    awful.key(
+        {},
+        "XF86MonBrightnessUp",
+        function()
+            -- awesome.emit_signal("brightness::up")
+        end,
+        {
+            description = "Raise Brightness",
+            group       = "Multimedia"
+        }),
+    awful.key(
+        {},
+        "XF86MonBrightnessDown",
+        function()
+            -- awesome.emit_signal("brightness::down")
+        end,
+        {
+            description = "Lower Brightness",
+            group       = "Multimedia"
+        }),
+    awful.key(
+        {},
+        "XF86Search",
+        function()
+            awful.spawn("rofi -show drun -theme ~/.config/rofi/launcher.rasi")
+        end,
+        {
+            description = "Play Previous Track",
+            group       = "Multimedia"
+        }),
+    awful.key(
         { settings.modkey },
         "l",
         function()
-            ls_show()
+            awesome.emit_signal("lockscreen::show")
         end,
         {
             description = "Lock screen",
@@ -132,7 +202,7 @@ keys.globalkeys    = gears.table.join(
         { settings.modkey },
         "p",
         function()
-            pm_toggle()
+            awesome.emit_signal("powermenu::toggle")
         end,
         {
             description = "Toggle Powermenu",
@@ -153,7 +223,7 @@ keys.globalkeys    = gears.table.join(
         { settings.modkey, },
         "b",
         function()
-            bu_toggle()
+            awesome.emit_signal("bulletin::toggle")
         end,
         {
             description = "Toggle Bulletin",
@@ -163,7 +233,7 @@ keys.globalkeys    = gears.table.join(
         { settings.modkey, },
         "d",
         function()
-            db_toggle()
+            awesome.emit_signal("dashboard::toggle")
         end,
         {
             description = "Toggle Dashboard",
