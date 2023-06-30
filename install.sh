@@ -101,6 +101,7 @@ update_file() {
 	else
 		echo "Installing $name configs..."
 	fi
+	mkdir -p "$HOME/$(dirname "$file")"
 	cp ./dots/dotfiles/$file $HOME/$file
 }
 
@@ -204,9 +205,10 @@ if [ -d "$HOME/.config/oh-my-zsh" ]; then
 		echo "oh-my-zsh configs detected, deleting..."
 		rm -rf $HOME/.config/oh-my-zsh
 	fi
+else
+	echo "Installing oh-my-zsh..."
+	ZSH="$HOME/.config/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 fi
-echo "Installing oh-my-zsh..."
-ZSH="$HOME/.config/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 
 if [ -d "$ZSH/custom/plugins/zsh-autosuggestions" ]; then
 	echo "zsh-autosuggestions is already installed"
