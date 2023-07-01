@@ -100,7 +100,9 @@ local function create_buttons(buttons, object)
 end
 
 local function create_entry(btns, object)
-    local icon      = wibox.widget {
+    local entry          = {}
+
+    local icon           = wibox.widget {
         {
             id     = "icon",
             resize = true,
@@ -121,7 +123,7 @@ local function create_entry(btns, object)
         widget = wibox.container.margin,
     }
 
-    local entry     = wibox.widget {
+    entry.widget         = wibox.widget {
         {
             {
                 icon,
@@ -136,7 +138,16 @@ local function create_entry(btns, object)
         widget = wibox.container.background,
     }
 
-    local pin       = type(object) == "string"
+    local pin            = type(object) == "string"
+
+    -- Set name and type
+    if not pin then
+        entry.pinned = false
+        entry.name   = string.lower(object.class)
+    else
+        entry.pinned = true
+        entry.name   = object
+    end
 
     -- Set icon
     if not pin then
@@ -148,16 +159,16 @@ local function create_entry(btns, object)
     -- Set color
     if not pin then
         if object.minimized then
-            entry.bg = beautiful.widget_normal
+            entry.widget.bg        = beautiful.widget_normal
             indicator.indicator.bg = beautiful.accent
         elseif object.urgent then
-            entry.bg = beautiful.widget_normal
+            entry.widget.bg        = beautiful.widget_normal
             indicator.indicator.bg = beautiful.widget_urgent
         elseif object == client.focus then
-            entry.bg = beautiful.widget_selected
+            entry.widget.bg        = beautiful.widget_selected
             indicator.indicator.bg = beautiful.accent
         else
-            entry.bg = beautiful.widget_normal
+            entry.widget.bg        = beautiful.widget_normal
             indicator.indicator.bg = beautiful.accent
         end
     end
@@ -165,45 +176,45 @@ local function create_entry(btns, object)
     -- Set indicator size
     if not pin then
         if object.minimized then
-            indicator.left  = dpi(8)
-            indicator.right = dpi(8)
+            indicator.left  = dpi(22)
+            indicator.right = dpi(22)
         else
             indicator.left  = 0
             indicator.right = 0
         end
     end
 
-    entry:buttons(create_buttons(btns, object))
+    entry.widget:buttons(create_buttons(btns, object))
 
-    entry:connect_signal("mouse::enter", function()
+    entry.widget:connect_signal("mouse::enter", function()
         if object ~= client.focus or pin then
-            entry.bg = beautiful.widget_hover
+            entry.widget.bg = beautiful.widget_hover
         else
-            entry.bg = beautiful.widget_hover
+            entry.widget.bg = beautiful.widget_hover
         end
     end)
 
-    entry:connect_signal("mouse::leave", function()
+    entry.widget:connect_signal("mouse::leave", function()
         if object ~= client.focus or pin then
-            entry.bg = beautiful.widget_normal
+            entry.widget.bg = beautiful.widget_normal
         else
-            entry.bg = beautiful.widget_selected
+            entry.widget.bg = beautiful.widget_selected
         end
     end)
 
-    entry:connect_signal("button::press", function()
+    entry.widget:connect_signal("button::press", function()
         if object ~= client.focus or pin then
-            entry.bg = beautiful.widget_hover .. "DD"
+            entry.widget.bg = beautiful.widget_hover .. "DD"
         else
-            entry.bg = beautiful.widget_hover .. "DD"
+            entry.widget.bg = beautiful.widget_hover .. "DD"
         end
     end)
 
-    entry:connect_signal("button::release", function()
+    entry.widget:connect_signal("button::release", function()
         if object ~= client.focus or pin then
-            entry.bg = beautiful.widget_normal
+            entry.widget.bg = beautiful.widget_normal
         else
-            entry.bg = beautiful.widget_selected
+            entry.widget.bg = beautiful.widget_selected
         end
     end)
 
@@ -221,10 +232,12 @@ local function tasklist(s)
 
         local classnames = {}
 
+        local temp = {}
+
         -- Add running clients
         for _, object in ipairs(objects) do
             table.insert(classnames, string.lower(object.class))
-            w:add(create_entry(widget_buttons, object))
+            table.insert(temp, create_entry(widget_buttons, object))
         end
 
         -- Add pinned clients
@@ -232,11 +245,33 @@ local function tasklist(s)
         for _, t in ipairs(tags) do
             if t.selected then
                 for _, object in ipairs(settings.tags[t.index].pinned) do
-                    if not string.find(table.concat(classnames, ", "), object:gsub("-", "%%-")) then
-                        w:insert(1, create_entry(pin_buttons, object))
+                    local tmp_object = object
+                    if object == "signal-desktop" then
+                        tmp_object = "signal"
+                    elseif object == "element-desktop" then
+                        tmp_object = "element"
+                    end
+                    if not string.find(table.concat(classnames, ", "), tmp_object:gsub("-", "%%-")) then
+                        table.insert(temp, create_entry(pin_buttons, object))
                     end
                 end
             end
+        end
+
+        if settings.tasklist_sort == "alphabetical" then
+            -- Sort the objects table alphabetically
+            table.sort(temp, function(a, b)
+                if settings.tasklist_rev then
+                    return string.lower(a.name) > string.lower(b.name)
+                else
+                    return string.lower(a.name) < string.lower(b.name)
+                end
+            end)
+        end
+
+        -- Add sorted running clients
+        for _, object in ipairs(temp) do
+            w:add(object.widget)
         end
 
         return w

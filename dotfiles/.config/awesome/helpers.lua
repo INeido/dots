@@ -139,6 +139,10 @@ function helpers.find_icon(class, client)
             name = "code.svg"
         elseif name == "steamwebhelper.svg" then
             name = "Steam.svg"
+        elseif name == "signal.svg" then
+            name = "signal-desktop.svg"
+        elseif name == "signal.svg" then
+            name = "element-desktop.svg"
         end
 
         for i, icon in ipairs(cache.client_icons) do

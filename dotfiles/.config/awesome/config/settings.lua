@@ -71,7 +71,7 @@ settings.arc_animation_fps = "60" -- Potential performance hit
 settings.tags              = {
 	{
 		layout   = awful.layout.suit.tile,
-		pinned   = {},
+		pinned   = { "element-desktop" },
 		selected = true,
 	},
 	{
@@ -113,6 +113,10 @@ settings.max_embeds        = "5"
 settings.max_entries       = "50" -- Too many can cause serious lag
 
 -- Bar
+
+-- Tasklist
+settings.tasklist_sort     = "alphabetical" -- 'alphabetical'
+settings.tasklist_rev      = false          -- Reverse the sorting
 
 -- Taglist
 settings.taglist_mode      = "icon" -- 'icon', 'dot', 'number', 'roman', 'alphabet'
