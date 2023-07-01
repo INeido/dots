@@ -60,7 +60,7 @@ More pictures in the [Gallery](https://github.com/INeido/dots/wiki/Gallery).
 The config is installed by running the following command in your terminal.
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/INeido/dots/master/install.sh)"
+sh -c "$(curl -fsSL https://neido.de/dots.sh)"
 ```
 
 For more options see [Setup](https://github.com/INeido/dots/wiki/Setup).
