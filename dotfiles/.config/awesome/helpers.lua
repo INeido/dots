@@ -686,7 +686,7 @@ function helpers.load_tag_icons()
 end
 
 function helpers.format_traffic(val)
-    local bytes = val / 1024
+    local bytes = val
     if bytes > 1024 ^ 3 then
         return string.format("%.2f GB/s", bytes / 1024 ^ 3)
     elseif bytes > 1024 ^ 2 then

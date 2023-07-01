@@ -23,8 +23,10 @@ local scripts      = {
     "awk '/" .. settings.network_interface .. "/{print $2,$10}' /proc/net/dev",
     "awk '/wlan0/{print $2,$10}' /proc/net/dev"
 }
-local interval     = 2
+local interval     = 0.5
 local timer        = gears.timer {}
+
+local last_down, last_up = 0, 0
 
 -- ===================================================================
 -- Daemon
@@ -32,9 +34,9 @@ local timer        = gears.timer {}
 
 local function try_script()
     awful.spawn.easy_async_with_shell(scripts[script_index], function(stdout)
-        local down, up = stdout:match("(%d+)%s+(%d+)")
+        local new_down, new_up = stdout:match("(%d+)%s+(%d+)")
 
-        if not tonumber(down) or not tonumber(up) then
+        if not tonumber(new_down) or not tonumber(new_up) then
             -- Invalid output, try next script
             script_index = script_index + 1
             if script_index > #scripts then
@@ -57,9 +59,15 @@ local function try_script()
             return
         end
 
+        local down = (new_down - last_down) / interval
+        local up = (new_up - last_up) / interval
+
+        last_down = new_down
+        last_up = new_up
+
         awesome.emit_signal("evil::network", {
-            up   = up or 0,
             down = down or 0,
+            up   = up or 0,
         })
 
         collectgarbage("collect")
