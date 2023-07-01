@@ -140,8 +140,5 @@ settings.pacman_notif      = true
 
 -- Dashboard
 
--- Enter the drives you want to get data from for the widget
-settings.drive_names       = { "/" }
-
 -- Musicplayer art temp folder
 settings.musicplayer_temp  = "/tmp"

@@ -26,7 +26,7 @@ local function format_size(kilobytes)
         size = size / 1024
         unit_index = unit_index + 1
     end
-    local formatted_size = string.format("%.1f", size)
+    local formatted_size = string.format("%.0f", size)
     if formatted_size == "1000.0" and unit_index < #units then
         formatted_size = "1.0"
         unit_index = unit_index + 1
@@ -38,11 +38,11 @@ end
 -- Create Drives
 -- ===================================================================
 
-local create_widget = function(name)
+local function storage(drive)
     local w = wibox.widget {
         -- Header Text
         {
-            text   = name,
+            text   = drive,
             align  = "center",
             font   = beautiful.font .. "Bold 20",
             widget = wibox.widget.textbox,
@@ -81,38 +81,28 @@ local create_widget = function(name)
         spacing = dpi(10),
         layout  = wibox.layout.fixed.vertical,
     }
+
+    -- ===================================================================
+    -- Signal
+    -- ===================================================================
+
+    awesome.connect_signal("evil::storage", function(args)
+        local data = nil
+        for _, partition in ipairs(args.drives) do
+            if partition.mount == drive then
+                data = partition
+                break
+            end
+        end
+
+        if data ~= nil then
+            w:get_children_by_id("chart")[1]:set_value(data.usage)
+            w:get_children_by_id("val")[1]:set_text(data.usage .. "%")
+            w:get_children_by_id("text")[1]:set_text(format_size(data.free) .. " free")
+        end
+    end)
+
     return w
 end
 
--- ===================================================================
--- Widget
--- ===================================================================
-
-local w = wibox.widget {
-    spacing = dpi(70),
-    layout  = wibox.layout.fixed.horizontal,
-}
-
--- ===================================================================
--- Drives
--- ===================================================================
-
-local drives = {}
-for i, v in ipairs(settings.drive_names) do
-    table.insert(drives, create_widget(v))
-    w:add(drives[i])
-end
-
--- ===================================================================
--- Signal
--- ===================================================================
-
-awesome.connect_signal("evil::storage", function(args)
-    for i, v in ipairs(drives) do
-        drives[i]:get_children_by_id("chart")[1]:set_value(args.drives[i].usage)
-        drives[i]:get_children_by_id("val")[1]:set_text(args.drives[i].usage .. "%")
-        drives[i]:get_children_by_id("text")[1]:set_text(format_size(args.drives[i].free) .. " free")
-    end
-end)
-
-return w
+return storage

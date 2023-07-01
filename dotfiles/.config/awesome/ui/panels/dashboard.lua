@@ -132,7 +132,8 @@ dashboard.panel:setup {
                 -- Column 1
                 helpers.box_db_widget(music, dpi(400), dpi(400)),
                 {
-                    helpers.box_db_widget(storage, dpi(400), dpi(190)),
+                    helpers.box_db_widget(storage("/"), dpi(200), dpi(190)),
+                    helpers.box_db_widget(storage("/Games"), dpi(200), dpi(190)),
                     layout = wibox.layout.fixed.horizontal
                 },
                 layout = wibox.layout.fixed.vertical
