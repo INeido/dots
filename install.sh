@@ -26,7 +26,9 @@ ensure_yay() {
 		echo "yay is not installed. Installing yay..."
 		git clone https://aur.archlinux.org/yay.git
 		cd yay
-		makepkg -si
+		makepkg -si --noconfirm
+		cd ~
+		rm -rf ~/yay
 	else
 		echo "yay is already installed"
 	fi
