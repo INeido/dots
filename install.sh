@@ -5,16 +5,35 @@ set -e
 REQUIREMENTS="zsh awesome-git extra/rofi lolcat neofetch playerctl brightnessctl upower acpi ttf-font-awesome ttf-fira-code imagemagick networkmanager maim xclip papirus-icon-theme pacman-contrib picom lxsession code htop nemo qutebrowser alacritty spotify-launcher thefuck"
 OPTIONAL="vlc python network-manager-applet networkmanager-openvpn"
 
+BLACK='\033[0;30m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+WHITE='\033[0;37m'
+BOLD='\033[1m'
+DIM='\033[2m'
+ITALIC='\033[3m'
+UNDERLINE='\033[4m'
+BLINK='\033[5m'
+INVERT='\033[7m'
+HIDDEN='\033[8m'
+STRIKETHROUGH='\033[9m'
+NC='\033[0m' # No Color
+
 # Greeter
-echo "Welcome to the install script!"
 echo ""
-echo "This script will..."
-echo "  1. Run a full system update."
-echo "  2. Make sure yay is installed."
-echo "  3. Install requirements."
-echo "  4. Install the dotfiles."
-echo "  5. Install optional packages."
-echo "  5. Cleanup."
+echo -e "${BOLD}Welcome to the install script!${NC}"
+echo ""
+echo -e "${WHITE}This script will...${NC}"
+echo -e "  ${WHITE}1. Run a full system update.${NC}"
+echo -e "  ${WHITE}2. Make sure yay is installed.${NC}"
+echo -e "  ${WHITE}3. Install requirements.${NC}"
+echo -e "  ${WHITE}4. Install the dotfiles.${NC}"
+echo -e "  ${WHITE}5. Install optional packages.${NC}"
+echo -e "  ${WHITE}6. Cleanup.${NC}"
 echo ""
 
 read -n 1 -s -r -p "Press any key when ready..."
@@ -23,12 +42,13 @@ echo ""
 # Makes sure yay is intalled, as it is needed for this script
 ensure_yay() {
 	if ! command -v yay &>/dev/null; then
-		echo "yay is not installed. Installing yay..."
+		echo -n "${BLUE}yay${NC} is not installed. Installing yay... "
 		git clone https://aur.archlinux.org/yay.git
 		cd yay
 		makepkg -si --noconfirm
 		cd ~
 		rm -rf ~/yay
+		echo -e "${GREEN}Done!${NC}"
 	else
 		echo "yay is already installed"
 	fi
@@ -39,10 +59,11 @@ install_if_needed() {
 	local REQ="$@"
 	for package in $REQ; do
 		if ! yay -Qs $package >/dev/null; then
-			echo "Installing $package"
-			yay -S --noconfirm --needed $package
+			echo -e -n "Installing ${BLUE}$package${NC}... "
+			yay -S --noconfirm --needed $package >/dev/null 2>&1
+			echo -e "${GREEN}Done!${NC}"
 		else
-			echo "$package is already installed"
+			echo -e "${BLUE}$package${NC} is already installed!"
 		fi
 	done
 }
@@ -52,10 +73,10 @@ install_optional() {
 	local REQ="$@"
 	for package in $REQ; do
 		if ! yay -Qs $package >/dev/null; then
-			echo "Installing $package"
+			echo -e -n "Installing ${BLUE}$package${NC}... "
 			yay -S --needed $package
 		else
-			echo "$package is already installed"
+			echo -e "${BLUE}$package${NC} is already installed!"
 		fi
 	done
 }
@@ -66,7 +87,7 @@ update_folder() {
 	local name="$2"
 	if [ -d "$HOME/$folder" ]; then
 		if [ $backup = "yes" ]; then
-			echo "$name configs detected, backing up..."
+			echo -e -n "${BLUE}$name${NC} configs detected, backing up... "
 			if [ -d "$HOME/$folder.bak" ]; then
 				rm -rf "$HOME/$folder.bak"
 				mkdir "$HOME/$folder.bak"
@@ -74,14 +95,17 @@ update_folder() {
 				mkdir "$HOME/$folder.bak"
 			fi
 			mv "$HOME/$folder" "$HOME/$folder.bak"
+			echo -e "${GREEN}Done!${NC}"
 		else
-			echo "$name configs detected, deleting..."
+			echo -e -n "${BLUE}$name${NC} configs detected, deleting... "
 			rm -rf "$HOME/$folder"
+			echo -e "${GREEN}Done!${NC}"
 		fi
 	fi
-	echo "Installing $name configs..."
+	echo -e -n "Installing ${BLUE}$name${NC} configs... "
 	mkdir -p "$HOME/$folder"
 	cp -r "./dots/dotfiles/$folder"/* "$HOME/$folder"
+	echo -e "${GREEN}Done!${NC}"
 }
 
 # Backup current settings and copy new ones
@@ -90,16 +114,17 @@ update_file() {
 	local name="$2"
 	if [ -f $HOME/$file ]; then
 		if [ $backup = "yes" ]; then
-			echo "$name config detected, backing up..."
+			echo -e -n "${BLUE}$name${NC} config detected, backing up... "
 			mv $HOME/$file $HOME/$file.bak
+			echo -e "${GREEN}Done!${NC}"
 		else
 			rm -rf $HOME/$file
 		fi
-	else
-		echo "Installing $name configs..."
 	fi
+	echo -e -n "Installing ${BLUE}$name${NC} configs... "
 	mkdir -p "$HOME/$(dirname "$file")"
 	cp ./dots/dotfiles/$file $HOME/$file
+	echo -e "${GREEN}Done!${NC}"
 }
 
 # Adjust xinit file to start AwesomeWM
@@ -160,29 +185,31 @@ esac
 
 # 1.
 echo ""
-echo "==================================================================="
-echo "Updating system..."
-echo "==================================================================="
+echo -e "${NC}\n${YELLOW}===================================================================${NC}"
+echo -e "${YELLOW}Updating system...${NC}"
+echo -e "${YELLOW}===================================================================${NC}\n"
 echo ""
 
 sudo pacman --noconfirm -Syyu
+echo ""
 echo "Installing prerequisites..."
+echo ""
 sudo pacman -S --needed git base-devel
 
 # 2.
 echo ""
-echo "==================================================================="
-echo "Checking yay..."
-echo "==================================================================="
+echo -e "${NC}\n${YELLOW}===================================================================${NC}"
+echo -e "${YELLOW}Checking yay...${NC}"
+echo -e "${YELLOW}===================================================================${NC}\n"
 echo ""
 
 ensure_yay
 
 # 3.
 echo ""
-echo "==================================================================="
-echo "Installing requirements..."
-echo "==================================================================="
+echo -e "${NC}\n${YELLOW}===================================================================${NC}"
+echo -e "${YELLOW}Installing requirements...${NC}"
+echo -e "${YELLOW}===================================================================${NC}\n"
 echo ""
 
 install_if_needed $REQUIREMENTS
@@ -190,7 +217,7 @@ install_if_needed $REQUIREMENTS
 # Install oh-my-zsh and plugins
 if [ -d "$HOME/.config/oh-my-zsh" ]; then
 	if [ $backup = "yes" ]; then
-		echo "oh-my-zsh configs detected, backing up..."
+		echo -e -n "${BLUE}oh-my-zsh${NC} configs detected, backing up... "
 		if [ -d $HOME/.config/oh-my-zsh.bak ]; then
 			rm -rf $HOME/.config/oh-my-zsh.bak
 			mkdir $HOME/.config/oh-my-zsh.bak
@@ -198,46 +225,55 @@ if [ -d "$HOME/.config/oh-my-zsh" ]; then
 			mkdir $HOME/.config/oh-my-zsh.bak
 		fi
 		mv $HOME/.config/oh-my-zsh $HOME/.config/oh-my-zsh.bak
+		echo -e "${GREEN}Done!${NC}"
 	else
-		echo "oh-my-zsh configs detected, deleting..."
+		echo -e -n "${BLUE}oh-my-zsh${NC} configs detected, deleting..."
 		rm -rf $HOME/.config/oh-my-zsh
+		echo -e "${GREEN}Done!${NC}"
 	fi
 else
-	echo "Installing oh-my-zsh..."
-	ZSH="$HOME/.config/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+	echo -e -n "Installing ${BLUE}oh-my-zsh${NC}... "
+	ZSH="$HOME/.config/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc >/dev/null 2>&1
+	echo -e "${GREEN}Done!${NC}"
 fi
 
 if [ -d "$ZSH/custom/plugins/zsh-autosuggestions" ]; then
-	echo "zsh-autosuggestions is already installed"
+	echo "${BLUE}zsh-autosuggestions${NC} is already installed!"
 else
-	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.config/oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	echo -e -n "Installing ${BLUE}zsh-autosuggestions${NC} plugin... "
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.config/oh-my-zsh/custom}/plugins/zsh-autosuggestions >/dev/null 2>&1
+	echo -e "${GREEN}Done!${NC}"
 fi
 if [ -d "$ZSH/custom/plugins/zsh-syntax-highlighting" ]; then
-	echo "zsh-syntax-highlighting is already installed"
+	echo "${BLUE}zsh-syntax-highlighting${NC} is already installed!"
 else
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$HOME/.config/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	echo -e -n "Installing ${BLUE}zsh-syntax-highlighting${NC} plugin... "
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$HOME/.config/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting >/dev/null 2>&1
+	echo -e "${GREEN}Done!${NC}"
 fi
 
 # 4.
 echo ""
-echo "==================================================================="
-echo "Installing dotfiles..."
-echo "==================================================================="
+echo -e "${NC}\n${YELLOW}===================================================================${NC}"
+echo -e "${YELLOW}Installing dotfiles...${NC}"
+echo -e "${YELLOW}===================================================================${NC}\n"
 echo ""
 
-echo "Clone Git Repository..."
+echo -n "Clone Git Repository... "
 if [ -d ./dots ]; then
 	rm -rf ./dots
 fi
 # Only clone dotfiles, we don't need the samples
-git clone --depth=1 --filter=blob:none --sparse https://github.com/INeido/dots
+git clone --quiet --depth=1 --filter=blob:none --sparse https://github.com/INeido/dots >/dev/null 2>&1
 cd dots
-git sparse-checkout init --cone
-git sparse-checkout set dotfiles
+git sparse-checkout init --cone >/dev/null 2>&1
+git sparse-checkout set dotfiles >/dev/null 2>&1
 cd ..
+echo -e "${GREEN}Done!${NC}"
 echo ""
 
 echo "Copying dotfiles..."
+echo ""
 update_file ".zshrc" "zshrc"
 update_file ".config/qutebrowser/config.py" "Qutebrowser: config.py"
 update_file ".config/qutebrowser/autoconfig.yml" "Qutebrowser: autoconfig.yml"
@@ -253,9 +289,9 @@ update_folder ".config/awesome" "Awesome"
 
 # 5.
 echo ""
-echo "==================================================================="
-echo "Installing optional packages..."
-echo "==================================================================="
+echo -e "${NC}\n${YELLOW}===================================================================${NC}"
+echo -e "${YELLOW}Installing optional packages...${NC}"
+echo -e "${YELLOW}===================================================================${NC}\n"
 echo ""
 
 read -r -p ":: Do you want to install liblua_pam for the lockscreen? [Y/n]: " pam
@@ -313,9 +349,9 @@ esac
 
 # 6.
 echo ""
-echo "==================================================================="
-echo "Finishing up..."
-echo "==================================================================="
+echo -e "${NC}\n${YELLOW}===================================================================${NC}"
+echo -e "${YELLOW}Finishing up...${NC}"
+echo -e "${YELLOW}===================================================================${NC}\n"
 echo ""
 
 adjust_xinit_file
