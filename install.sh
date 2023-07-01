@@ -2,9 +2,8 @@
 set -e
 
 # Variables
-REQUIREMENTS="zsh awesome-git rofi lolcat neofetch playerctl brightnessctl upower acpi ttf-font-awesome ttf-fira-code imagemagick networkmanager maim xclip papirus-icon-theme pacman-contrib picom lxsession"
-APPLICATIONS="code htop nemo qutebrowser alacritty spotify-launcher"
-OPTIONAL="discord vlc steam signal-desktop remmina bitwarden lutris virt-manager python freerdp network-manager-applet networkmanager-openvpn"
+REQUIREMENTS="zsh awesome-git extra/rofi lolcat neofetch playerctl brightnessctl upower acpi ttf-font-awesome ttf-fira-code imagemagick networkmanager maim xclip papirus-icon-theme pacman-contrib picom lxsession code htop nemo qutebrowser alacritty spotify-launcher thefuck"
+OPTIONAL="vlc python network-manager-applet networkmanager-openvpn"
 
 # Greeter
 echo "Welcome to the install script!"
@@ -25,10 +24,6 @@ echo ""
 ensure_yay() {
 	if ! command -v yay &>/dev/null; then
 		echo "yay is not installed. Installing yay..."
-		# sudo?
-		# samples take a long time
-		# "dont disturb" mode where everything goes into bulletin
-		#
 		git clone https://aur.archlinux.org/yay.git
 		cd yay
 		makepkg -si
@@ -279,25 +274,6 @@ case $pam in
 esac
 
 echo ""
-echo "Packages ($(echo $APPLICATIONS | wc -w)) $APPLICATIONS"
-echo ""
-
-read -r -p ":: Do you want to install my recommended packages? [Y/n]: " rec
-echo ""
-
-case $rec in
-[yY][eE][sS] | [yY])
-	install_optional $APPLICATIONS
-	;;
-[nN][oO] | [nN])
-	continue
-	;;
-[*])
-	install_optional $APPLICATIONS
-	;;
-esac
-
-echo ""
 echo "Packages ($(echo $OPTIONAL | wc -w)) $OPTIONAL"
 echo ""
 
@@ -349,7 +325,7 @@ rm -rf ./dots >/dev/null
 echo ""
 echo "Installation complete!"
 echo ""
-echo "Make sure to complete the finishing touches as explained on the github repo:"
+echo "Make sure to complete the Finishing Touches as explained on the github repo:"
 echo "https://github.com/INeido/dots/wiki/Setup"
 
 if pgrep awesome >/dev/null; then
