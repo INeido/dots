@@ -2,8 +2,8 @@
 set -e
 
 # Variables
-REQUIREMENTS="zsh awesome-git extra/rofi lolcat neofetch playerctl brightnessctl upower acpi ttf-font-awesome ttf-fira-code imagemagick networkmanager maim xclip papirus-icon-theme pacman-contrib picom lxsession code htop nemo qutebrowser alacritty spotify-launcher thefuck"
-OPTIONAL="vlc python network-manager-applet networkmanager-openvpn"
+REQUIREMENTS="zsh awesome-git extra/rofi lolcat neofetch playerctl brightnessctl upower acpi ttf-font-awesome ttf-fira-code imagemagick networkmanager maim xclip papirus-icon-theme pacman-contrib picom lxsession code htop nemo qutebrowser alacritty spotify-launcher thefuck nano"
+OPTIONAL="vlc python network-manager-applet networkmanager-openvpn pulsemixer"
 
 BLACK='\033[0;30m'
 RED='\033[0;31m'
@@ -164,7 +164,7 @@ EOF
 	# Reload the systemd daemon
 	sudo systemctl daemon-reload
 
-	echo "Autologin enabled for user: $USER"
+	echo -e "Autologin enabled for user: ${BLUE}$USER${NC}"
 }
 
 # Settings
@@ -361,7 +361,7 @@ echo "Cleaning temp files..."
 rm -rf ./dots >/dev/null
 
 echo ""
-echo "Installation complete!"
+echo -e "${BOLD}Installation complete!${NC}"
 echo ""
 echo "Make sure to complete the Finishing Touches as explained on the github repo:"
 echo "https://github.com/INeido/dots/wiki/Setup"
