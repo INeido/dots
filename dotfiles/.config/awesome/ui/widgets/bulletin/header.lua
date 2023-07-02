@@ -87,6 +87,7 @@ local function header(reset_function)
 	local function toggle_mute()
 		settings.do_not_disturb = not settings.do_not_disturb
 		mute_cur_icon = settings.do_not_disturb and mute_on_icon or mute_off_icon
+		mute_widget.markup = helpers.text_color(mute_cur_icon, beautiful.fg_normal)
 	end
 
 	-- ===================================================================
