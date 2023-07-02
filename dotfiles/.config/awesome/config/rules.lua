@@ -14,7 +14,6 @@ local awful       = require("awful")
 local helpers     = require("helpers")
 local beautiful   = require("beautiful")
 
-local keys        = require("config.keys")
 local screen      = awful.screen.focused()
 
 -- ===================================================================
@@ -30,8 +29,6 @@ awful.rules.rules = {
       border_color     = beautiful.border_normal,
       focus            = awful.client.focus.filter,
       raise            = true,
-      keys             = keys.clientkeys,
-      buttons          = keys.clientbuttons,
       screen           = awful.screen.preferred,
       placement        = awful.placement.no_overlap + awful.placement.no_offscreen,
       size_hints_honor = false,
